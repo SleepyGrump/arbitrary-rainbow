@@ -1,0 +1,51 @@
+﻿<html>
+	<head>
+		<title>Generic MUCode editor</title>
+		<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+		<script src="//cdn.jsdelivr.net/ace/1.2.4/min/ace.js" type="text/javascript" charset="utf-8"></script>
+		<script src="codeformat.js"></script>
+		<style type="text/css" rel="stylesheet">
+			body, input { background-color: #111; color: #ddd; font-family: Arial, Helvetica, sans-serif; }
+			input { border: 1px solid #ccc; padding: .3em .6em; border-radius: .3em; }
+			.CodeFormat { float: left; width: 68%; }
+			.SideBar { float: right; width: 30%; }
+			#CodeBox { width: 100%; height: 600px; border: 1px solid #ccc; }
+			#UndoButton { float: right; }
+			.SideBar p { clear: both; }
+			.BracketCounts span, .PasteCounts span, .Buttons input, .Warnings span { display: block; margin: 1em; float: left; }
+			.Buttons input { margin-top: 0; }
+			.SnipCounts:not(:empty) { border: 1px solid #ccc; padding: .5em; }
+			.SnipCounts span { display: block; margin: 1em 0; }
+			.Error { color: #cc0000; font-weight: bold; }
+			.Warning { color: orange; }
+			.Container:not(:empty), .DetailedNote:not(:empty) { cursor: pointer; }
+			.Container .Title, .DetailedNote .Title { text-decoration: underline; }
+			.DetailedNote { border: 1px solid #ccc; padding: 1em; }
+			.Collapsed { display: none !important; visibility: hidden; }
+			.Indent { padding-left: 1em; color: #ccc; width: 100%; }
+		</style>
+	</head>
+	<body>
+		<div class="CodeFormat">
+			<p>Paste code below, then click the button:
+				<input type="button" onclick="fnFormatCode();" value="Format code for MU*" />
+				<input type="button" onclick="fnExplodeCode();" value="Explode code" />
+				<input type="button" onclick="fnUndoFormat();" value="Undo!" id="UndoButton" />
+			</p>
+			<div id="CodeBox"></div>
+		</div>
+		<div class="Sidebar">
+			<p class="Buttons">
+				<input type="button" onclick="fnSelectCode();" value="Select all of the code" />
+			</p>
+			<p class="PasteCounts"><span class="NumPastes"></span><span class="NumFormats"></span></p>
+			<p class="Warnings Error"></p>
+			<p class="BracketCounts"></p>
+			<p class="SnipCounts"></p>
+			<p class="CreateCounts"></p>
+		</div>
+	</body>
+</html>
