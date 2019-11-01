@@ -35,7 +35,7 @@ Future expansion potential:
 
 &TR.MAKEFUNCTIONS LF=@dolist lattr(%0/f.global.*)=@function rest(rest(##, .), .)=%0/##; @dolist lattr(%0/f.globalp.*)=@function/preserve rest(rest(##, .), .)=%0/##; @dolist lattr(%0/f.globalpp.*)=@function/preserve/privilege rest(rest(##, .), .)=%0/##;
 
-@force me=&D.FUNCTION_OBJECTS LF=[strcat(xget(#1, d.function_objects), %b, num(LF))]
+@force me=&D.FUNCTION_OBJECTS LF=[num(LF)]
 
 /*
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~@@
@@ -256,12 +256,14 @@ th alert() Test!
 
 @@ %0 - %#
 @@ %1 - minimum width
-@@ Output: a number between 1 and 6.
+@@ Output: a number between 1 and 6 for how many columns can fit on screen.
 &f.get-max-columns LF=strcat(setq(0, sub(ulocal(f.get-width, %0), 2)), setq(1, if(t(%1), %1, 10)), case(1, gt(%q1, ulocal(f.calc-width, %q0, 2)), 1, gt(%q1, ulocal(f.calc-width, %q0, 3)), 2, gt(%q1, ulocal(f.calc-width, %q0, 4)), 3, gt(%q1, ulocal(f.calc-width, %q0, 5)), 4, gt(%q1, ulocal(f.calc-width, %q0, 6)), 5, 6))
 
 @@ %0 - the width of the screen
 @@ %1 - the number of columns
 &f.calc-width LF=sub(ceil(fdiv(%0, %1)), sub(%1, 1))
 
+@@ %0 - the player to get the width of the screen of
+@@ Output: the width of the player's screen, max 80 and min 50.
 &f.get-width LF=max(min(width(if(t(%0), %0, %#)), 80), 50)
 
