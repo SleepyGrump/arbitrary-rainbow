@@ -220,5 +220,3 @@ Only the owner (or staff) can perform the following commands:
 @tel CDB=CHF
 @tel CHF=CHC
 
-@tel CHC=#2
-
