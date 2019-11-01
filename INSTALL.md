@@ -22,4 +22,16 @@
 
 11. Report any bugs back to this repo!
 
+## Installation instructions for the experienced
+
+1. Snip out the block comments with a decent editor (I use UltraEdit). They should all be at the top and bottom of the file.
+
+2. Paste code as-is into your game. Try not to accidentally copy and paste any Github interface cruft.
+
+3. Test that sucker.
+
+4. Drop it in your master code room.
+
+5. Report any bugs, especially with the install process. These files are meant to be drop-in ready.
+
 # Thanks!
