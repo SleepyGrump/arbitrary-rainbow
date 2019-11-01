@@ -1,0 +1,136 @@
+/L20"MUCode File" Nocase Noquote NestBlockComments
+/Block Comment On = @@(
+/Block Comment Off = )
+// Block Comment On Alt = /*
+// Block Comment Off Alt = */
+/Line Comment = @@
+/Line Comment Num = 3@@
+/Line Comment Alt = //
+/Escape Char = \
+/File Extensions = MU
+/Delimiters = ~!$^*()=|\{}[]:;"'.%+<> ,	?
+/Function String = "%^(^+*^)="
+/Function String 1 = "%&cmd-^(*^) *="
+/Function String 2 = "%&^(fn-*^) *="
+/Function String 3 = "%&^(prog-*^) *="
+/Function String 4 = "%&^(tr-*^) *="
+/Function String 5 = "%^(@* *^)="
+/C1"Commands"
+@alias @apply_marked @attribute @boot @break @chown @chownall @clone @cpattr @create @cut @dbck @decompile @destroy @dig @disable @doing @dolist @dolist/notify @drain @dump @dynhelp @edit @emit @enable @entrances @eval @extansi @femit @find @force @fpose @freeze @fsay @grep @halt @hide @if @kick @last @limit @link @list @list_file @listmotd @lock @log @mark @mark_all @money @motd @mudwho @mvattr @name @newpassword @notify @nuke @oemit @open @parent @password @pcreate @pemit @poor @power @program @ps @quitprogram @quota @readcache @reboot @register @remit @robot @rxlevel @search @selfboot @set @shutdown @stats @sweep @switch @switch/first @switch/notify @teleport @thaw @timewarp @toad @toggle @trigger @turtle @txlevel @unlink @unlock @verb @wait @wait/until @wall @whereall @whereis @wipe @zone
+drop
+enter examine
+folder
+get give goto grab
+help
+inventory
+join
+kill
+leave listen look lpage
+mail mrpage
+news newsdb
+page pose
+rpage
+say score slay smell
+taste think touch train
+use
+version
+whisper wielded wizhelp wmail worn
+/C2"Custom Commands"
+** $ + &cmd- @cron
+/C3"Functions"
+abs acos add after aiindex aindex alphamax alphamin and andchr andflag andflags ansi aposs art asc asin atan attrcnt avg
+beep before between bittype bound brackets
+cand cansee capstr case caseall cat ceil center charin charout children chkreality chomp chr citer cloak clone cmds columns comp con config conn controls convsecs convtime cor cos crc32 create createtime creplace ctu
+dec decrypt default delete delextract destroy dice dig dist2d dist3d div doing dynhelp
+e edefault edit elements elementsmux elist elock emit encrypt entrances eq error escape escapex eval exit exp extract
+fdiv filter findable first flags floor floordiv fold foreach fullname
+garble get get_eval globalroom grab graball grep gt gte guild grepi
+hasattr hasattrp hasflag haspower hasquota hasrxlevel hastoggle hastxlevel hastype home
+idle if ifelse iindex ilev inc index inprogram insert inum inzone isalnum isalpha isdbref isdigit ishidden islower isnum ispunct isspace isupper isword isxdigit iter itext ibreak
+keeptype
+ladd land last lastcreate lattr lattrp lavg lcmds lcon lcstr ldelete ldiv left lemit lexits lflags link list listcommands listflags listfunctions listmatch listnewsgroups listrlevels listtoggles lit ljc ljust lloc lmax lmin lmul ln lnor lnum lnum2 loc localfunc localize locate lock log lor lpowers lrand lreplace lrooms lsub lt lte ltoggles lwho lxnor lxor lzone
+mailalias mailquick mailsize mailstatus map mask match max member merge mid min mix modifytime modulo money moneyname moon move mudname mul munge mod
+name nand ncomp nearby neq next nor nostr not notchr npemit nsiter null num nummatch nummember numpos numwildmatch
+obj objeval oemit open or orchr orflag orflags owner
+pack parenmatch parent parents parse parsestr pedit pemit pfind pi pmatch port pos poss power power10 programmer ptimefmt pushregs
+quota
+r race rand randextract randmatch randpos rebootsecs reboottime remainder remit remove remtype repeat replace rest reverse revwords right rindex rjc rjust rloc rnum room rotl rotr round rset rxlevel regraball
+s safebuff scramble search secs secure securex sees set setdiff setinter setq setqmatch setq_old setr setr_old setunion shl shr shuffle sign sin singletime size sort sortby soundex soundlike space splice sqrt squish startsecs starttime stats step str strcat streq strfunc strip stripansi strlen strmatch strmath sub subj switch switchall
+t tan tel textfile time timefmt tobin todec toggle tohex tooct totcmds totmatch totmember totpos totwildmatch trace translate trim trunc txlevel type
+u u2 u2default u2ldefault u2local ucstr udefault ueval uldefault ulocal unpack
+v vadd valid vattrcnt vcross vdim vdot version visible visiblemux vmag vmul vsub vunit
+where while wildmatch wipe wordpos words wrap wrapcolumns
+xcon xdec xget xinc xnor xor xorchr xorflag
+zemit zfun zfun2 zfun2default zfun2ldefault zfun2local zfundefault zfuneval zfunldefault zfunlocal zwho zone
+/C4"Custom Functions"
+** fn- fn. tr- tr. fm- &fn- &fn. &tr- &tr. &fm- &filter- filter- &limit- limit- &list- list- &set- set- &subfn- subfn-
+age
+band bnand bor border
+capwords cname column
+digittime
+exptime
+findlocation fire fmtconn fmtidle footer
+getstat gettempstat getstatname getstatlocation getstattype getspec getxpmultiplier
+hasrpflag heardit
+isstaff itemize isstat isskill isooc
+lparent lpos lsearch listlocations langarble
+mail
+nonzero
+objmem orest
+pickrand poll pgrep
+roll
+sortbyname sortbynum stdheader stdsubheader stdfooter
+table timestring totalpresent threecolumns
+v_raw vcode vtime
+writetime wordgarble
+/C5"Flags"
+!ABODE !ANSI !ANSICOLOR !ARCHITECT !AUDIBLE !AUDITORIUM !BYEROOM !BLIND !BOUNCE !CHOWN_OK !CLOAK !CONNECTED !CONTROL_OK !COUNCILOR !COMMANDS !COMBAT !DARK !DESTROY_OK !DOORED !ENTER_OK !EXIT !FLOATING !FREE !FUBAR !GOING !GUILDMASTER !HALT !HALTED !HAVEN !IMMORTAL !INDESTRUCTIBLE !INHERIT !IC !JUMP_OK !KEY !LIGHT !LINK_OK !MONITOR !MYOPIC !MARKER0 !MARKER1 !MARKER2 !MARKER3 !MARKER4 !MARKER5 !MARKER6 !MARKER7 !MARKER8 !MARKER9 !NO_SPOOF !NO_TEL !NO_WALL !NO_YELL !NO_UNDERLINE !NO_COMMAND !OPAQUE !PARENT_OK !PLAYER !PUPPET !PRIVATE !PRIVILEGE !PRESERVE !QUIET !ROBOT !ROOM !ROYALTY !SAFE !SLAVE !STICKY !SIDEFX !SHOWFAILCMD !TERSE !TRACE !TRANSPARENT !TELOK !UNFINDABLE !VERBOSE !VISUAL !ZONEMASTER
+ABODE ANSI ANSICOLOR ARCHITECT AUDIBLE AUDITORIUM
+BYEROOM BLIND BOUNCE
+CHOWN_OK CLOAK CONNECTED CONTROL_OK COUNCILOR COMMANDS COMBAT
+DARK DESTROY_OK DOORED
+ENTER_OK EXIT
+FLOATING FREE FUBAR
+GOING GUILDMASTER
+HALT HALTED HAVEN
+IMMORTAL INDESTRUCTIBLE INHERIT IC
+JUMP_OK
+KEY
+LIGHT LINK_OK
+MONITOR MYOPIC MARKER0 MARKER1 MARKER2 MARKER3 MARKER4 MARKER5 MARKER6 MARKER7 MARKER8 MARKER9
+NO_SPOOF NO_TEL NO_WALL NO_YELL NO_UNDERLINE NO_COMMAND
+OPAQUE
+PARENT_OK PLAYER PUPPET PRIVATE PRIVILEGE PRESERVE
+QUIET
+ROBOT ROOM ROYALTY
+SAFE SLAVE STICKY SIDEFX SHOWFAILCMD
+TERSE TRACE TRANSPARENT TELOK
+UNFINDABLE
+VERBOSE VISUAL
+ZONEMASTER
+/C6"Custom Flags"
+APPROVED
+DEAD
+TIMESTOPPED
+WIZARD
+/C7"Special Variables"
+** &_ %q ## %f
+%0 %1 %2 %3 %4 %5 %6 %7 %8 %9 %n %l %s %o %p %# %b %r %t
+#$
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+/C8"Variables"
+** %q<
+%qA %qB %qC %qD %qE %qF %qG %qH %qI %qJ %qK %qL %qM %qN %qO %qP %qQ %qR %qS %qT %qU %qV %qW %qX %qY %qZ
+|
+~
+here
+me
