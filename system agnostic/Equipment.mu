@@ -3,25 +3,32 @@
 /*
 Staff commands:
 
-	+eq/create <title>=<details>
-	+eq/destroy <title> - does not remove it from the players who have it!
-	+eq/tag <title>=<tag> - tag equipment mental, physical, whatever
-	+eq/untag <title>=<tag to remove> - untag equipment
+* +eq/create <title>=<details>
+* +eq/destroy <title> - does not remove it from the players who have it!
+* +eq/tag <title>=<tag> - tag equipment mental, physical, whatever
+* +eq/untag <title>=<tag to remove> - untag equipment
 
-	+eq/give <player>=<title> - give 'em stuff
-	+eq/take <player>=<title> - take their stuff
+* +eq/give <player>=<title> - give 'em stuff
+* +eq/take <player>=<title> - take their stuff
 
-	+eq/view <player> - see their stuff
+* +eq/note <player>/<title>=<note> - Anything special about this item? number, etc?
 
+* +eq/view <player> - see their stuff
+* +eq/details <player>/<title> - view details on their stuff
+*
 Player commands:
 
-	+eq - list your equipment
-	+eq/details <title> - view details on a piece of equipment
-	+eq/list - list equipment tags
-	+eq/list <tag> - list all equipment in a particular tag
-	+eq/find <title> - list all equipment that starts with that text
-	+eq/prove <title> - prove you have a piece of equipment to the room
-	+eq/prove <title>=<player> - prove you have a piece of equipment to a player
+* +eq - list your equipment
+* +eq/details <title> - view details on a piece of equipment
+* +eq/list - list equipment tags
+* +eq/list <tag> - list all equipment in a particular tag
+* +eq/find <title> - list all equipment that starts with that text
+* +eq/prove <title> - prove you have a piece of equipment to the room
+* +eq/prove <title>=<player> - prove you have a piece of equipment to a player
+
+Changelog:
+
+2019-11-05: Added "+eq/note" and made "+eq/details" accept a player/title syntax.
 
 */
 
@@ -38,7 +45,7 @@ Player commands:
 
 @force me=&vD EQF=[num(EQD)]
 
-@desc EQC=%RStaff commands:%R%R%T+eq/create <title>=<details>%R%T+eq/destroy <title> - does not remove it from the players who have it!%R%T+eq/tag <title>=<tag> - tag equipment mental, physical, whatever%R%T+eq/untag <title>=<tag to remove> - untag equipment%R%R%T+eq/give <player>=<title> - give 'em stuff%R%T+eq/take <player>=<title> - take their stuff%R%R%T+eq/view <player> - see their stuff%R%RPlayer commands:%R%R%T+eq - list your equipment%R%T+eq/details <title> - view details on a piece of equipment%R%T+eq/list - list equipment tags%R%T+eq/list <tag> - list all equipment in a particular tag%R%T+eq/find <title> - list all equipment that starts with that text%R%T+eq/prove <title> - prove you have a piece of equipment to the room%R%T+eq/prove <title>=<player> - prove you have a piece of equipment to a player%R
+@desc EQC=%RStaff commands:%RStaff commands:%R%R%T+eq/create <title>=<details>%R%T+eq/destroy <title> - does not remove it from the players who have it!%R%T+eq/tag <title>=<tag> - tag equipment mental, physical, whatever%R%T+eq/untag <title>=<tag to remove> - untag equipment%R%R%T+eq/give <player>=<title> - give 'em stuff%R%T+eq/take <player>=<title> - take their stuff%R%R%T+eq/note <player>/<title>=<note> - Anything special about this item? number, etc?%R%R%T+eq/view <player> - see their stuff%R%T+eq/details <player>/<title> - view details on their stuff%R%RPlayer commands:%R%R%T+eq - list your equipment%R%T+eq/details <title> - view details on a piece of equipment%R%T+eq/list - list equipment tags%R%T+eq/list <tag> - list all equipment in a particular tag%R%T+eq/find <title> - list all equipment that starts with that text%R%T+eq/prove <title> - prove you have a piece of equipment to the room%R%T+eq/prove <title>=<player> - prove you have a piece of equipment to a player%R
 
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -72,7 +79,7 @@ Player commands:
 @@ %0 - player viewing
 @@ %1 - title of the presumed equipment
 @@ %2 - player the equipment is on
-&layout.equipment-details EQF=if(t(setr(0, ulocal(f.find-all-equipment-by-title, %1))), strcat(wheader(ulocal(f.get-equipment-title, %q0), %0), %R, boxtext(ulocal(f.get-equipment-details, %q0),,, %0), %R%R, boxtext(strcat(Tags:, %b, setq(1, ulocal(f.get-equipment-tags, %q0)), if(t(%q1), itemize(%q1, |), None.)),,, %0), %R%R, if(t(%2), if(hasattr(%2, _%q0), boxtext(rest(xget(%2, _%q0), |),,, %0))), %r, wfooter(, %0)), ulocal(layout.error, Could not find equipment '%1'.))
+&layout.equipment-details EQF=if(t(setr(0, ulocal(f.find-all-equipment-by-title, %1))), strcat(wheader(ulocal(f.get-equipment-title, %q0), %0), %R, boxtext(ulocal(f.get-equipment-details, %q0),,, %0), %R%R, boxtext(strcat(Tags:, %b, setq(1, ulocal(f.get-equipment-tags, %q0)), if(t(%q1), itemize(%q1, |), None.)),,, %0), %R%R, if(t(%2), strcat(if(hasattr(%2, _%q0), boxtext(rest(xget(%2, _%q0), |),,, %0)), if(hasattr(%2, edit(_%q0, NAME, note)), strcat(%r%r%b, Note:, %b, xget(%2, edit(_%q0, NAME, note)))))), %r, wfooter(, %0)), ulocal(layout.error, Could not find equipment '%1'.))
 
 @@ %0 - player
 @@ %1 - equipment found
@@ -125,7 +132,6 @@ Player commands:
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 &cmd-+eq EQC=$+eq*:@switch setr(E, strcat(setq(C, ulocal(f.find-command-switch, %0)), if(not(t(%qC)), Could not find command: +eq%0)))=, { @trigger me/%qC=%#, %0; }, { @pemit %#=ulocal(layout.error, %qE); }
-+eq
 
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -134,7 +140,7 @@ Player commands:
 
 &switch.0. EQC=@pemit %0=ulocal(layout.equipment, %0);
 
-&switch.1.details EQC=@pemit %0=ulocal(layout.equipment-details, %0, rest(%1), %0);
+&switch.1.details EQC=@pemit %0=ulocal(layout.equipment-details, %0, switch(rest(%1), */*, rest(rest(%1), /), rest(%1)), switch(rest(%1), */*, if(isstaff(%0), if(t(setr(P, ulocal(f.get-player, first(rest(%1), /)))), %qP, ulocal(layout.error, Could not find player '[first(rest(%1), /)]'.)), ulocal(layout.error, You are not staff and cannot view players' equipment.)), %0));
 
 &switch.2.list EQC=@pemit %0=ulocal(layout.list-equipment, %0, rest(%1));
 
@@ -153,6 +159,8 @@ Player commands:
 &switch.6.take EQC=@trigger me/tr.equipment-take=%0, before(rest(%1), =), rest(%1, =);
 
 &switch.6.view EQC=@trigger me/tr.equipment-view=%0, rest(%1);
+
+&switch.6.note EQC=@trigger me/tr.equipment-note=%0, first(rest(%1), /), last(first(%1, =), /), rest(%1, =);
 
 &switch.99.destroy EQC=@switch/first %1=*=*, { @trigger me/tr.destroy-equipment=%0, first(rest(%1), =), rest(%1, =); }, { @trigger me/tr.confirm-destroy=%0, rest(%1); }
 
@@ -184,18 +192,25 @@ Player commands:
 @@ %0 - %#
 @@ %1 - player
 @@ %2 - equipment title
-&tr.equipment-give EQC=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot give equipment.), %b, if(not(t(setr(A, ulocal(f.find-all-equipment-by-title, %2)))), Could not find equipment named '%2'.), %b, if(or(not(t(%2)), not(t(setr(P, ulocal(f.get-player, %1))))), Could not find player '%1'.)))))=, { @set %qP=_%qA:[ulocal(f.get-equipment-title, %qA)]|[strcat(Given to, %b, name(%qP), %(, %qP, %), %b, by, %b, moniker(%0), %b, %(, %0, %), %b, on, %b, time(), .)]; @pemit %0=alert(Equipment) You gave [name(%qP)] the equipment [ulocal(f.get-equipment-title, %qA)]. If there's anything special about it, use +note.; }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.equipment-give EQC=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot give equipment.), %b, if(not(t(setr(A, ulocal(f.find-all-equipment-by-title, %2)))), Could not find equipment named '%2'.), %b, if(or(not(t(%2)), not(t(setr(P, ulocal(f.get-player, %1))))), Could not find player '%1'.)))))=, { @set %qP=_%qA:[ulocal(f.get-equipment-title, %qA)]|[strcat(Given to, %b, name(%qP), %(, %qP, %), %b, by, %b, moniker(%0), %b, %(, %0, %), %b, on, %b, time(), .)]; @pemit %0=alert(Equipment) You gave [name(%qP)] the equipment [ulocal(f.get-equipment-title, %qA)].; }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
 @@ %1 - player
 @@ %2 - equipment title
-&tr.equipment-take EQC=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot take away equipment.), %b, if(or(not(t(%2)), not(t(setr(P, ulocal(f.get-player, %1))))), Could not find player '%1'., if(not(t(setr(A, ulocal(f.find-equipment-on-player-by-title, %qP, %2)))), Could not find equipment named '%2' on player [name(%qP)].))))))=, { @wipe %qP/%qA; @pemit %0=alert(Equipment) You took [name(%qP)]'s equipment [ulocal(f.get-equipment-title, trim(%qA, l, _))] away. Remember to unapprove any applicable player notes.; }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.equipment-take EQC=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot take away equipment.), %b, if(or(not(t(%2)), not(t(setr(P, ulocal(f.get-player, %1))))), Could not find player '%1'., if(not(t(setr(A, ulocal(f.find-equipment-on-player-by-title, %qP, %2)))), Could not find equipment named '%2' on player [name(%qP)].))))))=, { @wipe %qP/%qA; @pemit %0=alert(Equipment) You took [name(%qP)]'s equipment [ulocal(f.get-equipment-title, trim(%qA, l, _))] away.; }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
 @@ %1 - player
 &tr.equipment-view EQC=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot view players' equipment.), %b, if(or(not(t(%1)), not(t(setr(P, ulocal(f.get-player, %1))))), Could not find player '%1'.)))))=, { @pemit %0=ulocal(layout.players-equipment, %0, %qP); }, { @pemit %0=ulocal(layout.error, %qE); }
+
+@@ Input:
+@@ %0 - %#
+@@ %1 - player
+@@ %2 - equipment title
+@@ %3 - note
+&tr.equipment-note EQC=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot add notes to players' equipment.), %b, if(or(not(t(%1)), not(t(setr(P, ulocal(f.get-player, %1))))), Could not find player '%1'.), %b, if(not(t(setr(A, ulocal(f.find-equipment-on-player-by-title, %qP, %2)))), Could not find equipment named '%2' on player [name(%qP)].)))))=, { @set %qP=[edit(%qA, NAME, note)]:%3; @pemit %0=ulocal(layout.equipment-details, %0, first(xget(%qP, %qA), |), %qP); }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
