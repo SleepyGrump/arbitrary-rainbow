@@ -5,11 +5,7 @@ WORK IN PROGRESS. But should drop in cleanly. Just... well, expect bugs and read
 
 Currently working on:
 
-- Make chargen checks for contracts count BOTH regalia (seeming and favored)
-
-- Fix Goblin Debt so "0" is a valid number on CG checks.
-
-- Need to figure out how "Out of seeming benefits" work for XP costs.
+- Need to figure out how "Out of seeming benefits" work for XP costs. Should be 1.
 
 ================================================================================
 
@@ -43,13 +39,17 @@ There are some changes below from the base code:
 
 - Changed 'Councelor' to 'Counselor'
 
-- Removed the coded motley item on the sheet, it was being called via v() rather than u()
+- Removed the coded motley item on the sheet, it was being called via v() rather than u() (NOLA's code is old, newer games probably should not do this)
 
 - Made the default of "wyrd" be "1" because having it be derived broke templates for NOLA. Newer installs should use the Thenocode for that value.
 
 - Removed "Frailties" - these will be handled like Kuruth triggers and vampire banes, IE a note.
 
-- Added "Pure Clarity" contract
+- Added "Pure Clarity" contract at a player's request
+
+- Turns out Goblin Debt is available to EVERYONE so I added it to the default Advantages block and set up the regain/spend stuff to not be locked to Changeling/Fae-touched.
+
+- Goblin Debt only goes to 9 according to the book: A changeling can never rack up more than nine Debt points - subsequent points wash right off her. Instead, when she would incur a 10th point, she immediately gains the Hedge Denizen Condition (p. 340).
 
 - NOLA treats attributes as derived values, meaning Vigor/etc automatically add to them. As such, our check for favored attributes must check the original (base) attribute, and the favored attribute matching check needs to snip that little "base_" off the front. This changes the check for chargen attributes juuuuust a little bit. This should not affect anyone's game, as they'll just get "strength" or whatever.
 	Actual code change:
@@ -98,8 +98,14 @@ think Setting up sheet stuff that might not exist on older games.
 
 &f.recursion.grouped-columns [v(d.sheet)]=case(1, eq(ladd(%0), %2), %0, gt(ladd(%0), %2), extract(%0, 1, dec(words(%0))), ulocal(f.recursion.grouped-columns, cat(%0, first(%1)), rest(%1), %2))
 
-think Entering Changeling stuff.
+think Adding Goblin Debt to EVERYBODY'S sheet.
 
+&advantages.default [v(d.nsc)]=iter(defense weaponry_defense brawl_defense speed initiative size perception goblin_debt [udefault(advantages.[get(%0/_bio.template)], null(null))], ulocal(f.cheat_getstat.with_name, %0, advantage.%i0, numeric),, |)
+
+@dolist search(type=players,eval=[hasattr(##, _bio.template)])={ @set ##=_ADVANTAGE.GOBLIN_DEBT:0; @set ##=_ADVANTAGE.GOBLIN_DEBT_MAXIMUM:9; }
+
+
+think Entering Changeling stuff.
 
 &d.search-order-02-changeling [v(d.sfp)]=contract
 
@@ -179,19 +185,19 @@ think Setting up advantages.
 
 &tags.advantage.glamour_maximum [v(d.dt)]=derived.changeling.fae-touched
 
-&advantage.goblin_debt [v(d.dd)]=#
+&advantage.goblin_debt [v(d.dd)]=0.1.2.3.4.5.6.7.8.9
 
 &default.advantage.goblin_debt [v(d.dd)]=0
 
-&tags.advantage.goblin_debt [v(d.dt)]=pool.changeling
+&tags.advantage.goblin_debt [v(d.dt)]=pool
 
-&notes.advantage.goblin_debt [v(d.dt)]=Gain one point after successfully using a Goblin Contract (see '+help pools')|Staff and STs can use these points when interesting|At 10+, you're a Hobgoblin
+&notes.advantage.goblin_debt [v(d.dt)]=Gain one point after successfully using a Goblin Contract (see '+help pools')|Staff and STs can use these points when interesting|A changeling can never rack up more than nine Debt points — subsequent points wash right off her. Instead, when she would incur a 10th point, she immediately gains the Hedge Denizen Condition (p. 340).|Anyone can gain Goblin Debt!
 
-&advantage.goblin_debt_maximum [v(d.dd)]=99
+&advantage.goblin_debt_maximum [v(d.dd)]=9
 
-&default.advantage.goblin_debt_maximum [v(d.dd)]=99
+&default.advantage.goblin_debt_maximum [v(d.dd)]=9
 
-&tags.advantage.goblin_debt_maximum [v(d.dt)]=pool.changeling
+&tags.advantage.goblin_debt_maximum [v(d.dt)]=pool
 
 &advantage.kenning [v(d.dd)]=if(gt(u(.value_stats, %0, advantage.clarity), fdiv(u(.value_stats, %0, advantage.clarity_maximum), 2)), u(.value_stats, %0, advantage.clarity), n/a)
 
@@ -997,18 +1003,15 @@ think Contracts going in now...
 
 &notes.contract.wayward_guide [v(d.dt)]=Remember to add Goblin Debt when used
 
-&contract.pure_clarity [v(d.dd)]=1
+&contract.pure_clarity [v(d.dd)]=1|Fairest.Ogre
 
-&tags.contract.pure_clarity [v(d.dt)]=changeling.royal
+&tags.contract.pure_clarity [v(d.dt)]=changeling.shield.fairest.ogre.royal
 
 think Chargen checks being created.
 
 &f.allocated.power-trait.changeling [v(d.cg)]=mul(dec(first(get(%0/_advantage.wyrd), .)), 5)
 
-&f.allocated.contracts [v(d.cg)]=localize(strcat(setq(x, u(.value, %0, bio.favored_regalia)), setq(y, u(.value, %0, bio.court)), setq(a, edit(setdiff(lattr(%0/_contract.*), lattr(%0/_contract.*.*)), _CONTRACT., CONTRACT.)), setq(f, u(f.list-stats-tags, %0, contract, common.%qx, and)), setq(c, setdiff(u(f.list-stats-tags, %0, contract, common.goblin, or), %qf)), setq(r, setinter(u(f.list-stats-tags, %0, contract, favored), u(f.list-stats-tags, %0, contract, %qx.%qy, or),)), words(%qa), `, words(%qf), `, words(%qc), `, words(%qr)))
-
-th u(#260/f.allocated.contracts, #728)
-
+&f.allocated.contracts [v(d.cg)]=localize(strcat(setq(x, u(v(d.dd)/.value, %0, bio.favored_regalia)), setq(s, u(v(d.dd)/.value, %0, bio.seeming_regalia)), setq(y, u(v(d.dd)/.value, %0, bio.court)), setq(a, edit(setdiff(lattr(%0/_contract.*), lattr(%0/_contract.*.*)), _CONTRACT., CONTRACT.)), setq(f, setunion(u(f.list-stats-tags, %0, contract, common.%qx, and), u(f.list-stats-tags, %0, contract, common.%qs, and))), setq(c, setdiff(u(f.list-stats-tags, %0, contract, common.goblin, or), %qf)), setq(r, setinter(u(f.list-stats-tags, %0, contract, favored), u(f.list-stats-tags, %0, contract, %qx.%qy, or),)), words(%qa), `, words(%qf), `, words(%qc), `, words(%qr)))
 
 &f.allocated.contracts.seeming [v(d.cg)]=strcat(setq(x, get(%0/_bio.seeming)), setq(y, edit(setdiff(get(%0/_contract.*), get(%0/_contract.*.*)), _CONTRACT., CONTRACT.)), setq(a, edit(lattr(%0/_contract.*.*), _CONTRACT., CONTRACT.)), setq(s, graball(%qa, contract.*.%qx)), setq(c,), words(%qa), `, words(%qs), `, words(%qc))
 
@@ -1036,9 +1039,7 @@ th u(#260/f.allocated.contracts, #728)
 
 &check.contracts [v(d.cg)]=udefault(check.contracts.[get(%0/_bio.template)], ** check failed **, %0)
 
-@@ WORKING: need to add 2nd regalia check.
-
-&check.contracts.changeling [v(d.cg)]=strcat(setq(9, u(f.allocated.contracts, %0)), setq(t, ladd(%q9, `)), setq(i, ladd(elements(%q9, 2 3, `), `)), setq(o, elements(%q9, 1, `)), %b, %b, ansi(h, Total contracts), :, %b, if(eq(%qa, 0), ansi(xh, <none>), %qa), %b, %(of 6%), %b, u(check.contracts.changeling.total, %qa), %r, %b, %b, %b, %b, ansi(h, Favored), :, %b, if(eq(%qf, 0), ansi(xh, <none>), %qf), %b, %(at least 2%), %b, u(check.contracts.changeling.favored, %qf), %r, %b, %b, %b, %b, ansi(h, Royal), :, %b, if(eq(%qr, 0), ansi(xh, <none>), %qr), %b, %(at least 2%), %b, u(check.contracts.changeling.royal, %qr), %r)
+&check.contracts.changeling [v(d.cg)]=strcat(setq(9, u(f.allocated.contracts, %0)), setq(a, first(%q9, `)), setq(i, extract(%q9, 2, 1, `)), setq(o, extract(%q9, 3, 1, `)), %b, %b, ansi(h, Total contracts), :, %b, if(eq(%qa, 0), ansi(xh, <none>), %qa), %b, %(of 6%), %b, u(check.contracts.changeling.total, %qa), %r, %b, %b, %b, %b, ansi(h, Favored), :, %b, if(eq(%qi, 0), ansi(xh, <none>), %qi), %b, %(at least 2%), %b, u(check.contracts.changeling.favored, %qo), %r, %b, %b, %b, %b, ansi(h, Royal), :, %b, if(eq(%qo, 0), ansi(xh, <none>), %qo), %b, %(at least 2%), %b, u(check.contracts.changeling.royal, %qo), %r)
 
 &check.contracts.changeling.total [v(d.cg)]=u(display.check.ok-no, eq(%0, 6))
 
@@ -1118,9 +1119,10 @@ think Spend/regain stuff.
 
 &spend.methods.goblin_debt [v(d.psrs)]=[null(nothing but numeric allowed here)]
 
-&spend.trigger.goblin_debt [v(d.psrs)]=think strcat(m:, %b, setr(m, u(f.match_method, %1, spend, goblin_debt, %2)), %r, a:, %b, setr(a, u(amt.spend, %1, goblin_debt, %qm)), %r, u:, %b, setr(u, hasattr(%1, _advantage.wyrd)), %r, s:, %b, setr(s, hasattr(%1, _advantage.goblin_debt_maximum)), %r,); @assert cand(%qu, %qs)={@pemit %0=u(.msg, goblin debt/spend, cat(if(strmatch(%0, %1), You, name(%1)), must have both Wyrd and a Goblin Debt pool))}; @assert strlen(%qm)={@pemit %0=u(.msg, goblin debt/spend, I could not find the method '%2')}; @assert t(%qa)={@pemit %0=u(.msg, goblin debt/spend, rest(%qa))}; @assert t(setr(e, u(f.pool.canchange, %1, goblin_debt, %qa)))={@pemit %0=u(.msg, goblin debt/spend, rest(%qe))}; @assert t(setr(e, u(f.pool.changestat, %1, goblin_debt, %qa)))={@pemit %0=u(.msg, goblin debt/spend, rest(%qe))}; think e: [setr(e, u(display.number, %0, %1, glamour, spend, %qa, %qm, %4))]; @eval u(f.announcement, %0, %1, spend, %qe);
+&spend.trigger.goblin_debt [v(d.psrs)]=@assert t(setr(e, u(f.pool.canchange, %1, goblin_debt, -1)))={@pemit %0=u(.msg, goblin debt/spend, rest(%qe))}; @assert t(setr(e, u(f.pool.changestat, %1, goblin_debt, -1)))={u(.msg, goblin debt/spend, rest(%qe))}; think e: [setr(e, u(display.number, %0, %1, goblin_debt, spend, 1,, %4))]; @eval u(f.announcement, %0, %1, spend, %qe);
 
-&regain.trigger.goblin_debt [v(d.psrs)]=think strcat(m:, %b, setr(m, u(f.match_method, %1, regain, goblin_debt, %2)), %r, a:, %b, setr(a, u(amt.regain, %1, goblin_debt, %qm)), %r, u:, %b, setr(u, hasattr(%1, _advantage.wyrd)), %r, s:, %b, setr(s, hasattr(%1, _advantage.goblin_debt_maximum)), %r,); @assert cand(%qu, %qs)={@pemit %0=u(.msg, goblin debt/regain, cat(if(strmatch(%0, %1), You, name(%1)), must have both Wyrd and a Goblin Debt pool))}; @assert strlen(%qm)={@pemit %0=u(.msg, goblin debt/regain, I could not find the method '%2')}; @assert t(%qa)={@pemit %0=u(.msg, goblin debt/regain, rest(%qa))}; @assert t(setr(e, u(f.pool.canchange, %1, goblin_debt, %qa)))={@pemit %0=u(.msg, goblin debt/regain, rest(%qe))}; @assert t(setr(e, u(f.pool.changestat, %1, goblin_debt, %qa)))={@pemit %0=u(.msg, goblin debt/regain, rest(%qe))}; think e: [setr(e, u(display.number, %0, %1, glamour, regain, %qa, %qm, %4))]; @eval u(f.announcement, %0, %1, regain, %qe);
+&regain.trigger.goblin_debt [v(d.psrs)]=think strcat(m:, %b, setr(m, u(f.match_method, %1, regain, goblin_debt, %2)), %r, a:, %b, setr(a, u(amt.regain, %1, goblin_debt, %qm)), %r,); @assert strlen(%qm)={@pemit %0=u(.msg, goblin debt/regain, I could not find the method '%2')}; @assert t(%qa)={@pemit %0=u(.msg, goblin debt/regain, rest(%qa))}; @assert t(setr(e, u(f.pool.canchange, %1, goblin_debt, %qa)))={@pemit %0=u(.msg, goblin debt/regain, rest(%qe))}; @assert t(setr(e, u(f.pool.changestat, %1, goblin_debt, %qa)))={@pemit %0=u(.msg, goblin debt/regain, rest(%qe))}; think e: [setr(e, u(display.number, %0, %1, goblin_debt, regain, %qa, %qm, %4))]; @eval u(f.announcement, %0, %1, regain, %qe);
+
 
 think Entry complete.
 
