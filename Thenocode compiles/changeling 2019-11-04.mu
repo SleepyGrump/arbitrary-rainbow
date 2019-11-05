@@ -47,6 +47,8 @@ There are some changes below from the base code:
 
 - Added "Pure Clarity" contract at a player's request
 
+- Added the prereq for Fair Harvest
+
 - Turns out Goblin Debt is available to EVERYONE so I added it to the default Advantages block and set up the regain/spend stuff to not be locked to Changeling/Fae-touched.
 
 - Goblin Debt only goes to 9 according to the book: A changeling can never rack up more than nine Debt points - subsequent points wash right off her. Instead, when she would incur a 10th point, she immediately gains the Hedge Denizen Condition (p. 340).
@@ -56,6 +58,8 @@ There are some changes below from the base code:
 		New code: edit(elements(%i0, 2, .), BASE_, )
 		Old code: elements(%i0, 2, .)
 
+- NEW STUFF: Created a merit called "Dual Kith" which is balanced for GMC.
+
 ================================================================================
 
 Final notes:
@@ -63,6 +67,8 @@ Final notes:
 	This is confirmed to be without conjoined code from my testing, so such errors can be ignored on the mucode preprocessor.
 
 	This includes one object creation (the clarity system object).
+
+	This is NOT an exact rip of the original Thenocode, since at the time of this file's generation it was not complete.
 
 */
 
@@ -104,14 +110,21 @@ think Setting up sheet stuff that might not exist on older games.
 
 &f.statcheck [v(d.cg)]=localize(strcat(setq(s, ulocal(v(d.sfp)/f.statpath-without-instance, rest(%1, _))), setq(c, ulocal(v(d.sfp)/f.get-class, %qs)), setq(v, case(%qc, numeric, first(u(%0/%1), .), u(%0/%1))), setq(t, case(1, strmatch(%1, _*.*.*), u(f.statcheck.substat, %0, %1, %2), ulocal(v(d.sfp)/f.hastag?.workhorse, %qs, derived), ulocal(f.statcheck.derived, %0, %1, %qc), strmatch(%qc, list), ulocal(f.statcheck.list, %qs, %qv, %2), ulocal(f.statcheck.normal, %1, %qs, %qv, %2))), if(strlen(%qt), 1, %qt), ., iter(cg-only template other, ulocal(f.prerequisite.%i0, %0, %1, %2),, .)))
 
-
-
 think Adding Goblin Debt to EVERYBODY'S sheet.
 
 &advantages.default [v(d.nsc)]=iter(defense weaponry_defense brawl_defense speed initiative size perception goblin_debt [udefault(advantages.[get(%0/_bio.template)], null(null))], ulocal(f.cheat_getstat.with_name, %0, advantage.%i0, numeric),, |)
 
 @dolist search(type=players,eval=[hasattr(##, _bio.template)])={ @set ##=_ADVANTAGE.GOBLIN_DEBT:0; @set ##=_ADVANTAGE.GOBLIN_DEBT_MAXIMUM:9; }
 
+think Creating the Dual Kith merit - house rules for NOLA, skip if you want!
+
+&merit.dual_kith_() [v(d.dd)]=4|Artist.Bright One.Chatelaine.Gristlegrinder.Helldiver.Hunterheart.Leechfinger.Mirrorskin.Nightsinger.Notary.Playmate.Snowskin
+
+&prerequisite.merit.dual_kith_() [v(d.dd)]=if(t(%2), cand(lte(words(lattr(%0/_merit.dual_kith_(*))), 0), u(.is_not, %0, bio.kith, %2)))
+
+&prereq-text.merit.dual_kith_() [v(d.dd)]=Changeling, must be a different kith from your current kith, cannot be taken more than once.
+
+&tags.merit.dual_kith_() [v(d.dt)]=changeling.
 
 think Entering Changeling stuff.
 
@@ -323,7 +336,7 @@ think Merit time!
 
 &merit.fair_harvest_() [v(d.dd)]=1.2|*
 
-&prerequisite.merit.fair_harvest_() [v(d.dd)]=<< may only be taken once >>
+&prerequisite.merit.fair_harvest_() [v(d.dd)]=if(t(%2), lte(words(lattr(%0/_merit.fair_harvest_(*))), 0))
 
 &prereq-text.merit.fair_harvest_() [v(d.dd)]=May only be taken once.
 
