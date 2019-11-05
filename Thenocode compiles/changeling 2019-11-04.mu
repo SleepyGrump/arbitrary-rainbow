@@ -191,7 +191,7 @@ think Setting up advantages.
 
 &tags.advantage.goblin_debt [v(d.dt)]=pool
 
-&notes.advantage.goblin_debt [v(d.dt)]=Gain one point after successfully using a Goblin Contract (see '+help pools')|Staff and STs can use these points when interesting|A changeling can never rack up more than nine Debt points — subsequent points wash right off her. Instead, when she would incur a 10th point, she immediately gains the Hedge Denizen Condition (p. 340).|Anyone can gain Goblin Debt!
+&notes.advantage.goblin_debt [v(d.dt)]=Gain one point after successfully using a Goblin Contract (see '+help pools')|Staff and STs can use these points when interesting|A changeling can never rack up more than nine Debt points - subsequent points wash right off her. Instead, when she would incur a 10th point, she immediately gains the Hedge Denizen Condition (p. 340).|Anyone can gain Goblin Debt!
 
 &advantage.goblin_debt_maximum [v(d.dd)]=9
 
@@ -1122,9 +1122,6 @@ think Spend/regain stuff.
 &spend.trigger.goblin_debt [v(d.psrs)]=@assert t(setr(e, u(f.pool.canchange, %1, goblin_debt, -1)))={@pemit %0=u(.msg, goblin debt/spend, rest(%qe))}; @assert t(setr(e, u(f.pool.changestat, %1, goblin_debt, -1)))={u(.msg, goblin debt/spend, rest(%qe))}; think e: [setr(e, u(display.number, %0, %1, goblin_debt, spend, 1,, %4))]; @eval u(f.announcement, %0, %1, spend, %qe);
 
 &regain.trigger.goblin_debt [v(d.psrs)]=think strcat(m:, %b, setr(m, u(f.match_method, %1, regain, goblin_debt, %2)), %r, a:, %b, setr(a, u(amt.regain, %1, goblin_debt, %qm)), %r,); @assert strlen(%qm)={@pemit %0=u(.msg, goblin debt/regain, I could not find the method '%2')}; @assert t(%qa)={@pemit %0=u(.msg, goblin debt/regain, rest(%qa))}; @assert t(setr(e, u(f.pool.canchange, %1, goblin_debt, %qa)))={@pemit %0=u(.msg, goblin debt/regain, rest(%qe))}; @assert t(setr(e, u(f.pool.changestat, %1, goblin_debt, %qa)))={@pemit %0=u(.msg, goblin debt/regain, rest(%qe))}; think e: [setr(e, u(display.number, %0, %1, goblin_debt, regain, %qa, %qm, %4))]; @eval u(f.announcement, %0, %1, regain, %qe);
-
-
-think Entry complete.
 
 think Entering conditions.
 
