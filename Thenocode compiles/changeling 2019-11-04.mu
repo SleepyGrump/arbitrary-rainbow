@@ -1027,6 +1027,8 @@ think Contracts going in now...
 
 &notes.contract.wayward_guide [v(d.dt)]=Remember to add Goblin Debt when used
 
+think Adding contracts that were missing in the original code...
+
 &contract.pure_clarity [v(d.dd)]=1|Fairest.Ogre
 
 &tags.contract.pure_clarity [v(d.dt)]=changeling.shield.fairest.ogre.royal
@@ -1037,7 +1039,39 @@ think Contracts going in now...
 
 &contract.red_revenge [v(d.dd)]=1|Elemental.Ogre
 
-&tags.contract.red_revenge [v(d.dt)]=changeling.steed.elemental.ogre.royal
+&tags.contract.red_revenge [v(d.dt)]=changeling.sword.elemental.ogre.royal
+
+&contract.elemental_weapon [v(d.dd)]=1|Darkling.Elemental
+
+&tags.contract.elemental_weapon [v(d.dt)]=changeling.sword.elemental.darkling.common
+
+&contract.might_of_the_terrible_brute [v(d.dd)]=1|Beast.Elemental
+
+&tags.contract.might_of_the_terrible_brute [v(d.dt)]=changeling.sword.elemental.beast.common
+
+&contract.overpowering_dread [v(d.dd)]=1|Elemental.Fairest
+
+&tags.contract.overpowering_dread [v(d.dt)]=changeling.sword.elemental.fairest.common
+
+&contract.touch_of_wrath [v(d.dd)]=1|Elemental.Wizened
+
+&tags.contract.touch_of_wrath [v(d.dt)]=changeling.sword.elemental.wizened.common
+
+&contract.elemental_fury [v(d.dd)]=1|Elemental.Fairest
+
+&tags.contract.elemental_fury [v(d.dt)]=changeling.sword.elemental.fairest.royal
+
+&contract.oathbreaker's_punishment [v(d.dd)]=1|Elemental.Wizened
+
+&tags.contract.oathbreaker's_punishment [v(d.dt)]=changeling.sword.elemental.wizened.royal
+
+&contract.relentless_pursuit [v(d.dd)]=1|Elemental.Beast
+
+&tags.contract.relentless_pursuit [v(d.dt)]=changeling.sword.elemental.beast.royal
+
+&contract.thief_of_reason [v(d.dd)]=1|Elemental.Fairest
+
+&tags.contract.thief_of_reason [v(d.dt)]=changeling.sword.elemental.fairest.royal
 
 think Chargen checks being created.
 
