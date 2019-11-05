@@ -98,6 +98,14 @@ think Setting up sheet stuff that might not exist on older games.
 
 &f.recursion.grouped-columns [v(d.sheet)]=case(1, eq(ladd(%0), %2), %0, gt(ladd(%0), %2), extract(%0, 1, dec(words(%0))), ulocal(f.recursion.grouped-columns, cat(%0, first(%1)), rest(%1), %2))
 
+&f.statvalidate.workhorse [v(d.sfp)]=localize(switch(0, u(f.statvalue-good, %1), #-1 VALUE CONTAINS ILLEGAL FORMAT, comp(lcstr(%1), default), strcat(setq(v, get(u(d.data-dictionary)/default.%0)), if(t(%qv), %qv, null(default of <null> will clear stat))), strcat(setq(s, first(get(u(d.data-dictionary)/%0), |)), setq(c, ulocal(f.get-class, %0)), setq(v, case(%qc, flag, if(strmatch(%1,), null(<null>), %qs), list, strcat(setq(e, edit(%1, %b, .)), setq(x, iter(graball(%qe, !*, ., .), ![grab(.%qs, [rest(%i0, !)]*, .)], ., .)), setq(a, iter(setdiff(%qe, %qx, .), grab(.%qs, %i0*, .), ., .)), trim(squish(%qa.%qx, .), b, .)), grab(%qs, %1*, .))), case(%qs, *, %1, #, if(cand(gte(%1, 1), isint(%1)), %1, #-1 VALUE NOT A POSITIVE INTEGER), switch(0, comp(%1,), #-1 VALUE WAS NULL, lt(words(%0, .), 3), %1, strlen(%qv), #-1 VALUE NOT FOUND, %qv)))))
+
+&f.statcheck.normal [v(d.cg)]=localize(strcat(setq(t, if(hasattr([u(d.dd)], %1), 1, #-1 Stat not found)), setq(t, if(cand(t(%qt), strmatch(%0, _*.*_(*))), strcat(setq(i, edit(strip(rest(%0, %(), %)), _, %b)), setq(d, extract(get([u(d.dd)]/%1), 2, 1, |)), case(1, t(member(%qd, *)), 1, and(member(%qd, #), isint(%qi)), 1, t(match(%qd, %qi, .)), 1, #-1 Instance is not valid %(%qi%))), %qt)), setq(v, case(1, and(isnum(%2), t(%3)), add(%2, %3), t(%3), %3, %2)), if(strlen(%qt), ulocal([u(d.sfp)]/f.statvalidate.workhorse, %1, %qv), %qt)))
+
+&f.statcheck [v(d.cg)]=localize(strcat(setq(s, ulocal(v(d.sfp)/f.statpath-without-instance, rest(%1, _))), setq(c, ulocal(v(d.sfp)/f.get-class, %qs)), setq(v, case(%qc, numeric, first(u(%0/%1), .), u(%0/%1))), setq(t, case(1, strmatch(%1, _*.*.*), u(f.statcheck.substat, %0, %1, %2), ulocal(v(d.sfp)/f.hastag?.workhorse, %qs, derived), ulocal(f.statcheck.derived, %0, %1, %qc), strmatch(%qc, list), ulocal(f.statcheck.list, %qs, %qv, %2), ulocal(f.statcheck.normal, %1, %qs, %qv, %2))), if(strlen(%qt), 1, %qt), ., iter(cg-only template other, ulocal(f.prerequisite.%i0, %0, %1, %2),, .)))
+
+
+
 think Adding Goblin Debt to EVERYBODY'S sheet.
 
 &advantages.default [v(d.nsc)]=iter(defense weaponry_defense brawl_defense speed initiative size perception goblin_debt [udefault(advantages.[get(%0/_bio.template)], null(null))], ulocal(f.cheat_getstat.with_name, %0, advantage.%i0, numeric),, |)
