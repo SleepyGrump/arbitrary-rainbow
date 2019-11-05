@@ -45,10 +45,7 @@ There are some changes below from the base code:
 
 - Removed "Frailties" - these will be handled like Kuruth triggers and vampire banes, IE a note.
 
-- Adding missing contracts as I find them:
-	Pure Clarity
-	Primal Glory
-	Red Revenge
+- Adding missing contracts as I find them. They all seem to be from the Sword contracts. Search below for "Adding contracts that were missing in the original code..." to find the list.
 
 - Added the prereq for Fair Harvest
 
