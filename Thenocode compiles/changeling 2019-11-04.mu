@@ -45,7 +45,10 @@ There are some changes below from the base code:
 
 - Removed "Frailties" - these will be handled like Kuruth triggers and vampire banes, IE a note.
 
-- Added "Pure Clarity" contract at a player's request
+- Adding missing contracts as I find them:
+	Pure Clarity
+	Primal Glory
+	Red Revenge
 
 - Added the prereq for Fair Harvest
 
@@ -156,11 +159,11 @@ think Creating bio stats.
 
 &tags.bio.seeming_regalia [v(d.dt)]=derived.changeling
 
-&bio.favored_regalia [v(d.dd)]=Crown.Jewels.Mirror.Shield.Steed.Sword
+&bio.royal_regalia [v(d.dd)]=Crown.Jewels.Mirror.Shield.Steed.Sword
 
-&default.bio.favored_regalia [v(d.dd)]=
+&default.bio.royal_regalia [v(d.dd)]=
 
-&tags.bio.favored_regalia [v(d.dt)]=changeling
+&tags.bio.royal_regalia [v(d.dt)]=changeling
 
 &bio.court [v(d.dd)]=Spring.Summer.Autumn.Winter.Courtless
 
@@ -630,23 +633,23 @@ think Contracts going in now...
 
 &contract.discreet_summons [v(d.dd)]=1|Darkling.Fairest
 
-&tags.contract.discreet_summons [v(d.dt)]=changeling.crown.darkling.fairest.favored
+&tags.contract.discreet_summons [v(d.dt)]=changeling.crown.darkling.fairest.royal
 
 &contract.mastermind's_gambit [v(d.dd)]=1|Elemental.Fairest
 
-&tags.contract.mastermind's_gambit [v(d.dt)]=changeling.crown.elemental.fairest.favored
+&tags.contract.mastermind's_gambit [v(d.dt)]=changeling.crown.elemental.fairest.royal
 
 &contract.pipes_of_the_beastcaller [v(d.dd)]=1|Beast.Fairest
 
-&tags.contract.pipes_of_the_beastcaller [v(d.dt)]=changeling.crown.beast.fairest.favored
+&tags.contract.pipes_of_the_beastcaller [v(d.dt)]=changeling.crown.beast.fairest.royal
 
-&contract.the_favored_court [v(d.dd)]=1|Fairest.Wizened
+&contract.the_royal_court [v(d.dd)]=1|Fairest.Wizened
 
-&tags.contract.the_favored_court [v(d.dt)]=changeling.crown.fairest.wizened.favored
+&tags.contract.the_royal_court [v(d.dt)]=changeling.crown.fairest.wizened.royal
 
 &contract.spinning_wheel [v(d.dd)]=1|Fairest.Ogre
 
-&tags.contract.spinning_wheel [v(d.dt)]=changeling.crown.fairest.ogre.favored
+&tags.contract.spinning_wheel [v(d.dt)]=changeling.crown.fairest.ogre.royal
 
 &contract.blessing_of_perfection [v(d.dd)]=1|Fairest.Wizened
 
@@ -670,23 +673,23 @@ think Contracts going in now...
 
 &contract.changeling_hours [v(d.dd)]=1|Elemental.Wizened
 
-&tags.contract.changeling_hours [v(d.dt)]=changeling.jewels.elemental.wizened.favored
+&tags.contract.changeling_hours [v(d.dt)]=changeling.jewels.elemental.wizened.royal
 
 &contract.dance_of_the_toys [v(d.dd)]=1|Beast.Wizened
 
-&tags.contract.dance_of_the_toys [v(d.dt)]=changeling.jewels.beast.wizened.favored
+&tags.contract.dance_of_the_toys [v(d.dt)]=changeling.jewels.beast.wizened.royal
 
 &contract.hidden_reality [v(d.dd)]=1|Fairest.Wizened
 
-&tags.contract.hidden_reality [v(d.dt)]=changeling.jewels.fairest.wizened.favored
+&tags.contract.hidden_reality [v(d.dt)]=changeling.jewels.fairest.wizened.royal
 
 &contract.stealing_the_solid_reflection [v(d.dd)]=1|Fairest.Wizened
 
-&tags.contract.stealing_the_solid_reflection [v(d.dt)]=changeling.jewels.fairest.wizened.favored
+&tags.contract.stealing_the_solid_reflection [v(d.dt)]=changeling.jewels.fairest.wizened.royal
 
 &contract.tatterdemalion's_workshop [v(d.dd)]=1|Ogre.Wizened
 
-&tags.contract.tatterdemalion's_workshop [v(d.dt)]=changeling.jewels.ogre.wizened.favored
+&tags.contract.tatterdemalion's_workshop [v(d.dt)]=changeling.jewels.ogre.wizened.royal
 
 &contract.glimpse_of_a_distant_mirror [v(d.dd)]=1|Beast.Darkling
 
@@ -710,23 +713,23 @@ think Contracts going in now...
 
 &contract.props_and_scenery [v(d.dd)]=1|Darkling.Ogre
 
-&tags.contract.props_and_scenery [v(d.dt)]=changeling.mirror.darkling.ogre.favored
+&tags.contract.props_and_scenery [v(d.dt)]=changeling.mirror.darkling.ogre.royal
 
 &contract.reflections_of_the_past [v(d.dd)]=1|Darkling.Fairest
 
-&tags.contract.reflections_of_the_past [v(d.dt)]=changeling.mirror.darkling.fairest.favored
+&tags.contract.reflections_of_the_past [v(d.dt)]=changeling.mirror.darkling.fairest.royal
 
 &contract.riddle-kith [v(d.dd)]=1|Darkling.Elemental
 
-&tags.contract.riddle-kith [v(d.dt)]=changeling.mirror.darkling.elemental.favored
+&tags.contract.riddle-kith [v(d.dt)]=changeling.mirror.darkling.elemental.royal
 
 &contract.skinmask [v(d.dd)]=1|Darkling.Fairest
 
-&tags.contract.skinmask [v(d.dt)]=changeling.mirror.darkling.fairest.favored
+&tags.contract.skinmask [v(d.dt)]=changeling.mirror.darkling.fairest.royal
 
 &contract.unravel_the_tapestry [v(d.dd)]=1|Darkling.Wizened
 
-&tags.contract.unravel_the_tapestry [v(d.dt)]=changeling.mirror.darkling.wizened.favored
+&tags.contract.unravel_the_tapestry [v(d.dt)]=changeling.mirror.darkling.wizened.royal
 
 &contract.cloak_of_night [v(d.dd)]=1|Darkling.Ogre
 
@@ -750,19 +753,19 @@ think Contracts going in now...
 
 &contract.fortifying_presence [v(d.dd)]=1|Fairest.Ogre
 
-&tags.contract.fortifying_presence [v(d.dt)]=changeling.shield.fairest.ogre.favored
+&tags.contract.fortifying_presence [v(d.dt)]=changeling.shield.fairest.ogre.royal
 
 &contract.hedgewall [v(d.dd)]=1|Beast.Ogre
 
-&tags.contract.hedgewall [v(d.dt)]=changeling.shield.beast.ogre.favored
+&tags.contract.hedgewall [v(d.dt)]=changeling.shield.beast.ogre.royal
 
 &contract.vow_of_no_compromise [v(d.dd)]=1|Ogre.Elemental
 
-&tags.contract.vow_of_no_compromise [v(d.dt)]=changeling.shield.ogre.elemental.favored
+&tags.contract.vow_of_no_compromise [v(d.dt)]=changeling.shield.ogre.elemental.royal
 
 &contract.whispers_of_morning [v(d.dd)]=1|Ogre.Wizened
 
-&tags.contract.whispers_of_morning [v(d.dt)]=changeling.shield.ogre.wizened.favored
+&tags.contract.whispers_of_morning [v(d.dt)]=changeling.shield.ogre.wizened.royal
 
 &contract.boon_of_the_scuttling_spider [v(d.dd)]=1|Beast.Darkling
 
@@ -786,23 +789,23 @@ think Contracts going in now...
 
 &contract.chrysalis [v(d.dd)]=1|Beast.Ogre
 
-&tags.contract.chrysalis [v(d.dt)]=changeling.steed.beast.ogre.favored
+&tags.contract.chrysalis [v(d.dt)]=changeling.steed.beast.ogre.royal
 
 &contract.flickering_hours [v(d.dd)]=1|Beast.Elemental
 
-&tags.contract.flickering_hours [v(d.dt)]=changeling.steed.beast.elemental.favored
+&tags.contract.flickering_hours [v(d.dt)]=changeling.steed.beast.elemental.royal
 
 &contract.leaping_toward_nightfall [v(d.dd)]=1|Beast.Darkling
 
-&tags.contract.leaping_toward_nightfall [v(d.dt)]=changeling.steed.beast.darkling.favored
+&tags.contract.leaping_toward_nightfall [v(d.dt)]=changeling.steed.beast.darkling.royal
 
 &contract.mirror_walk [v(d.dd)]=1|Beast.Elemental
 
-&tags.contract.mirror_walk [v(d.dt)]=changeling.steed.beast.elemental.favored
+&tags.contract.mirror_walk [v(d.dt)]=changeling.steed.beast.elemental.royal
 
 &contract.talon_and_wing [v(d.dd)]=1|Beast.Darkling
 
-&tags.contract.talon_and_wing [v(d.dt)]=changeling.steed.beast.darkling.favored
+&tags.contract.talon_and_wing [v(d.dt)]=changeling.steed.beast.darkling.royal
 
 &contract.cupid's_arrow [v(d.dd)]=1
 
@@ -826,23 +829,23 @@ think Contracts going in now...
 
 &contract.blessing_of_spring [v(d.dd)]=1
 
-&tags.contract.blessing_of_spring [v(d.dt)]=changeling.spring.favored
+&tags.contract.blessing_of_spring [v(d.dt)]=changeling.spring.royal
 
 &contract.gift_of_warm_blood [v(d.dd)]=1
 
-&tags.contract.gift_of_warm_blood [v(d.dt)]=changeling.spring.favored
+&tags.contract.gift_of_warm_blood [v(d.dt)]=changeling.spring.royal
 
 &contract.pandora's_gift [v(d.dd)]=1
 
-&tags.contract.pandora's_gift [v(d.dt)]=changeling.spring.favored
+&tags.contract.pandora's_gift [v(d.dt)]=changeling.spring.royal
 
 &contract.prince_of_ivy [v(d.dd)]=1
 
-&tags.contract.prince_of_ivy [v(d.dt)]=changeling.spring.favored
+&tags.contract.prince_of_ivy [v(d.dt)]=changeling.spring.royal
 
 &contract.waking_the_inner_fae [v(d.dd)]=1
 
-&tags.contract.waking_the_inner_fae [v(d.dt)]=changeling.spring.favored
+&tags.contract.waking_the_inner_fae [v(d.dt)]=changeling.spring.royal
 
 &contract.baleful_sense [v(d.dd)]=1
 
@@ -866,23 +869,23 @@ think Contracts going in now...
 
 &contract.fiery_tongue [v(d.dd)]=1
 
-&tags.contract.fiery_tongue [v(d.dt)]=changeling.summer.favored
+&tags.contract.fiery_tongue [v(d.dt)]=changeling.summer.royal
 
 &contract.flames_of_summer [v(d.dd)]=1
 
-&tags.contract.flames_of_summer [v(d.dt)]=changeling.summer.favored
+&tags.contract.flames_of_summer [v(d.dt)]=changeling.summer.royal
 
 &contract.helios'_judgement [v(d.dd)]=1
 
-&tags.contract.helios'_judgement [v(d.dt)]=changeling.summer.favored
+&tags.contract.helios'_judgement [v(d.dt)]=changeling.summer.royal
 
 &contract.solstice_revelation [v(d.dd)]=1
 
-&tags.contract.solstice_revelation [v(d.dt)]=changeling.summer.favored
+&tags.contract.solstice_revelation [v(d.dt)]=changeling.summer.royal
 
 &contract.sunburnt_heart [v(d.dd)]=1
 
-&tags.contract.sunburnt_heart [v(d.dt)]=changeling.summer.favored
+&tags.contract.sunburnt_heart [v(d.dt)]=changeling.summer.royal
 
 &contract.autumn's_fury [v(d.dd)]=1
 
@@ -906,23 +909,23 @@ think Contracts going in now...
 
 &contract.famine's_bulwark [v(d.dd)]=1
 
-&tags.contract.famine's_bulwark [v(d.dt)]=changeling.autumn.favored
+&tags.contract.famine's_bulwark [v(d.dt)]=changeling.autumn.royal
 
 &contract.mien_of_the_baba_yaga [v(d.dd)]=1
 
-&tags.contract.mien_of_the_baba_yaga [v(d.dt)]=changeling.autumn.favored
+&tags.contract.mien_of_the_baba_yaga [v(d.dt)]=changeling.autumn.royal
 
 &contract.riding_the_falling_leaves [v(d.dd)]=1
 
-&tags.contract.riding_the_falling_leaves [v(d.dt)]=changeling.autumn.favored
+&tags.contract.riding_the_falling_leaves [v(d.dt)]=changeling.autumn.royal
 
 &contract.sorcerer's_rebuke [v(d.dd)]=1
 
-&tags.contract.sorcerer's_rebuke [v(d.dt)]=changeling.autumn.favored
+&tags.contract.sorcerer's_rebuke [v(d.dt)]=changeling.autumn.royal
 
 &contract.tasting_the_harvest [v(d.dd)]=1
 
-&tags.contract.tasting_the_harvest [v(d.dt)]=changeling.autumn.favored
+&tags.contract.tasting_the_harvest [v(d.dt)]=changeling.autumn.royal
 
 &contract.the_dragon_knows [v(d.dd)]=1
 
@@ -946,23 +949,23 @@ think Contracts going in now...
 
 &contract.ermine's_winter_coat [v(d.dd)]=1
 
-&tags.contract.ermine's_winter_coat [v(d.dt)]=changeling.winter.favored
+&tags.contract.ermine's_winter_coat [v(d.dt)]=changeling.winter.royal
 
 &contract.fallow_fields [v(d.dd)]=1
 
-&tags.contract.fallow_fields [v(d.dt)]=changeling.winter.favored
+&tags.contract.fallow_fields [v(d.dt)]=changeling.winter.royal
 
 &contract.field_of_regret [v(d.dd)]=1
 
-&tags.contract.field_of_regret [v(d.dt)]=changeling.winter.favored
+&tags.contract.field_of_regret [v(d.dt)]=changeling.winter.royal
 
 &contract.mantle_of_frost [v(d.dd)]=1
 
-&tags.contract.mantle_of_frost [v(d.dt)]=changeling.winter.favored
+&tags.contract.mantle_of_frost [v(d.dt)]=changeling.winter.royal
 
 &contract.winter's_curse [v(d.dd)]=1
 
-&tags.contract.winter's_curse [v(d.dt)]=changeling.winter.favored
+&tags.contract.winter's_curse [v(d.dt)]=changeling.winter.royal
 
 &contract.blessing_of_forgetfulness [v(d.dd)]=1
 
@@ -1028,11 +1031,19 @@ think Contracts going in now...
 
 &tags.contract.pure_clarity [v(d.dt)]=changeling.shield.fairest.ogre.royal
 
+&contract.primal_glory [v(d.dd)]=1|Elemental.Ogre
+
+&tags.contract.primal_glory [v(d.dt)]=changeling.sword.elemental.ogre.common
+
+&contract.red_revenge [v(d.dd)]=1|Elemental.Ogre
+
+&tags.contract.red_revenge [v(d.dt)]=changeling.steed.elemental.ogre.royal
+
 think Chargen checks being created.
 
 &f.allocated.power-trait.changeling [v(d.cg)]=mul(dec(first(get(%0/_advantage.wyrd), .)), 5)
 
-&f.allocated.contracts [v(d.cg)]=localize(strcat(setq(x, u(v(d.dd)/.value, %0, bio.favored_regalia)), setq(s, u(v(d.dd)/.value, %0, bio.seeming_regalia)), setq(y, u(v(d.dd)/.value, %0, bio.court)), setq(a, edit(setdiff(lattr(%0/_contract.*), lattr(%0/_contract.*.*)), _CONTRACT., CONTRACT.)), setq(f, setunion(u(f.list-stats-tags, %0, contract, common.%qx, and), u(f.list-stats-tags, %0, contract, common.%qs, and))), setq(c, setdiff(u(f.list-stats-tags, %0, contract, common.goblin, or), %qf)), setq(r, setinter(u(f.list-stats-tags, %0, contract, favored), u(f.list-stats-tags, %0, contract, %qx.%qy, or),)), words(%qa), `, words(%qf), `, words(%qc), `, words(%qr)))
+&f.allocated.contracts [v(d.cg)]=localize(strcat(setq(x, u(v(d.dd)/.value, %0, bio.royal_regalia)), setq(s, u(v(d.dd)/.value, %0, bio.seeming_regalia)), setq(y, u(v(d.dd)/.value, %0, bio.court)), setq(a, edit(setdiff(lattr(%0/_contract.*), lattr(%0/_contract.*.*)), _CONTRACT., CONTRACT.)), setq(f, setunion(u(f.list-stats-tags, %0, contract, common.%qx, and), u(f.list-stats-tags, %0, contract, common.%qs, and))), setq(c, setdiff(u(f.list-stats-tags, %0, contract, common.goblin, or), %qf)), setq(r, setinter(u(f.list-stats-tags, %0, contract, favored), u(f.list-stats-tags, %0, contract, %qx.%qy, or),)), words(%qa), `, words(%qf), `, words(%qc), `, words(%qr)))
 
 &f.allocated.contracts.seeming [v(d.cg)]=strcat(setq(x, get(%0/_bio.seeming)), setq(y, edit(setdiff(get(%0/_contract.*), get(%0/_contract.*.*)), _CONTRACT., CONTRACT.)), setq(a, edit(lattr(%0/_contract.*.*), _CONTRACT., CONTRACT.)), setq(s, graball(%qa, contract.*.%qx)), setq(c,), words(%qa), `, words(%qs), `, words(%qc))
 
@@ -1040,7 +1051,7 @@ think Chargen checks being created.
 
 &check.bio.changeling [v(d.cg)]=seeming kith court needle thread favored_regalia
 
-&check.chargen.attributes.changeling [v(d.cg)]=strcat(setq(f, v(d.changeling.blessing_attributes.[get(%0/_bio.seeming)])), setq(a, lcstr(iter(lattr(%0/_attribute.*.favored), edit(elements(%i0, 2, .), BASE_, )))), setq(i, setinter(%qa, %qf)), setq(c, ulocal(f.pts-valid?.attributes, %0, attribute.%qi:-1)), ulocal(f.allocated.attributes, %0), %b, %(of 5/4/3 + favored%), %b, ulocal(display.check.stats, %0, attributes, attribute.%qa:-1), %r, %b %b%b, ansi(h, Favored Attribute), :, %b, titlestr(itemize(%qa)), %b, %[, case(1, eq(words(%qa), 0), ansi(r, none set), gt(words(%qa), 1), ansi(r, too many set), neq(words(%qi), 1), ansi(r, not allowed for your seeming), not(%qc), ansi(r, bonus point not spent), ansi(g, OK)), %])
+&check.chargen.attributes.changeling [v(d.cg)]=strcat(setq(f, v(d.changeling.blessing_attributes.[get(%0/_bio.seeming)])), setq(a, lcstr(iter(lattr(%0/_attribute.*.royal), edit(elements(%i0, 2, .), BASE_, )))), setq(i, setinter(%qa, %qf)), setq(c, ulocal(f.pts-valid?.attributes, %0, attribute.%qi:-1)), ulocal(f.allocated.attributes, %0), %b, %(of 5/4/3 + favored%), %b, ulocal(display.check.stats, %0, attributes, attribute.%qa:-1), %r, %b %b%b, ansi(h, Favored Attribute), :, %b, titlestr(itemize(%qa)), %b, %[, case(1, eq(words(%qa), 0), ansi(r, none set), gt(words(%qa), 1), ansi(r, too many set), neq(words(%qi), 1), ansi(r, not allowed for your seeming), not(%qc), ansi(r, bonus point not spent), ansi(g, OK)), %])
 
 &d.changeling.blessing_attributes.darkling [v(d.cg)]=wits dexterity manipulation
 
@@ -1060,19 +1071,19 @@ think Chargen checks being created.
 
 &check.contracts [v(d.cg)]=udefault(check.contracts.[get(%0/_bio.template)], ** check failed **, %0)
 
-&check.contracts.changeling [v(d.cg)]=strcat(setq(9, u(f.allocated.contracts, %0)), setq(a, first(%q9, `)), setq(i, extract(%q9, 2, 1, `)), setq(o, extract(%q9, 3, 1, `)), %b, %b, ansi(h, Total contracts), :, %b, if(eq(%qa, 0), ansi(xh, <none>), %qa), %b, %(of 6%), %b, u(check.contracts.changeling.total, %qa), %r, %b, %b, %b, %b, ansi(h, Favored), :, %b, if(eq(%qi, 0), ansi(xh, <none>), %qi), %b, %(at least 2%), %b, u(check.contracts.changeling.favored, %qo), %r, %b, %b, %b, %b, ansi(h, Royal), :, %b, if(eq(%qo, 0), ansi(xh, <none>), %qo), %b, %(at least 2%), %b, u(check.contracts.changeling.royal, %qo), %r)
+&check.contracts.changeling [v(d.cg)]=strcat(setq(9, u(f.allocated.contracts, %0)), setq(a, first(%q9, `)), setq(i, extract(%q9, 2, 1, `)), setq(o, extract(%q9, 3, 1, `)), %b, %b, ansi(h, Total contracts), :, %b, if(eq(%qa, 0), ansi(xh, <none>), %qa), %b, %(of 6%), %b, u(check.contracts.changeling.total, %qa), %r, %b, %b, %b, %b, ansi(h, Favored), :, %b, if(eq(%qi, 0), ansi(xh, <none>), %qi), %b, %(at least 2%), %b, u(check.contracts.changeling.royal, %qo), %r, %b, %b, %b, %b, ansi(h, Royal), :, %b, if(eq(%qo, 0), ansi(xh, <none>), %qo), %b, %(at least 2%), %b, u(check.contracts.changeling.royal, %qo), %r)
 
 &check.contracts.changeling.total [v(d.cg)]=u(display.check.ok-no, eq(%0, 6))
 
-&check.contracts.changeling.favored [v(d.cg)]=u(display.check.ok-no, gte(%0, 2))
+&check.contracts.changeling.royal [v(d.cg)]=u(display.check.ok-no, gte(%0, 2))
 
 &check.contracts.changeling.royal [v(d.cg)]=u(display.check.ok-no, gte(%0, 2))
 
-&check.contracts.fae-touched [v(d.cg)]=strcat(setq(9, u(f.allocated.contracts, %0)), setq(t, ladd(%q9, `)), setq(i, ladd(elements(%q9, 2 3, `), `)), setq(o, elements(%q9, 1, `)), %b, %b, ansi(h, Total contracts), :, %b, if(eq(%qa, 0), ansi(xh, <none>), %qa), %b, %(of 2%), %b, u(check.contracts.fae-touched.total, %qa), %r, %b, %b, %b, %b, ansi(h, Favored), :, %b, if(eq(%qf, 0), ansi(xh, <none>), %qf), %b, %(of 2%), %b, u(check.contracts.fae-touched.favored, %qf), %r, %b, %b, %b, %b, ansi(h, Royal), :, %b, if(eq(%qr, 0), ansi(xh, <none>), %qr), %b, %(of none%), %b, u(check.contracts.fae-touched.royal, %qr), %r)
+&check.contracts.fae-touched [v(d.cg)]=strcat(setq(9, u(f.allocated.contracts, %0)), setq(t, ladd(%q9, `)), setq(i, ladd(elements(%q9, 2 3, `), `)), setq(o, elements(%q9, 1, `)), %b, %b, ansi(h, Total contracts), :, %b, if(eq(%qa, 0), ansi(xh, <none>), %qa), %b, %(of 2%), %b, u(check.contracts.fae-touched.total, %qa), %r, %b, %b, %b, %b, ansi(h, Favored), :, %b, if(eq(%qf, 0), ansi(xh, <none>), %qf), %b, %(of 2%), %b, u(check.contracts.fae-touched.royal, %qf), %r, %b, %b, %b, %b, ansi(h, Royal), :, %b, if(eq(%qr, 0), ansi(xh, <none>), %qr), %b, %(of none%), %b, u(check.contracts.fae-touched.royal, %qr), %r)
 
 &check.contracts.fae-touched.total [v(d.cg)]=u(display.check.ok-no, eq(%0, 2))
 
-&check.contracts.fae-touched.favored [v(d.cg)]=u(display.check.ok-no, eq(%0, 2))
+&check.contracts.fae-touched.royal [v(d.cg)]=u(display.check.ok-no, eq(%0, 2))
 
 &check.contracts.fae-touched.royal [v(d.cg)]=u(display.check.ok-no, eq(%0, 0))
 
@@ -1080,7 +1091,7 @@ think XP stuff.
 
 &xp.advantage.glamour [v(d.xpcd)]=u(cost.standard, 5, %1, %2)
 
-&xp.contract [v(d.xpcd)]=u(cost.standard, case(1, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, [u(.value, %0, bio.favored_regalia)].common), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, goblin), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, common), 3, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, [u(.value, %0, bio.favored_regalia)].royal), 3, 4), %1, %2)
+&xp.contract [v(d.xpcd)]=u(cost.standard, case(1, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, [u(.value, %0, bio.royal_regalia)].common), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, goblin), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, common), 3, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, [u(.value, %0, bio.royal_regalia)].royal), 3, 4), %1, %2)
 
 &d.restricted.types.changeling [v(d.xpas)]=contract
 
@@ -1098,7 +1109,7 @@ think Stat blocks going in.
 
 &filter.powers.contracts [v(d.nsc)]=t(strlen(after(%0, :)))
 
-&powers.contracts [v(d.nsc)]=localize(strcat(setq(f, u(v(d.dd)/.value, %0, bio.favored_regalia)), setq(c, u(v(d.dd)/.value, %0, bio.court)), setq(a, lattr(%0/_contract.*)), setq(t, iter(Crown.Jewels.Mirror.Shield.Steed.Sword.[get(v(d.dd)/bio.court)].Goblin, strcat(%i0, :, filter(v(d.sfp)/f.hastag?.workhorse, edit(%qa, _CONTRACT., CONTRACT.),,, %i0)), ., |)), setq(u, iter(%qt, strcat(first(%i0, :), :, iter(rest(%i0, :), ulocal(f.cheat_getstat.name_only, %0, %i0, flag),, .)), |, |)), setq(x, ulocal(powers.contracts.seeming_bonus, %0, %qu)), setq(x, filter(filter.powers.contracts, %qx, |, |)), setq(x, edit(%qx, %qf:, %qf [ansi(xh, %(blessing%))]:)), setq(x, edit(%qx, %qc:, %qc [ansi(xh, %(mantle%))]:)), %qx))
+&powers.contracts [v(d.nsc)]=localize(strcat(setq(f, u(v(d.dd)/.value, %0, bio.royal_regalia)), setq(c, u(v(d.dd)/.value, %0, bio.court)), setq(a, lattr(%0/_contract.*)), setq(t, iter(Crown.Jewels.Mirror.Shield.Steed.Sword.[get(v(d.dd)/bio.court)].Goblin, strcat(%i0, :, filter(v(d.sfp)/f.hastag?.workhorse, edit(%qa, _CONTRACT., CONTRACT.),,, %i0)), ., |)), setq(u, iter(%qt, strcat(first(%i0, :), :, iter(rest(%i0, :), ulocal(f.cheat_getstat.name_only, %0, %i0, flag),, .)), |, |)), setq(x, ulocal(powers.contracts.seeming_bonus, %0, %qu)), setq(x, filter(filter.powers.contracts, %qx, |, |)), setq(x, edit(%qx, %qf:, %qf [ansi(xh, %(blessing%))]:)), setq(x, edit(%qx, %qc:, %qc [ansi(xh, %(mantle%))]:)), %qx))
 
 &block.powers.changeling [v(d.sheet)]=u(block.powers.contracts, %0, %1)
 
