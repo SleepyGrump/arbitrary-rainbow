@@ -31,11 +31,11 @@ There are some changes below from the base code:
 
 - Did the XP thing, including the super-favored type of contracts.
 
-- Added "favored regalia" and changed the OLD "favored regalia" to "seeming regalia". Included chargen checks for it.
+- Added "chosen regalia" and changed the OLD "favored regalia" to "seeming regalia". Included chargen checks for it. Both count as "favored" so at a staffer's request we decided to call one chosen and the other seeming, so as not to confuse things.
 
-- Added "promise" as a bio field for fae-touched
+- Fae-touched get to choose a regalia
 
-- Added a strcat around the contents of f.allocated.contracts.seeming.
+- Added a strcat around the contents of f.allocated.contracts.seeming. (It's not in use but maybe someday it will be?)
 
 - Changed 'Councelor' to 'Counselor'
 
@@ -156,11 +156,11 @@ think Creating bio stats.
 
 &tags.bio.seeming_regalia [v(d.dt)]=derived.changeling
 
-&bio.royal_regalia [v(d.dd)]=Crown.Jewels.Mirror.Shield.Steed.Sword
+&bio.chosen_regalia [v(d.dd)]=Crown.Jewels.Mirror.Shield.Steed.Sword
 
-&default.bio.royal_regalia [v(d.dd)]=
+&default.bio.chosen_regalia [v(d.dd)]=
 
-&tags.bio.royal_regalia [v(d.dt)]=changeling
+&tags.bio.chosen_regalia [v(d.dt)]=changeling.fae-touched
 
 &bio.court [v(d.dd)]=Spring.Summer.Autumn.Winter.Courtless
 
@@ -179,10 +179,6 @@ think Creating bio stats.
 &bio.thread [v(d.dd)]=Acceptance.Anger.Family.Friendship.Hate.Honor.Joy.Love.Memory.Revenge
 
 &tags.bio.thread [v(d.dd)]=changeling
-
-&bio.promise [v(d.dd)]=*
-
-&tags.bio.promise [v(d.dd)]=fae-touched
 
 think Setting up advantages.
 
@@ -1074,13 +1070,13 @@ think Chargen checks being created.
 
 &f.allocated.power-trait.changeling [v(d.cg)]=mul(dec(first(get(%0/_advantage.wyrd), .)), 5)
 
-&f.allocated.contracts [v(d.cg)]=localize(strcat(setq(x, u(v(d.dd)/.value, %0, bio.royal_regalia)), setq(s, u(v(d.dd)/.value, %0, bio.seeming_regalia)), setq(y, u(v(d.dd)/.value, %0, bio.court)), setq(a, edit(setdiff(lattr(%0/_contract.*), lattr(%0/_contract.*.*)), _CONTRACT., CONTRACT.)), setq(f, setunion(u(f.list-stats-tags, %0, contract, common.%qx, and), u(f.list-stats-tags, %0, contract, common.%qs, and))), setq(c, setdiff(u(f.list-stats-tags, %0, contract, common.goblin, or), %qf)), setq(r, setinter(u(f.list-stats-tags, %0, contract, favored), u(f.list-stats-tags, %0, contract, %qx.%qy, or),)), words(%qa), `, words(%qf), `, words(%qc), `, words(%qr)))
+&f.allocated.contracts [v(d.cg)]=localize(strcat(setq(x, u(v(d.dd)/.value, %0, bio.chosen_regalia)), setq(m, u(v(d.dd)/.value, %0, bio.seeming_regalia)), setq(y, u(v(d.dd)/.value, %0, bio.court)), setq(a, edit(setdiff(lattr(%0/_contract.*), lattr(%0/_contract.*.*)), _CONTRACT., CONTRACT.)), setq(f, extract(setinter(u(f.list-stats-tags, %0, contract, common), u(f.list-stats-tags, %0, contract, %qm.%qx, or)), 1, 2)), setq(c, setdiff(u(f.list-stats-tags, %0, contract, common.goblin, or), %qf)), setq(r, setinter(u(f.list-stats-tags, %0, contract, royal), u(f.list-stats-tags, %0, contract, %qm.%qx.%qy, or),)), words(%qa), `, words(%qf), `, words(%qc), `, words(%qr)))
 
 &f.allocated.contracts.seeming [v(d.cg)]=strcat(setq(x, get(%0/_bio.seeming)), setq(y, edit(setdiff(get(%0/_contract.*), get(%0/_contract.*.*)), _CONTRACT., CONTRACT.)), setq(a, edit(lattr(%0/_contract.*.*), _CONTRACT., CONTRACT.)), setq(s, graball(%qa, contract.*.%qx)), setq(c,), words(%qa), `, words(%qs), `, words(%qc))
 
-&check.bio.fae-touched [v(d.cg)]=virtue vice promise
+&check.bio.fae-touched [v(d.cg)]=virtue vice chosen_regalia
 
-&check.bio.changeling [v(d.cg)]=seeming kith court needle thread favored_regalia
+&check.bio.changeling [v(d.cg)]=seeming kith court needle thread chosen_regalia
 
 &check.chargen.attributes.changeling [v(d.cg)]=strcat(setq(f, v(d.changeling.blessing_attributes.[get(%0/_bio.seeming)])), setq(a, lcstr(iter(lattr(%0/_attribute.*.royal), edit(elements(%i0, 2, .), BASE_, )))), setq(i, setinter(%qa, %qf)), setq(c, ulocal(f.pts-valid?.attributes, %0, attribute.%qi:-1)), ulocal(f.allocated.attributes, %0), %b, %(of 5/4/3 + favored%), %b, ulocal(display.check.stats, %0, attributes, attribute.%qa:-1), %r, %b %b%b, ansi(h, Favored Attribute), :, %b, titlestr(itemize(%qa)), %b, %[, case(1, eq(words(%qa), 0), ansi(r, none set), gt(words(%qa), 1), ansi(r, too many set), neq(words(%qi), 1), ansi(r, not allowed for your seeming), not(%qc), ansi(r, bonus point not spent), ansi(g, OK)), %])
 
@@ -1102,19 +1098,23 @@ think Chargen checks being created.
 
 &check.contracts [v(d.cg)]=udefault(check.contracts.[get(%0/_bio.template)], ** check failed **, %0)
 
-&check.contracts.changeling [v(d.cg)]=strcat(setq(9, u(f.allocated.contracts, %0)), setq(a, first(%q9, `)), setq(i, extract(%q9, 2, 1, `)), setq(o, extract(%q9, 3, 1, `)), %b, %b, ansi(h, Total contracts), :, %b, if(eq(%qa, 0), ansi(xh, <none>), %qa), %b, %(of 6%), %b, u(check.contracts.changeling.total, %qa), %r, %b, %b, %b, %b, ansi(h, Favored), :, %b, if(eq(%qi, 0), ansi(xh, <none>), %qi), %b, %(at least 2%), %b, u(check.contracts.changeling.royal, %qo), %r, %b, %b, %b, %b, ansi(h, Royal), :, %b, if(eq(%qo, 0), ansi(xh, <none>), %qo), %b, %(at least 2%), %b, u(check.contracts.changeling.royal, %qo), %r)
+&check.contracts.changeling [v(d.cg)]=strcat(setq(9, u(f.allocated.contracts, %0)), setq(a, first(%q9, `)), setq(f, extract(%q9, 2, 1, `)), setq(c, extract(%q9, 3, 1, `)), setq(r, last(%q9, `)), %b, %b, ansi(h, Total contracts), :, %b, if(eq(%qa, 0), ansi(xh, <none>), %qa), %b, %(of 6%), %b, u(check.contracts.changeling.total, %qa), %r, %b, %b, %b, %b, ansi(h, Common Chosen or Seeming Regalia), :, %b, if(eq(%qf, 0), ansi(xh, <none>), %qf), %b, %(at least 2%), %b, u(check.contracts.changeling.favored, %qf), %r, %b, %b, %b, %b, ansi(h, Common or Goblin), :, %b, if(eq(%qc, 0), ansi(xh, <none>), %qc), %b, %(at least 2%), %b, u(check.contracts.changeling.common, %qc), %r, %b, %b, %b, %b, ansi(h, Royal Chosen Regalia%, Seeming Regalia%, or Court), :, %b, if(eq(%qr, 0), ansi(xh, <none>), %qr), %b, %(at least 2%), %b, u(check.contracts.changeling.royal, %qr), %r)
 
 &check.contracts.changeling.total [v(d.cg)]=u(display.check.ok-no, eq(%0, 6))
 
-&check.contracts.changeling.royal [v(d.cg)]=u(display.check.ok-no, gte(%0, 2))
+&check.contracts.changeling.favored [v(d.cg)]=u(display.check.ok-no, gte(%0, 2))
+
+&check.contracts.changeling.common [v(d.cg)]=u(display.check.ok-no, gte(%0, 2))
 
 &check.contracts.changeling.royal [v(d.cg)]=u(display.check.ok-no, gte(%0, 2))
 
-&check.contracts.fae-touched [v(d.cg)]=strcat(setq(9, u(f.allocated.contracts, %0)), setq(t, ladd(%q9, `)), setq(i, ladd(elements(%q9, 2 3, `), `)), setq(o, elements(%q9, 1, `)), %b, %b, ansi(h, Total contracts), :, %b, if(eq(%qa, 0), ansi(xh, <none>), %qa), %b, %(of 2%), %b, u(check.contracts.fae-touched.total, %qa), %r, %b, %b, %b, %b, ansi(h, Favored), :, %b, if(eq(%qf, 0), ansi(xh, <none>), %qf), %b, %(of 2%), %b, u(check.contracts.fae-touched.royal, %qf), %r, %b, %b, %b, %b, ansi(h, Royal), :, %b, if(eq(%qr, 0), ansi(xh, <none>), %qr), %b, %(of none%), %b, u(check.contracts.fae-touched.royal, %qr), %r)
+&check.contracts.fae-touched [v(d.cg)]=strcat(setq(9, u(f.allocated.contracts, %0)), setq(a, first(%q9, `)), setq(f, extract(%q9, 2, 1, `)), setq(c, extract(%q9, 3, 1, `)), setq(r, last(%q9, `)), %b, %b, ansi(h, Total contracts), :, %b, if(eq(%qa, 0), ansi(xh, <none>), %qa), %b, %(of 2%), %b, u(check.contracts.fae-touched.total, %qa), %r, %b, %b, %b, %b, ansi(h, Common Chosen or Seeming Regalia), :, %b, if(eq(%qf, 0), ansi(xh, <none>), %qf), %b, %(of 2%), %b, u(check.contracts.fae-touched.favored, %qf), %r, %b, %b, %b, %b, ansi(h, Non-favored Common), :, %b, if(eq(%qc, 0), ansi(xh, <none>), %qc), %b, %(of none%), %b, u(check.contracts.fae-touched.common, %qc), %r, %b, %b, %b, %b, ansi(h, Royal), :, %b, if(eq(%qr, 0), ansi(xh, <none>), %qr), %b, %(of none%), %b, u(check.contracts.fae-touched.royal, %qr), %r)
 
 &check.contracts.fae-touched.total [v(d.cg)]=u(display.check.ok-no, eq(%0, 2))
 
-&check.contracts.fae-touched.royal [v(d.cg)]=u(display.check.ok-no, eq(%0, 2))
+&check.contracts.fae-touched.favored [v(d.cg)]=u(display.check.ok-no, eq(%0, 2))
+
+&check.contracts.fae-touched.common [v(d.cg)]=u(display.check.ok-no, eq(%0, 0))
 
 &check.contracts.fae-touched.royal [v(d.cg)]=u(display.check.ok-no, eq(%0, 0))
 
@@ -1122,7 +1122,7 @@ think XP stuff.
 
 &xp.advantage.glamour [v(d.xpcd)]=u(cost.standard, 5, %1, %2)
 
-&xp.contract [v(d.xpcd)]=u(cost.standard, case(1, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, [u(.value, %0, bio.royal_regalia)].common), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, goblin), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, common), 3, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, [u(.value, %0, bio.royal_regalia)].royal), 3, 4), %1, %2)
+&xp.contract [v(d.xpcd)]=u(cost.standard, case(1, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, [u(.value, %0, bio.chosen_regalia)].common), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, [u(.value, %0, bio.seeming_regalia)].common), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, goblin), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, common), 3, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, [u(.value, %0, bio.chosen_regalia)].royal), 3, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, [u(.value, %0, bio.seeming_regalia)].royal), 3, 4), %1, %2)
 
 &d.restricted.types.changeling [v(d.xpas)]=contract
 
@@ -1130,9 +1130,9 @@ think XP stuff.
 
 think Stat blocks going in.
 
-&bio.default.fae-touched [v(d.nsc)]=birthdate concept motley template virtue vice promise
+&bio.default.fae-touched [v(d.nsc)]=birthdate concept motley template virtue vice chosen_regalia
 
-&bio.default.changeling [v(d.nsc)]=birthdate concept needle thread template court seeming kith motley favored_regalia
+&bio.default.changeling [v(d.nsc)]=birthdate concept needle thread template court seeming kith motley chosen_regalia seeming_regalia
 
 &powers.contracts.seeming_bonus [v(d.nsc)]=iter(%1, strcat(first(%i0, :), :, iter(rest(%i0, :), strcat(setq(y, edit(%i0, %b, _)), setq(z, lattr(%0/_contract.%qy.*)), setq(z, edit(%qz, _CONTRACT.[ucstr(%qy)].,, %b, ., _, %b)), if(gt(strlen(%qz), 0), %i0 %([iter(%qz, titlestr(%i0), ., %,%b)]%), %i0)), ., .)), |, |)
 
@@ -1140,7 +1140,7 @@ think Stat blocks going in.
 
 &filter.powers.contracts [v(d.nsc)]=t(strlen(after(%0, :)))
 
-&powers.contracts [v(d.nsc)]=localize(strcat(setq(f, u(v(d.dd)/.value, %0, bio.royal_regalia)), setq(c, u(v(d.dd)/.value, %0, bio.court)), setq(a, lattr(%0/_contract.*)), setq(t, iter(Crown.Jewels.Mirror.Shield.Steed.Sword.[get(v(d.dd)/bio.court)].Goblin, strcat(%i0, :, filter(v(d.sfp)/f.hastag?.workhorse, edit(%qa, _CONTRACT., CONTRACT.),,, %i0)), ., |)), setq(u, iter(%qt, strcat(first(%i0, :), :, iter(rest(%i0, :), ulocal(f.cheat_getstat.name_only, %0, %i0, flag),, .)), |, |)), setq(x, ulocal(powers.contracts.seeming_bonus, %0, %qu)), setq(x, filter(filter.powers.contracts, %qx, |, |)), setq(x, edit(%qx, %qf:, %qf [ansi(xh, %(blessing%))]:)), setq(x, edit(%qx, %qc:, %qc [ansi(xh, %(mantle%))]:)), %qx))
+&powers.contracts [v(d.nsc)]=localize(strcat(setq(f, u(v(d.dd)/.value, %0, bio.chosen_regalia)), setq(c, u(v(d.dd)/.value, %0, bio.court)), setq(a, lattr(%0/_contract.*)), setq(t, iter(Crown.Jewels.Mirror.Shield.Steed.Sword.[get(v(d.dd)/bio.court)].Goblin, strcat(%i0, :, filter(v(d.sfp)/f.hastag?.workhorse, edit(%qa, _CONTRACT., CONTRACT.),,, %i0)), ., |)), setq(u, iter(%qt, strcat(first(%i0, :), :, iter(rest(%i0, :), ulocal(f.cheat_getstat.name_only, %0, %i0, flag),, .)), |, |)), setq(x, ulocal(powers.contracts.seeming_bonus, %0, %qu)), setq(x, filter(filter.powers.contracts, %qx, |, |)), setq(x, edit(%qx, %qf:, %qf [ansi(xh, %(blessing%))]:)), setq(x, edit(%qx, %qc:, %qc [ansi(xh, %(mantle%))]:)), %qx))
 
 &block.powers.changeling [v(d.sheet)]=u(block.powers.contracts, %0, %1)
 
