@@ -5,7 +5,9 @@ WORK IN PROGRESS. But should drop in cleanly. Just... well, expect bugs and read
 
 Currently working on:
 
-- Need to figure out how "Out of seeming benefits" work for XP costs. Should be 1.
+- Need to get that seeming check working - it should notify "hey you forgot to set your seeming benefits" for some contracts.
+
+- Fae-touched are allowed to learn contracts at CG. Need to enable that.
 
 ================================================================================
 
@@ -29,7 +31,7 @@ There are some changes below from the base code:
 
 - Threw in some very basic Contract checks, not sure I got those right.
 
-- Did the XP thing, including the super-favored type of contracts.
+- Did the XP thing, including the super-favored type of contracts. Need to test and see if this is accurate. Also need to test XP cost for out-of-seeming stuff.
 
 - Added "chosen regalia" and changed the OLD "favored regalia" to "seeming regalia". Included chargen checks for it. Both count as "favored" so at a staffer's request we decided to call one chosen and the other seeming, so as not to confuse things.
 
@@ -1070,9 +1072,9 @@ think Chargen checks being created.
 
 &f.allocated.power-trait.changeling [v(d.cg)]=mul(dec(first(get(%0/_advantage.wyrd), .)), 5)
 
-&f.allocated.contracts [v(d.cg)]=localize(strcat(setq(x, u(v(d.dd)/.value, %0, bio.chosen_regalia)), setq(m, u(v(d.dd)/.value, %0, bio.seeming_regalia)), setq(y, u(v(d.dd)/.value, %0, bio.court)), setq(a, edit(setdiff(lattr(%0/_contract.*), lattr(%0/_contract.*.*)), _CONTRACT., CONTRACT.)), setq(f, extract(setinter(u(f.list-stats-tags, %0, contract, common), u(f.list-stats-tags, %0, contract, %qm.%qx, or)), 1, 2)), setq(c, setdiff(u(f.list-stats-tags, %0, contract, common.goblin, or), %qf)), setq(r, setinter(u(f.list-stats-tags, %0, contract, royal), u(f.list-stats-tags, %0, contract, %qm.%qx.%qy, or),)), words(%qa), `, words(%qf), `, words(%qc), `, words(%qr)))
+&f.allocated.contracts [v(d.cg)]=localize(strcat(setq(x, u(v(d.dd)/.value, %0, bio.chosen_regalia)), setq(m, u(v(d.dd)/.value, %0, bio.seeming_regalia)), setq(y, u(v(d.dd)/.value, %0, bio.court)), setq(a, edit(setdiff(lattr(%0/_contract.*), lattr(%0/_contract.*.*)), _CONTRACT., CONTRACT.)), setq(f, extract(setinter(u(f.list-stats-tags, %0, contract, common), u(f.list-stats-tags, %0, contract, %qm.%qx, or)), 1, 2)), setq(c, setdiff(u(f.list-stats-tags, %0, contract, common.goblin, or), %qf)), setq(r, setinter(u(f.list-stats-tags, %0, contract, royal), u(f.list-stats-tags, %0, contract, %qm.%qx.%qy, or),)), setq(z, u(v(d.dd)/.value, %0, bio.seeming)), setq(o,), setq(n,), null(iter(%qa, if(and(not(t(iter(lattr(%0/_[itext(0)].*), if(match(last(itext(0), .), %qz), 1, setq(o, setunion(%qo, itext(0)))),, null()))), t(member(xget(v(d.dt), tags.[itext(0)]), lcstr(%qz), .))), setq(n, setunion(%qn, itext(0)))))), words(%qa), `, words(%qf), `, words(%qc), `, words(%qr), `, words(%qo), `, words(%qn), `, %qn))
 
-&f.allocated.contracts.seeming [v(d.cg)]=strcat(setq(x, get(%0/_bio.seeming)), setq(y, edit(setdiff(get(%0/_contract.*), get(%0/_contract.*.*)), _CONTRACT., CONTRACT.)), setq(a, edit(lattr(%0/_contract.*.*), _CONTRACT., CONTRACT.)), setq(s, graball(%qa, contract.*.%qx)), setq(c,), words(%qa), `, words(%qs), `, words(%qc))
+&f.allocated.contracts.seeming [v(d.cg)]=strcat(setq(x, get(%0/_bio.seeming)), setr(y, edit(setdiff(get(%0/_contract.*), get(%0/_contract.*.%qx)), _CONTRACT., CONTRACT.)), setq(a, edit(lattr(%0/_contract.*.*), _CONTRACT., CONTRACT.)), setq(s, graball(%qa, contract.*.%qx)), setq(c,), words(%qa), `, words(%qs), `, words(%qc))
 
 &check.bio.fae-touched [v(d.cg)]=virtue vice chosen_regalia
 
@@ -1098,7 +1100,7 @@ think Chargen checks being created.
 
 &check.contracts [v(d.cg)]=udefault(check.contracts.[get(%0/_bio.template)], ** check failed **, %0)
 
-&check.contracts.changeling [v(d.cg)]=strcat(setq(9, u(f.allocated.contracts, %0)), setq(a, first(%q9, `)), setq(f, extract(%q9, 2, 1, `)), setq(c, extract(%q9, 3, 1, `)), setq(r, last(%q9, `)), %b, %b, ansi(h, Total contracts), :, %b, if(eq(%qa, 0), ansi(xh, <none>), %qa), %b, %(of 6%), %b, u(check.contracts.changeling.total, %qa), %r, %b, %b, %b, %b, ansi(h, Common Chosen or Seeming Regalia), :, %b, if(eq(%qf, 0), ansi(xh, <none>), %qf), %b, %(at least 2%), %b, u(check.contracts.changeling.favored, %qf), %r, %b, %b, %b, %b, ansi(h, Common or Goblin), :, %b, if(eq(%qc, 0), ansi(xh, <none>), %qc), %b, %(at least 2%), %b, u(check.contracts.changeling.common, %qc), %r, %b, %b, %b, %b, ansi(h, Royal Chosen Regalia%, Seeming Regalia%, or Court), :, %b, if(eq(%qr, 0), ansi(xh, <none>), %qr), %b, %(at least 2%), %b, u(check.contracts.changeling.royal, %qr), %r)
+&check.contracts.changeling [v(d.cg)]=strcat(setq(9, u(f.allocated.contracts, %0)), setq(a, first(%q9, `)), setq(f, extract(%q9, 2, 1, `)), setq(c, extract(%q9, 3, 1, `)), setq(r, extract(%q9, 4, 1, `)), setq(o, extract(%q9, 5, 1, `)), setq(i, extract(%q9, 6, 1, `)), setq(n, extract(%q9, 7, 1, `)), setq(m, get(%0/_bio.seeming)), %b, %b, ansi(h, Total contracts), :, %b, if(eq(%qa, 0), ansi(xh, <none>), %qa), %b, %(of 6%), %b, u(check.contracts.changeling.total, %qa), %r, %b, %b, %b, %b, ansi(h, Common Chosen or Seeming Regalia), :, %b, if(eq(%qf, 0), ansi(xh, <none>), %qf), %b, %(at least 2%), %b, u(check.contracts.changeling.favored, %qf), %r, %b, %b, %b, %b, ansi(h, Common or Goblin), :, %b, if(eq(%qc, 0), ansi(xh, <none>), %qc), %b, %(at least 2%), %b, u(check.contracts.changeling.common, %qc), %r, %b, %b, %b, %b, ansi(h, Royal Chosen Regalia%, Seeming Regalia%, or Court), :, %b, if(eq(%qr, 0), ansi(xh, <none>), %qr), %b, %(at least 2%), %b, u(check.contracts.changeling.royal, %qr), %r, %b, %b, %b, %b, ansi(h, Out-of-seeming Benefits), :, %b, if(eq(%qo, 0), ansi(xh, <none>), %qo), %b, %(of none%), %b, u(check.contracts.changeling.out-of-seeming, %qo), %r, %b, %b, %b, %b, ansi(h, In-seeming Benefits), :, %b, if(t(%qi), strcat(u(display.check.ok-no, 0), iter(%qn, strcat(%r, space(6), stat/set, %b, statname(rest(itext(0), .)), ., %qm, =1),, null())), u(display.check.ok-no, 1)))
 
 &check.contracts.changeling.total [v(d.cg)]=u(display.check.ok-no, eq(%0, 6))
 
@@ -1108,7 +1110,9 @@ think Chargen checks being created.
 
 &check.contracts.changeling.royal [v(d.cg)]=u(display.check.ok-no, gte(%0, 2))
 
-&check.contracts.fae-touched [v(d.cg)]=strcat(setq(9, u(f.allocated.contracts, %0)), setq(a, first(%q9, `)), setq(f, extract(%q9, 2, 1, `)), setq(c, extract(%q9, 3, 1, `)), setq(r, last(%q9, `)), %b, %b, ansi(h, Total contracts), :, %b, if(eq(%qa, 0), ansi(xh, <none>), %qa), %b, %(of 2%), %b, u(check.contracts.fae-touched.total, %qa), %r, %b, %b, %b, %b, ansi(h, Common Chosen or Seeming Regalia), :, %b, if(eq(%qf, 0), ansi(xh, <none>), %qf), %b, %(of 2%), %b, u(check.contracts.fae-touched.favored, %qf), %r, %b, %b, %b, %b, ansi(h, Non-favored Common), :, %b, if(eq(%qc, 0), ansi(xh, <none>), %qc), %b, %(of none%), %b, u(check.contracts.fae-touched.common, %qc), %r, %b, %b, %b, %b, ansi(h, Royal), :, %b, if(eq(%qr, 0), ansi(xh, <none>), %qr), %b, %(of none%), %b, u(check.contracts.fae-touched.royal, %qr), %r)
+&check.contracts.changeling.out-of-seeming [v(d.cg)]=u(display.check.ok-no, lte(%0, 0))
+
+&check.contracts.fae-touched [v(d.cg)]=strcat(setq(9, u(f.allocated.contracts, %0)), setq(a, first(%q9, `)), setq(f, extract(%q9, 2, 1, `)), setq(c, extract(%q9, 3, 1, `)), setq(r, extract(%q9, 4, 1, `)), setq(o, extract(%q9, 5, 1, `)), %b, %b, ansi(h, Total contracts), :, %b, if(eq(%qa, 0), ansi(xh, <none>), %qa), %b, %(of 2%), %b, u(check.contracts.fae-touched.total, %qa), %r, %b, %b, %b, %b, ansi(h, Common Chosen or Seeming Regalia), :, %b, if(eq(%qf, 0), ansi(xh, <none>), %qf), %b, %(of 2%), %b, u(check.contracts.fae-touched.favored, %qf), %r, %b, %b, %b, %b, ansi(h, Non-favored Common), :, %b, if(eq(%qc, 0), ansi(xh, <none>), %qc), %b, %(of none%), %b, u(check.contracts.fae-touched.common, %qc), %r, %b, %b, %b, %b, ansi(h, Royal), :, %b, if(eq(%qr, 0), ansi(xh, <none>), %qr), %b, %(of none%), %b, u(check.contracts.fae-touched.royal, %qr), %r, %b, %b, %b, %b, ansi(h, Seeming benefits), :, %b, if(eq(%qo, 0), ansi(xh, <none>), %qo), %b, %(of none%), %b, u(check.contracts.fae-touched.royal, %qo), %r)
 
 &check.contracts.fae-touched.total [v(d.cg)]=u(display.check.ok-no, eq(%0, 2))
 
