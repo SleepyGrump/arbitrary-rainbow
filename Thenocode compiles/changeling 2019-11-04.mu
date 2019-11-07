@@ -5,9 +5,7 @@ WORK IN PROGRESS. But should drop in cleanly. Just... well, expect bugs and read
 
 Currently working on:
 
-- Need to get that seeming check working - it should notify "hey you forgot to set your seeming benefits" for some contracts.
-
-- Fae-touched are allowed to learn contracts at CG. Need to enable that.
+- Nothing, we're in bug-testing phase
 
 ================================================================================
 
