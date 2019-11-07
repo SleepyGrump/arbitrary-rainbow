@@ -1132,6 +1132,10 @@ think XP stuff.
 
 &d.restricted.stats.changeling [v(d.xpas)]=advantage.glamour
 
+&d.restricted.types.fae-touched [v(d.xpas)]=contract
+
+&d.restricted.stats.fae-touched [v(d.xpas)]=advantage.glamour
+
 think Stat blocks going in.
 
 &bio.default.fae-touched [v(d.nsc)]=birthdate concept motley template virtue vice chosen_regalia
@@ -1146,7 +1150,7 @@ think Stat blocks going in.
 
 &powers.contracts [v(d.nsc)]=localize(strcat(setq(f, u(v(d.dd)/.value, %0, bio.chosen_regalia)), setq(c, u(v(d.dd)/.value, %0, bio.court)), setq(a, lattr(%0/_contract.*)), setq(t, iter(Crown.Jewels.Mirror.Shield.Steed.Sword.[get(v(d.dd)/bio.court)].Goblin, strcat(%i0, :, filter(v(d.sfp)/f.hastag?.workhorse, edit(%qa, _CONTRACT., CONTRACT.),,, %i0)), ., |)), setq(u, iter(%qt, strcat(first(%i0, :), :, iter(rest(%i0, :), ulocal(f.cheat_getstat.name_only, %0, %i0, flag),, .)), |, |)), setq(x, ulocal(powers.contracts.seeming_bonus, %0, %qu)), setq(x, filter(filter.powers.contracts, %qx, |, |)), setq(x, edit(%qx, %qf:, %qf [ansi(xh, %(blessing%))]:)), setq(x, edit(%qx, %qc:, %qc [ansi(xh, %(mantle%))]:)), %qx))
 
-&block.powers.Fae-touched [v(d.sheet)]=u(block.powers.contracts, %0, %1)
+&block.powers.fae-touched [v(d.sheet)]=u(block.powers.contracts, %0, %1)
 
 &block.powers.contracts [v(d.sheet)]=strcat(setq(c, u(powers.contracts, %0)), divider(Contracts), %r, ulocal(format.block.two-even-columns, iter(u(powers.contracts, %0), strcat(u(display.subheader.underline, 38, first(%i0, :)), %r, edit(rest(%i0, :), ., %r)), |, |), ansi(xh, |%b)), %r, null(to be continued),)
 
