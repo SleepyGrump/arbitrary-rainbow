@@ -608,417 +608,417 @@ think Contracts going in now...
 
 &contract.hostile_takeover [v(d.dd)]=1|Beast.Fairest
 
-&tags.contract.hostile_takeover [v(d.dt)]=changeling.crown.beast.fairest.common
+&tags.contract.hostile_takeover [v(d.dt)]=changeling.crown.beast.fairest.common.fae-touched
 
 &contract.mask_of_superiority [v(d.dd)]=1|Fairest.Ogre
 
-&tags.contract.mask_of_superiority [v(d.dt)]=changeling.crown.fairest.ogre.common
+&tags.contract.mask_of_superiority [v(d.dt)]=changeling.crown.fairest.ogre.common.fae-touched
 
 &contract.paralyzing_presence [v(d.dd)]=1|Darkling.Fairest
 
-&tags.contract.paralyzing_presence [v(d.dt)]=changeling.crown.darkling.fairest.common
+&tags.contract.paralyzing_presence [v(d.dt)]=changeling.crown.darkling.fairest.common.fae-touched
 
 &contract.summon_the_loyal_servant [v(d.dd)]=1|Elemental.Fairest
 
-&tags.contract.summon_the_loyal_servant [v(d.dt)]=changeling.crown.elemental.fairest.common
+&tags.contract.summon_the_loyal_servant [v(d.dt)]=changeling.crown.elemental.fairest.common.fae-touched
 
 &contract.tumult [v(d.dd)]=1|Fairest.Ogre
 
-&tags.contract.tumult [v(d.dt)]=changeling.crown.fairest.ogre.common
+&tags.contract.tumult [v(d.dt)]=changeling.crown.fairest.ogre.common.fae-touched
 
 &contract.discreet_summons [v(d.dd)]=1|Darkling.Fairest
 
-&tags.contract.discreet_summons [v(d.dt)]=changeling.crown.darkling.fairest.royal
+&tags.contract.discreet_summons [v(d.dt)]=changeling.crown.darkling.fairest.royal.fae-touched
 
 &contract.mastermind's_gambit [v(d.dd)]=1|Elemental.Fairest
 
-&tags.contract.mastermind's_gambit [v(d.dt)]=changeling.crown.elemental.fairest.royal
+&tags.contract.mastermind's_gambit [v(d.dt)]=changeling.crown.elemental.fairest.royal.fae-touched
 
 &contract.pipes_of_the_beastcaller [v(d.dd)]=1|Beast.Fairest
 
-&tags.contract.pipes_of_the_beastcaller [v(d.dt)]=changeling.crown.beast.fairest.royal
+&tags.contract.pipes_of_the_beastcaller [v(d.dt)]=changeling.crown.beast.fairest.royal.fae-touched
 
 &contract.the_royal_court [v(d.dd)]=1|Fairest.Wizened
 
-&tags.contract.the_royal_court [v(d.dt)]=changeling.crown.fairest.wizened.royal
+&tags.contract.the_royal_court [v(d.dt)]=changeling.crown.fairest.wizened.royal.fae-touched
 
 &contract.spinning_wheel [v(d.dd)]=1|Fairest.Ogre
 
-&tags.contract.spinning_wheel [v(d.dt)]=changeling.crown.fairest.ogre.royal
+&tags.contract.spinning_wheel [v(d.dt)]=changeling.crown.fairest.ogre.royal.fae-touched
 
 &contract.blessing_of_perfection [v(d.dd)]=1|Fairest.Wizened
 
-&tags.contract.blessing_of_perfection [v(d.dt)]=changeling.jewels.fairest.wizened.common
+&tags.contract.blessing_of_perfection [v(d.dt)]=changeling.jewels.fairest.wizened.common.fae-touched
 
 &contract.changing_fortunes [v(d.dd)]=1|Ogre.Wizened
 
-&tags.contract.changing_fortunes [v(d.dt)]=changeling.jewels.ogre.wizened.common
+&tags.contract.changing_fortunes [v(d.dt)]=changeling.jewels.ogre.wizened.common.fae-touched
 
 &contract.light-shy [v(d.dd)]=1|Darkling.wizened
 
-&tags.contract.light-shy [v(d.dt)]=changeling.jewels.darkling.wizened.common
+&tags.contract.light-shy [v(d.dt)]=changeling.jewels.darkling.wizened.common.fae-touched
 
 &contract.murkblur [v(d.dd)]=1|Elemental.Wizened
 
-&tags.contract.murkblur [v(d.dt)]=changeling.jewels.elemental.wizened.common
+&tags.contract.murkblur [v(d.dt)]=changeling.jewels.elemental.wizened.common.fae-touched
 
 &contract.trivial_reworking [v(d.dd)]=1|Darkling.Wizened
 
-&tags.contract.trivial_reworking [v(d.dt)]=changeling.jewels.darkling.wizened.common
+&tags.contract.trivial_reworking [v(d.dt)]=changeling.jewels.darkling.wizened.common.fae-touched
 
 &contract.changeling_hours [v(d.dd)]=1|Elemental.Wizened
 
-&tags.contract.changeling_hours [v(d.dt)]=changeling.jewels.elemental.wizened.royal
+&tags.contract.changeling_hours [v(d.dt)]=changeling.jewels.elemental.wizened.royal.fae-touched
 
 &contract.dance_of_the_toys [v(d.dd)]=1|Beast.Wizened
 
-&tags.contract.dance_of_the_toys [v(d.dt)]=changeling.jewels.beast.wizened.royal
+&tags.contract.dance_of_the_toys [v(d.dt)]=changeling.jewels.beast.wizened.royal.fae-touched
 
 &contract.hidden_reality [v(d.dd)]=1|Fairest.Wizened
 
-&tags.contract.hidden_reality [v(d.dt)]=changeling.jewels.fairest.wizened.royal
+&tags.contract.hidden_reality [v(d.dt)]=changeling.jewels.fairest.wizened.royal.fae-touched
 
 &contract.stealing_the_solid_reflection [v(d.dd)]=1|Fairest.Wizened
 
-&tags.contract.stealing_the_solid_reflection [v(d.dt)]=changeling.jewels.fairest.wizened.royal
+&tags.contract.stealing_the_solid_reflection [v(d.dt)]=changeling.jewels.fairest.wizened.royal.fae-touched
 
 &contract.tatterdemalion's_workshop [v(d.dd)]=1|Ogre.Wizened
 
-&tags.contract.tatterdemalion's_workshop [v(d.dt)]=changeling.jewels.ogre.wizened.royal
+&tags.contract.tatterdemalion's_workshop [v(d.dt)]=changeling.jewels.ogre.wizened.royal.fae-touched
 
 &contract.glimpse_of_a_distant_mirror [v(d.dd)]=1|Beast.Darkling
 
-&tags.contract.glimpse_of_a_distant_mirror [v(d.dt)]=changeling.mirror.beast.darkling.common
+&tags.contract.glimpse_of_a_distant_mirror [v(d.dt)]=changeling.mirror.beast.darkling.common.fae-touched
 
 &contract.know_the_competition [v(d.dd)]=1|Beast.Darkling
 
-&tags.contract.know_the_competition [v(d.dt)]=changeling.mirror.beast.darkling.common
+&tags.contract.know_the_competition [v(d.dt)]=changeling.mirror.beast.darkling.common.fae-touched
 
 &contract.portents_and_visions [v(d.dd)]=1|Darkling.Elemental
 
-&tags.contract.portents_and_visions [v(d.dt)]=changeling.mirror.darkling.elemental.common
+&tags.contract.portents_and_visions [v(d.dt)]=changeling.mirror.darkling.elemental.common.fae-touched
 
 &contract.read_lucidity [v(d.dd)]=1|Beast.Darkling
 
-&tags.contract.read_lucidity [v(d.dt)]=changeling.mirror.beast.darkling.common
+&tags.contract.read_lucidity [v(d.dt)]=changeling.mirror.beast.darkling.common.fae-touched
 
 &contract.walls_have_ears [v(d.dd)]=1|Darkling.Wizened
 
-&tags.contract.walls_have_ears [v(d.dt)]=changeling.mirror.darkling.wizened.common
+&tags.contract.walls_have_ears [v(d.dt)]=changeling.mirror.darkling.wizened.common.fae-touched
 
 &contract.props_and_scenery [v(d.dd)]=1|Darkling.Ogre
 
-&tags.contract.props_and_scenery [v(d.dt)]=changeling.mirror.darkling.ogre.royal
+&tags.contract.props_and_scenery [v(d.dt)]=changeling.mirror.darkling.ogre.royal.fae-touched
 
 &contract.reflections_of_the_past [v(d.dd)]=1|Darkling.Fairest
 
-&tags.contract.reflections_of_the_past [v(d.dt)]=changeling.mirror.darkling.fairest.royal
+&tags.contract.reflections_of_the_past [v(d.dt)]=changeling.mirror.darkling.fairest.royal.fae-touched
 
 &contract.riddle-kith [v(d.dd)]=1|Darkling.Elemental
 
-&tags.contract.riddle-kith [v(d.dt)]=changeling.mirror.darkling.elemental.royal
+&tags.contract.riddle-kith [v(d.dt)]=changeling.mirror.darkling.elemental.royal.fae-touched
 
 &contract.skinmask [v(d.dd)]=1|Darkling.Fairest
 
-&tags.contract.skinmask [v(d.dt)]=changeling.mirror.darkling.fairest.royal
+&tags.contract.skinmask [v(d.dt)]=changeling.mirror.darkling.fairest.royal.fae-touched
 
 &contract.unravel_the_tapestry [v(d.dd)]=1|Darkling.Wizened
 
-&tags.contract.unravel_the_tapestry [v(d.dt)]=changeling.mirror.darkling.wizened.royal
+&tags.contract.unravel_the_tapestry [v(d.dt)]=changeling.mirror.darkling.wizened.royal.fae-touched
 
 &contract.cloak_of_night [v(d.dd)]=1|Darkling.Ogre
 
-&tags.contract.cloak_of_night [v(d.dt)]=changeling.shield.darkling.ogre.common
+&tags.contract.cloak_of_night [v(d.dt)]=changeling.shield.darkling.ogre.common.fae-touched
 
 &contract.fae_cunning [v(d.dd)]=1|Elemental.Ogre
 
-&tags.contract.fae_cunning [v(d.dt)]=changeling.shield.elemental.ogre.common
+&tags.contract.fae_cunning [v(d.dt)]=changeling.shield.elemental.ogre.common.fae-touched
 
 &contract.shared_burden [v(d.dd)]=1|Ogre.Wizened
 
-&tags.contract.shared_burden [v(d.dt)]=changeling.shield.ogre.wizened.common
+&tags.contract.shared_burden [v(d.dt)]=changeling.shield.ogre.wizened.common.fae-touched
 
 &contract.thorns_and_brambles [v(d.dd)]=1|Darkling.Ogre
 
-&tags.contract.thorns_and_brambles [v(d.dt)]=changeling.shield.darkling.ogre.common
+&tags.contract.thorns_and_brambles [v(d.dt)]=changeling.shield.darkling.ogre.common.fae-touched
 
 &contract.trapdoor_spider's_trick [v(d.dd)]=1|Ogre.Wizened
 
-&tags.contract.trapdoor_spider's_trick [v(d.dt)]=changeling.shield.ogre.wizened.common
+&tags.contract.trapdoor_spider's_trick [v(d.dt)]=changeling.shield.ogre.wizened.common.fae-touched
 
 &contract.fortifying_presence [v(d.dd)]=1|Fairest.Ogre
 
-&tags.contract.fortifying_presence [v(d.dt)]=changeling.shield.fairest.ogre.royal
+&tags.contract.fortifying_presence [v(d.dt)]=changeling.shield.fairest.ogre.royal.fae-touched
 
 &contract.hedgewall [v(d.dd)]=1|Beast.Ogre
 
-&tags.contract.hedgewall [v(d.dt)]=changeling.shield.beast.ogre.royal
+&tags.contract.hedgewall [v(d.dt)]=changeling.shield.beast.ogre.royal.fae-touched
 
 &contract.vow_of_no_compromise [v(d.dd)]=1|Ogre.Elemental
 
-&tags.contract.vow_of_no_compromise [v(d.dt)]=changeling.shield.ogre.elemental.royal
+&tags.contract.vow_of_no_compromise [v(d.dt)]=changeling.shield.ogre.elemental.royal.fae-touched
 
 &contract.whispers_of_morning [v(d.dd)]=1|Ogre.Wizened
 
-&tags.contract.whispers_of_morning [v(d.dt)]=changeling.shield.ogre.wizened.royal
+&tags.contract.whispers_of_morning [v(d.dt)]=changeling.shield.ogre.wizened.royal.fae-touched
 
 &contract.boon_of_the_scuttling_spider [v(d.dd)]=1|Beast.Darkling
 
-&tags.contract.boon_of_the_scuttling_spider [v(d.dt)]=changeling.steed.beast.darkling.common
+&tags.contract.boon_of_the_scuttling_spider [v(d.dt)]=changeling.steed.beast.darkling.common.fae-touched
 
 &contract.dreamsteps [v(d.dd)]=1|Beast.Fairest
 
-&tags.contract.dreamsteps [v(d.dt)]=changeling.steed.beast.fairest.common
+&tags.contract.dreamsteps [v(d.dt)]=changeling.steed.beast.fairest.common.fae-touched
 
 &contract.nevertread [v(d.dd)]=1|Beast.Wizened
 
-&tags.contract.nevertread [v(d.dt)]=changeling.steed.beast.wizened.common
+&tags.contract.nevertread [v(d.dt)]=changeling.steed.beast.wizened.common.fae-touched
 
 &contract.pathfinder [v(d.dd)]=1|Beast.Wizened
 
-&tags.contract.pathfinder [v(d.dt)]=changeling.steed.beast.wizened.common
+&tags.contract.pathfinder [v(d.dt)]=changeling.steed.beast.wizened.common.fae-touched
 
 &contract.seven-league_leap [v(d.dd)]=1|Beast.Ogre
 
-&tags.contract.seven-league_leap [v(d.dt)]=changeling.steed.beast.ogre.common
+&tags.contract.seven-league_leap [v(d.dt)]=changeling.steed.beast.ogre.common.fae-touched
 
 &contract.chrysalis [v(d.dd)]=1|Beast.Ogre
 
-&tags.contract.chrysalis [v(d.dt)]=changeling.steed.beast.ogre.royal
+&tags.contract.chrysalis [v(d.dt)]=changeling.steed.beast.ogre.royal.fae-touched
 
 &contract.flickering_hours [v(d.dd)]=1|Beast.Elemental
 
-&tags.contract.flickering_hours [v(d.dt)]=changeling.steed.beast.elemental.royal
+&tags.contract.flickering_hours [v(d.dt)]=changeling.steed.beast.elemental.royal.fae-touched
 
 &contract.leaping_toward_nightfall [v(d.dd)]=1|Beast.Darkling
 
-&tags.contract.leaping_toward_nightfall [v(d.dt)]=changeling.steed.beast.darkling.royal
+&tags.contract.leaping_toward_nightfall [v(d.dt)]=changeling.steed.beast.darkling.royal.fae-touched
 
 &contract.mirror_walk [v(d.dd)]=1|Beast.Elemental
 
-&tags.contract.mirror_walk [v(d.dt)]=changeling.steed.beast.elemental.royal
+&tags.contract.mirror_walk [v(d.dt)]=changeling.steed.beast.elemental.royal.fae-touched
 
 &contract.talon_and_wing [v(d.dd)]=1|Beast.Darkling
 
-&tags.contract.talon_and_wing [v(d.dt)]=changeling.steed.beast.darkling.royal
+&tags.contract.talon_and_wing [v(d.dt)]=changeling.steed.beast.darkling.royal.fae-touched
 
 &contract.cupid's_arrow [v(d.dd)]=1
 
-&tags.contract.cupid's_arrow [v(d.dt)]=changeling.spring.common
+&tags.contract.cupid's_arrow [v(d.dt)]=changeling.spring.common.fae-touched
 
 &contract.dreams_of_the_earth [v(d.dd)]=1
 
-&tags.contract.dreams_of_the_earth [v(d.dt)]=changeling.spring.common
+&tags.contract.dreams_of_the_earth [v(d.dt)]=changeling.spring.common.fae-touched
 
 &contract.gift_of_warm_breath [v(d.dd)]=1
 
-&tags.contract.gift_of_warm_breath [v(d.dt)]=changeling.spring.common
+&tags.contract.gift_of_warm_breath [v(d.dt)]=changeling.spring.common.fae-touched
 
 &contract.spring's_kiss [v(d.dd)]=1
 
-&tags.contract.spring's_kiss [v(d.dt)]=changeling.spring.common
+&tags.contract.spring's_kiss [v(d.dt)]=changeling.spring.common.fae-touched
 
 &contract.wyrd-faced_stranger [v(d.dd)]=1
 
-&tags.contract.wyrd-faced_stranger [v(d.dt)]=changeling.spring.common
+&tags.contract.wyrd-faced_stranger [v(d.dt)]=changeling.spring.common.fae-touched
 
 &contract.blessing_of_spring [v(d.dd)]=1
 
-&tags.contract.blessing_of_spring [v(d.dt)]=changeling.spring.royal
+&tags.contract.blessing_of_spring [v(d.dt)]=changeling.spring.royal.fae-touched
 
 &contract.gift_of_warm_blood [v(d.dd)]=1
 
-&tags.contract.gift_of_warm_blood [v(d.dt)]=changeling.spring.royal
+&tags.contract.gift_of_warm_blood [v(d.dt)]=changeling.spring.royal.fae-touched
 
 &contract.pandora's_gift [v(d.dd)]=1
 
-&tags.contract.pandora's_gift [v(d.dt)]=changeling.spring.royal
+&tags.contract.pandora's_gift [v(d.dt)]=changeling.spring.royal.fae-touched
 
 &contract.prince_of_ivy [v(d.dd)]=1
 
-&tags.contract.prince_of_ivy [v(d.dt)]=changeling.spring.royal
+&tags.contract.prince_of_ivy [v(d.dt)]=changeling.spring.royal.fae-touched
 
 &contract.waking_the_inner_fae [v(d.dd)]=1
 
-&tags.contract.waking_the_inner_fae [v(d.dt)]=changeling.spring.royal
+&tags.contract.waking_the_inner_fae [v(d.dt)]=changeling.spring.royal.fae-touched
 
 &contract.baleful_sense [v(d.dd)]=1
 
-&tags.contract.baleful_sense [v(d.dt)]=changeling.summer.common
+&tags.contract.baleful_sense [v(d.dt)]=changeling.summer.common.fae-touched
 
 &contract.child_of_the_hearth [v(d.dd)]=1
 
-&tags.contract.child_of_the_hearth [v(d.dt)]=changeling.summer.common
+&tags.contract.child_of_the_hearth [v(d.dt)]=changeling.summer.common.fae-touched
 
 &contract.helios'_light [v(d.dd)]=1
 
-&tags.contract.helios'_light [v(d.dt)]=changeling.summer.common
+&tags.contract.helios'_light [v(d.dt)]=changeling.summer.common.fae-touched
 
 &contract.high_summer's_zeal [v(d.dd)]=1
 
-&tags.contract.high_summer's_zeal [v(d.dt)]=changeling.summer.common
+&tags.contract.high_summer's_zeal [v(d.dt)]=changeling.summer.common.fae-touched
 
 &contract.vigilance_of_ares [v(d.dd)]=1
 
-&tags.contract.vigilance_of_ares [v(d.dt)]=changeling.summer.common
+&tags.contract.vigilance_of_ares [v(d.dt)]=changeling.summer.common.fae-touched
 
 &contract.fiery_tongue [v(d.dd)]=1
 
-&tags.contract.fiery_tongue [v(d.dt)]=changeling.summer.royal
+&tags.contract.fiery_tongue [v(d.dt)]=changeling.summer.royal.fae-touched
 
 &contract.flames_of_summer [v(d.dd)]=1
 
-&tags.contract.flames_of_summer [v(d.dt)]=changeling.summer.royal
+&tags.contract.flames_of_summer [v(d.dt)]=changeling.summer.royal.fae-touched
 
 &contract.helios'_judgement [v(d.dd)]=1
 
-&tags.contract.helios'_judgement [v(d.dt)]=changeling.summer.royal
+&tags.contract.helios'_judgement [v(d.dt)]=changeling.summer.royal.fae-touched
 
 &contract.solstice_revelation [v(d.dd)]=1
 
-&tags.contract.solstice_revelation [v(d.dt)]=changeling.summer.royal
+&tags.contract.solstice_revelation [v(d.dt)]=changeling.summer.royal.fae-touched
 
 &contract.sunburnt_heart [v(d.dd)]=1
 
-&tags.contract.sunburnt_heart [v(d.dt)]=changeling.summer.royal
+&tags.contract.sunburnt_heart [v(d.dt)]=changeling.summer.royal.fae-touched
 
 &contract.autumn's_fury [v(d.dd)]=1
 
-&tags.contract.autumn's_fury [v(d.dt)]=changeling.autumn.common
+&tags.contract.autumn's_fury [v(d.dt)]=changeling.autumn.common.fae-touched
 
 &contract.last_harvest [v(d.dd)]=1
 
-&tags.contract.last_harvest [v(d.dt)]=changeling.autumn.common
+&tags.contract.last_harvest [v(d.dt)]=changeling.autumn.common.fae-touched
 
 &contract.tale_of_the_baba_yaga [v(d.dd)]=1
 
-&tags.contract.tale_of_the_baba_yaga [v(d.dt)]=changeling.autumn.common
+&tags.contract.tale_of_the_baba_yaga [v(d.dt)]=changeling.autumn.common.fae-touched
 
 &contract.twilight's_harbinger [v(d.dd)]=1
 
-&tags.contract.twilight's_harbinger [v(d.dt)]=changeling.autumn.common
+&tags.contract.twilight's_harbinger [v(d.dt)]=changeling.autumn.common.fae-touched
 
 &contract.witches'_intuition [v(d.dd)]=1
 
-&tags.contract.witches'_intuition [v(d.dt)]=changeling.autumn.common
+&tags.contract.witches'_intuition [v(d.dt)]=changeling.autumn.common.fae-touched
 
 &contract.famine's_bulwark [v(d.dd)]=1
 
-&tags.contract.famine's_bulwark [v(d.dt)]=changeling.autumn.royal
+&tags.contract.famine's_bulwark [v(d.dt)]=changeling.autumn.royal.fae-touched
 
 &contract.mien_of_the_baba_yaga [v(d.dd)]=1
 
-&tags.contract.mien_of_the_baba_yaga [v(d.dt)]=changeling.autumn.royal
+&tags.contract.mien_of_the_baba_yaga [v(d.dt)]=changeling.autumn.royal.fae-touched
 
 &contract.riding_the_falling_leaves [v(d.dd)]=1
 
-&tags.contract.riding_the_falling_leaves [v(d.dt)]=changeling.autumn.royal
+&tags.contract.riding_the_falling_leaves [v(d.dt)]=changeling.autumn.royal.fae-touched
 
 &contract.sorcerer's_rebuke [v(d.dd)]=1
 
-&tags.contract.sorcerer's_rebuke [v(d.dt)]=changeling.autumn.royal
+&tags.contract.sorcerer's_rebuke [v(d.dt)]=changeling.autumn.royal.fae-touched
 
 &contract.tasting_the_harvest [v(d.dd)]=1
 
-&tags.contract.tasting_the_harvest [v(d.dt)]=changeling.autumn.royal
+&tags.contract.tasting_the_harvest [v(d.dt)]=changeling.autumn.royal.fae-touched
 
 &contract.the_dragon_knows [v(d.dd)]=1
 
-&tags.contract.the_dragon_knows [v(d.dt)]=changeling.winter.common
+&tags.contract.the_dragon_knows [v(d.dt)]=changeling.winter.common.fae-touched
 
 &contract.heart_of_ice [v(d.dd)]=1
 
-&tags.contract.heart_of_ice [v(d.dt)]=changeling.winter.common
+&tags.contract.heart_of_ice [v(d.dt)]=changeling.winter.common.fae-touched
 
 &contract.ice_queen's_call [v(d.dd)]=1
 
-&tags.contract.ice_queen's_call [v(d.dt)]=changeling.winter.common
+&tags.contract.ice_queen's_call [v(d.dt)]=changeling.winter.common.fae-touched
 
 &contract.slipknot_dreams [v(d.dd)]=1
 
-&tags.contract.slipknot_dreams [v(d.dt)]=changeling.winter.common
+&tags.contract.slipknot_dreams [v(d.dt)]=changeling.winter.common.fae-touched
 
 &contract.touch_of_winter [v(d.dd)]=1
 
-&tags.contract.touch_of_winter [v(d.dt)]=changeling.winter.common
+&tags.contract.touch_of_winter [v(d.dt)]=changeling.winter.common.fae-touched
 
 &contract.ermine's_winter_coat [v(d.dd)]=1
 
-&tags.contract.ermine's_winter_coat [v(d.dt)]=changeling.winter.royal
+&tags.contract.ermine's_winter_coat [v(d.dt)]=changeling.winter.royal.fae-touched
 
 &contract.fallow_fields [v(d.dd)]=1
 
-&tags.contract.fallow_fields [v(d.dt)]=changeling.winter.royal
+&tags.contract.fallow_fields [v(d.dt)]=changeling.winter.royal.fae-touched
 
 &contract.field_of_regret [v(d.dd)]=1
 
-&tags.contract.field_of_regret [v(d.dt)]=changeling.winter.royal
+&tags.contract.field_of_regret [v(d.dt)]=changeling.winter.royal.fae-touched
 
 &contract.mantle_of_frost [v(d.dd)]=1
 
-&tags.contract.mantle_of_frost [v(d.dt)]=changeling.winter.royal
+&tags.contract.mantle_of_frost [v(d.dt)]=changeling.winter.royal.fae-touched
 
 &contract.winter's_curse [v(d.dd)]=1
 
-&tags.contract.winter's_curse [v(d.dt)]=changeling.winter.royal
+&tags.contract.winter's_curse [v(d.dt)]=changeling.winter.royal.fae-touched
 
 &contract.blessing_of_forgetfulness [v(d.dd)]=1
 
-&tags.contract.blessing_of_forgetfulness [v(d.dt)]=changeling.goblin
+&tags.contract.blessing_of_forgetfulness [v(d.dt)]=changeling.goblin.fae-touched
 
 &notes.contract.blessing_of_forgetfulness [v(d.dt)]=Remember to add Goblin Debt when used
 
 &contract.glib_tongue [v(d.dd)]=1
 
-&tags.contract.glib_tongue [v(d.dt)]=changeling.goblin
+&tags.contract.glib_tongue [v(d.dt)]=changeling.goblin.fae-touched
 
 &notes.contract.glib_tongue [v(d.dt)]=Remember to add Goblin Debt when used
 
 &contract.goblin's_eye [v(d.dd)]=1
 
-&tags.contract.goblin's_eye [v(d.dt)]=changeling.goblin
+&tags.contract.goblin's_eye [v(d.dt)]=changeling.goblin.fae-touched
 
 &notes.contract.goblin's_eye [v(d.dt)]=Remember to add Goblin Debt when used
 
 &contract.goblin's_luck [v(d.dd)]=1
 
-&tags.contract.goblin's_luck [v(d.dt)]=changeling.goblin
+&tags.contract.goblin's_luck [v(d.dt)]=changeling.goblin.fae-touched
 
 &notes.contract.goblin's_luck [v(d.dt)]=Remember to add Goblin Debt when used
 
 &contract.huntsman's_clarion [v(d.dd)]=1
 
-&tags.contract.huntsman's_clarion [v(d.dt)]=changeling.goblin
+&tags.contract.huntsman's_clarion [v(d.dt)]=changeling.goblin.fae-touched
 
 &notes.contract.huntsman's_clarion [v(d.dt)]=Remember to add Goblin Debt when used
 
 &contract.lost_visage [v(d.dd)]=1
 
-&tags.contract.lost_visage [v(d.dt)]=changeling.goblin
+&tags.contract.lost_visage [v(d.dt)]=changeling.goblin.fae-touched
 
 &notes.contract.lost_visage [v(d.dt)]=Remember to add Goblin Debt when used
 
 &contract.mantle_mask [v(d.dd)]=1
 
-&tags.contract.mantle_mask [v(d.dt)]=changeling.goblin
+&tags.contract.mantle_mask [v(d.dt)]=changeling.goblin.fae-touched
 
 &notes.contract.mantle_mask [v(d.dt)]=Remember to add Goblin Debt when used
 
 &contract.sight_of_truth_and_lies [v(d.dd)]=1
 
-&tags.contract.sight_of_truth_and_lies [v(d.dt)]=changeling.goblin
+&tags.contract.sight_of_truth_and_lies [v(d.dt)]=changeling.goblin.fae-touched
 
 &notes.contract.sight_of_truth_and_lies [v(d.dt)]=Remember to add Goblin Debt when used
 
 &contract.uncanny [v(d.dd)]=1
 
-&tags.contract.uncanny [v(d.dt)]=changeling.goblin
+&tags.contract.uncanny [v(d.dt)]=changeling.goblin.fae-touched
 
 &notes.contract.uncanny [v(d.dt)]=Remember to add Goblin Debt when used
 
 &contract.wayward_guide [v(d.dd)]=1
 
-&tags.contract.wayward_guide [v(d.dt)]=changeling.goblin
+&tags.contract.wayward_guide [v(d.dt)]=changeling.goblin.fae-touched
 
 &notes.contract.wayward_guide [v(d.dt)]=Remember to add Goblin Debt when used
 
@@ -1026,47 +1026,47 @@ think Adding contracts that were missing in the original code...
 
 &contract.pure_clarity [v(d.dd)]=1|Fairest.Ogre
 
-&tags.contract.pure_clarity [v(d.dt)]=changeling.shield.fairest.ogre.royal
+&tags.contract.pure_clarity [v(d.dt)]=changeling.shield.fairest.ogre.royal.fae-touched
 
 &contract.primal_glory [v(d.dd)]=1|Elemental.Ogre
 
-&tags.contract.primal_glory [v(d.dt)]=changeling.sword.elemental.ogre.common
+&tags.contract.primal_glory [v(d.dt)]=changeling.sword.elemental.ogre.common.fae-touched
 
 &contract.red_revenge [v(d.dd)]=1|Elemental.Ogre
 
-&tags.contract.red_revenge [v(d.dt)]=changeling.sword.elemental.ogre.royal
+&tags.contract.red_revenge [v(d.dt)]=changeling.sword.elemental.ogre.royal.fae-touched
 
 &contract.elemental_weapon [v(d.dd)]=1|Darkling.Elemental
 
-&tags.contract.elemental_weapon [v(d.dt)]=changeling.sword.elemental.darkling.common
+&tags.contract.elemental_weapon [v(d.dt)]=changeling.sword.elemental.darkling.common.fae-touched
 
 &contract.might_of_the_terrible_brute [v(d.dd)]=1|Beast.Elemental
 
-&tags.contract.might_of_the_terrible_brute [v(d.dt)]=changeling.sword.elemental.beast.common
+&tags.contract.might_of_the_terrible_brute [v(d.dt)]=changeling.sword.elemental.beast.common.fae-touched
 
 &contract.overpowering_dread [v(d.dd)]=1|Elemental.Fairest
 
-&tags.contract.overpowering_dread [v(d.dt)]=changeling.sword.elemental.fairest.common
+&tags.contract.overpowering_dread [v(d.dt)]=changeling.sword.elemental.fairest.common.fae-touched
 
 &contract.touch_of_wrath [v(d.dd)]=1|Elemental.Wizened
 
-&tags.contract.touch_of_wrath [v(d.dt)]=changeling.sword.elemental.wizened.common
+&tags.contract.touch_of_wrath [v(d.dt)]=changeling.sword.elemental.wizened.common.fae-touched
 
 &contract.elemental_fury [v(d.dd)]=1|Elemental.Fairest
 
-&tags.contract.elemental_fury [v(d.dt)]=changeling.sword.elemental.fairest.royal
+&tags.contract.elemental_fury [v(d.dt)]=changeling.sword.elemental.fairest.royal.fae-touched
 
 &contract.oathbreaker's_punishment [v(d.dd)]=1|Elemental.Wizened
 
-&tags.contract.oathbreaker's_punishment [v(d.dt)]=changeling.sword.elemental.wizened.royal
+&tags.contract.oathbreaker's_punishment [v(d.dt)]=changeling.sword.elemental.wizened.royal.fae-touched
 
 &contract.relentless_pursuit [v(d.dd)]=1|Elemental.Beast
 
-&tags.contract.relentless_pursuit [v(d.dt)]=changeling.sword.elemental.beast.royal
+&tags.contract.relentless_pursuit [v(d.dt)]=changeling.sword.elemental.beast.royal.fae-touched
 
 &contract.thief_of_reason [v(d.dd)]=1|Elemental.Fairest
 
-&tags.contract.thief_of_reason [v(d.dt)]=changeling.sword.elemental.fairest.royal
+&tags.contract.thief_of_reason [v(d.dt)]=changeling.sword.elemental.fairest.royal.fae-touched
 
 think Chargen checks being created.
 
