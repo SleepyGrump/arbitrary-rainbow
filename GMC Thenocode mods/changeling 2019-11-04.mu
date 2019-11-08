@@ -7,8 +7,6 @@ Currently working on:
 
 - Fae-touched wyrd is going to be weird.
 
-- According to the book: you must have dots of Mantle to take Royal Court contracts. I don't currently check for that in CG/check. Please be aware that it could be an issue.
-
 ================================================================================
 
 This is a COMPILED version of the following files, code credit to Thenomain:
@@ -52,6 +50,8 @@ There are some changes below from the base code:
 - Added the prereq for Fair Harvest
 
 - Added missing merits as I found them
+
+- According to the book: you must have a dot of Mantle to take Court contracts. You must have 3 dots of mantle to take Royal court contracts. Added prereqs for all Court contracts.
 
 - Turns out Goblin Debt is available to EVERYONE so I added it to the default Advantages block and set up the regain/spend stuff to not be locked to Changeling/Fae-touched.
 
@@ -821,161 +821,321 @@ think Contracts going in now...
 
 &tags.contract.cupid's_arrow [v(d.dt)]=changeling.spring.common.fae-touched
 
+&prerequisite.contract.cupid's_arrow [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Spring))
+
+&prereq-text.contract.cupid's_arrow [v(d.dd)]=Must have Mantle 1 and be of the Spring court.
+
 &contract.dreams_of_the_earth [v(d.dd)]=1
 
 &tags.contract.dreams_of_the_earth [v(d.dt)]=changeling.spring.common.fae-touched
+
+&prerequisite.contract.dreams_of_the_earth [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Spring))
+
+&prereq-text.contract.dreams_of_the_earth [v(d.dd)]=Must have Mantle 1 and be of the Spring court.
 
 &contract.gift_of_warm_breath [v(d.dd)]=1
 
 &tags.contract.gift_of_warm_breath [v(d.dt)]=changeling.spring.common.fae-touched
 
+&prerequisite.contract.gift_of_warm_breath [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Spring))
+
+&prereq-text.contract.gift_of_warm_breath [v(d.dd)]=Must have Mantle 1 and be of the Spring court.
+
 &contract.spring's_kiss [v(d.dd)]=1
 
 &tags.contract.spring's_kiss [v(d.dt)]=changeling.spring.common.fae-touched
+
+&prerequisite.contract.spring's_kiss [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Spring))
+
+&prereq-text.contract.spring's_kiss [v(d.dd)]=Must have Mantle 1 and be of the Spring court.
 
 &contract.wyrd-faced_stranger [v(d.dd)]=1
 
 &tags.contract.wyrd-faced_stranger [v(d.dt)]=changeling.spring.common.fae-touched
 
+&prerequisite.contract.wyrd-faced_stranger [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Spring))
+
+&prereq-text.contract.wyrd-faced_stranger [v(d.dd)]=Must have Mantle 1 and be of the Spring court.
+
 &contract.blessing_of_spring [v(d.dd)]=1
 
 &tags.contract.blessing_of_spring [v(d.dt)]=changeling.spring.royal.fae-touched
+
+&prerequisite.contract.blessing_of_spring [v(d.dd)]=cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.blessing_of_spring [v(d.dd)]=Spring Mantle 3+
 
 &contract.gift_of_warm_blood [v(d.dd)]=1
 
 &tags.contract.gift_of_warm_blood [v(d.dt)]=changeling.spring.royal.fae-touched
 
+&prerequisite.contract.gift_of_warm_blood [v(d.dd)]=cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.gift_of_warm_blood [v(d.dd)]=Spring Mantle 3+
+
 &contract.pandora's_gift [v(d.dd)]=1
 
 &tags.contract.pandora's_gift [v(d.dt)]=changeling.spring.royal.fae-touched
+
+&prerequisite.contract.pandora's_gift [v(d.dd)]=cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.pandora's_gift [v(d.dd)]=Spring Mantle 3+
 
 &contract.prince_of_ivy [v(d.dd)]=1
 
 &tags.contract.prince_of_ivy [v(d.dt)]=changeling.spring.royal.fae-touched
 
+&prerequisite.contract.prince_of_ivy [v(d.dd)]=cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.prince_of_ivy [v(d.dd)]=Spring Mantle 3+
+
 &contract.waking_the_inner_fae [v(d.dd)]=1
 
 &tags.contract.waking_the_inner_fae [v(d.dt)]=changeling.spring.royal.fae-touched
+
+&prerequisite.contract.waking_the_inner_fae [v(d.dd)]=cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.waking_the_inner_fae [v(d.dd)]=Spring Mantle 3+
 
 &contract.baleful_sense [v(d.dd)]=1
 
 &tags.contract.baleful_sense [v(d.dt)]=changeling.summer.common.fae-touched
 
+&prerequisite.contract.baleful_sense [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Summer))
+
+&prereq-text.contract.baleful_sense [v(d.dd)]=Must have Mantle 1 and be of the Summer court.
+
 &contract.child_of_the_hearth [v(d.dd)]=1
 
 &tags.contract.child_of_the_hearth [v(d.dt)]=changeling.summer.common.fae-touched
+
+&prerequisite.contract.child_of_the_hearth [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Summer))
+
+&prereq-text.contract.child_of_the_hearth [v(d.dd)]=Must have Mantle 1 and be of the Summer court.
 
 &contract.helios'_light [v(d.dd)]=1
 
 &tags.contract.helios'_light [v(d.dt)]=changeling.summer.common.fae-touched
 
+&prerequisite.contract.helios'_light [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Summer))
+
+&prereq-text.contract.helios'_light [v(d.dd)]=Must have Mantle 1 and be of the Summer court.
+
 &contract.high_summer's_zeal [v(d.dd)]=1
 
 &tags.contract.high_summer's_zeal [v(d.dt)]=changeling.summer.common.fae-touched
+
+&prerequisite.contract.high_summer's_zeal [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Summer))
+
+&prereq-text.contract.high_summer's_zeal [v(d.dd)]=Must have Mantle 1 and be of the Summer court.
 
 &contract.vigilance_of_ares [v(d.dd)]=1
 
 &tags.contract.vigilance_of_ares [v(d.dt)]=changeling.summer.common.fae-touched
 
+&prerequisite.contract.vigilance_of_ares [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Summer))
+
+&prereq-text.contract.vigilance_of_ares [v(d.dd)]=Must have Mantle 1 and be of the Summer court.
+
 &contract.fiery_tongue [v(d.dd)]=1
 
 &tags.contract.fiery_tongue [v(d.dt)]=changeling.summer.royal.fae-touched
+
+&prerequisite.contract.fiery_tongue [v(d.dd)]=cand(u(.is, %0, bio.court, Summer), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.fiery_tongue [v(d.dd)]=Summer Mantle 3+
 
 &contract.flames_of_summer [v(d.dd)]=1
 
 &tags.contract.flames_of_summer [v(d.dt)]=changeling.summer.royal.fae-touched
 
+&prerequisite.contract.flames_of_summer [v(d.dd)]=cand(u(.is, %0, bio.court, Summer), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.flames_of_summer [v(d.dd)]=Summer Mantle 3+
+
 &contract.helios'_judgement [v(d.dd)]=1
 
 &tags.contract.helios'_judgement [v(d.dt)]=changeling.summer.royal.fae-touched
+
+&prerequisite.contract.helios'_judgement [v(d.dd)]=cand(u(.is, %0, bio.court, Summer), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.helios'_judgement [v(d.dd)]=Summer Mantle 3+
 
 &contract.solstice_revelation [v(d.dd)]=1
 
 &tags.contract.solstice_revelation [v(d.dt)]=changeling.summer.royal.fae-touched
 
+&prerequisite.contract.solstice_revelation [v(d.dd)]=cand(u(.is, %0, bio.court, Summer), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.solstice_revelation [v(d.dd)]=Summer Mantle 3+
+
 &contract.sunburnt_heart [v(d.dd)]=1
 
 &tags.contract.sunburnt_heart [v(d.dt)]=changeling.summer.royal.fae-touched
+
+&prerequisite.contract.sunburnt_heart [v(d.dd)]=cand(u(.is, %0, bio.court, Summer), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.sunburnt_heart [v(d.dd)]=Summer Mantle 3+
 
 &contract.autumn's_fury [v(d.dd)]=1
 
 &tags.contract.autumn's_fury [v(d.dt)]=changeling.autumn.common.fae-touched
 
+&prerequisite.contract.autumn's_fury [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Autumn))
+
+&prereq-text.contract.autumn's_fury [v(d.dd)]=Must have Mantle 1 and be of the Autumn court.
+
 &contract.last_harvest [v(d.dd)]=1
 
 &tags.contract.last_harvest [v(d.dt)]=changeling.autumn.common.fae-touched
+
+&prerequisite.contract.last_harvest [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Autumn))
+
+&prereq-text.contract.last_harvest [v(d.dd)]=Must have Mantle 1 and be of the Autumn court.
 
 &contract.tale_of_the_baba_yaga [v(d.dd)]=1
 
 &tags.contract.tale_of_the_baba_yaga [v(d.dt)]=changeling.autumn.common.fae-touched
 
+&prerequisite.contract.tale_of_the_baba_yaga [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Autumn))
+
+&prereq-text.contract.tale_of_the_baba_yaga [v(d.dd)]=Must have Mantle 1 and be of the Autumn court.
+
 &contract.twilight's_harbinger [v(d.dd)]=1
 
 &tags.contract.twilight's_harbinger [v(d.dt)]=changeling.autumn.common.fae-touched
+
+&prerequisite.contract.twilight's_harbinger [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Autumn))
+
+&prereq-text.contract.twilight's_harbinger [v(d.dd)]=Must have Mantle 1 and be of the Autumn court.
 
 &contract.witches'_intuition [v(d.dd)]=1
 
 &tags.contract.witches'_intuition [v(d.dt)]=changeling.autumn.common.fae-touched
 
+&prerequisite.contract.witches'_intuition [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Autumn))
+
+&prereq-text.contract.witches'_intuition [v(d.dd)]=Must have Mantle 1 and be of the Autumn court.
+
 &contract.famine's_bulwark [v(d.dd)]=1
 
 &tags.contract.famine's_bulwark [v(d.dt)]=changeling.autumn.royal.fae-touched
+
+&prerequisite.contract.famine's_bulwark [v(d.dd)]=cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.famine's_bulwark [v(d.dd)]=Autumn Mantle 3+
 
 &contract.mien_of_the_baba_yaga [v(d.dd)]=1
 
 &tags.contract.mien_of_the_baba_yaga [v(d.dt)]=changeling.autumn.royal.fae-touched
 
+&prerequisite.contract.mien_of_the_baba_yaga [v(d.dd)]=cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.mien_of_the_baba_yaga [v(d.dd)]=Autumn Mantle 3+
+
 &contract.riding_the_falling_leaves [v(d.dd)]=1
 
 &tags.contract.riding_the_falling_leaves [v(d.dt)]=changeling.autumn.royal.fae-touched
+
+&prerequisite.contract.riding_the_falling_leaves [v(d.dd)]=cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.riding_the_falling_leaves [v(d.dd)]=Autumn Mantle 3+
 
 &contract.sorcerer's_rebuke [v(d.dd)]=1
 
 &tags.contract.sorcerer's_rebuke [v(d.dt)]=changeling.autumn.royal.fae-touched
 
+&prerequisite.contract.sorcerer's_rebuke [v(d.dd)]=cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.sorcerer's_rebuke [v(d.dd)]=Autumn Mantle 3+
+
 &contract.tasting_the_harvest [v(d.dd)]=1
 
 &tags.contract.tasting_the_harvest [v(d.dt)]=changeling.autumn.royal.fae-touched
+
+&prerequisite.contract.tasting_the_harvest [v(d.dd)]=cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.tasting_the_harvest [v(d.dd)]=Autumn Mantle 3+
 
 &contract.the_dragon_knows [v(d.dd)]=1
 
 &tags.contract.the_dragon_knows [v(d.dt)]=changeling.winter.common.fae-touched
 
+&prerequisite.contract.the_dragon_knows [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Winter))
+
+&prereq-text.contract.the_dragon_knows [v(d.dd)]=Must have Mantle 1 and be of the Winter court.
+
 &contract.heart_of_ice [v(d.dd)]=1
 
 &tags.contract.heart_of_ice [v(d.dt)]=changeling.winter.common.fae-touched
+
+&prerequisite.contract.heart_of_ice [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Winter))
+
+&prereq-text.contract.heart_of_ice [v(d.dd)]=Must have Mantle 1 and be of the Winter court.
 
 &contract.ice_queen's_call [v(d.dd)]=1
 
 &tags.contract.ice_queen's_call [v(d.dt)]=changeling.winter.common.fae-touched
 
+&prerequisite.contract.ice_queen's_call [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Winter))
+
+&prereq-text.contract.ice_queen's_call [v(d.dd)]=Must have Mantle 1 and be of the Winter court.
+
 &contract.slipknot_dreams [v(d.dd)]=1
 
 &tags.contract.slipknot_dreams [v(d.dt)]=changeling.winter.common.fae-touched
+
+&prerequisite.contract.slipknot_dreams [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Winter))
+
+&prereq-text.contract.slipknot_dreams [v(d.dd)]=Must have Mantle 1 and be of the Winter court.
 
 &contract.touch_of_winter [v(d.dd)]=1
 
 &tags.contract.touch_of_winter [v(d.dt)]=changeling.winter.common.fae-touched
 
+&prerequisite.contract.touch_of_winter [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Winter))
+
+&prereq-text.contract.touch_of_winter [v(d.dd)]=Must have Mantle 1 and be of the Winter court.
+
 &contract.ermine's_winter_coat [v(d.dd)]=1
 
 &tags.contract.ermine's_winter_coat [v(d.dt)]=changeling.winter.royal.fae-touched
+
+&prerequisite.contract.ermine's_winter_coat [v(d.dd)]=cand(u(.is, %0, bio.court, Winter), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.ermine's_winter_coat [v(d.dd)]=Winter Mantle 3+
 
 &contract.fallow_fields [v(d.dd)]=1
 
 &tags.contract.fallow_fields [v(d.dt)]=changeling.winter.royal.fae-touched
 
+&prerequisite.contract.fallow_fields [v(d.dd)]=cand(u(.is, %0, bio.court, Winter), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.fallow_fields [v(d.dd)]=Winter Mantle 3+
+
 &contract.field_of_regret [v(d.dd)]=1
 
 &tags.contract.field_of_regret [v(d.dt)]=changeling.winter.royal.fae-touched
+
+&prerequisite.contract.field_of_regret [v(d.dd)]=cand(u(.is, %0, bio.court, Winter), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.field_of_regret [v(d.dd)]=Winter Mantle 3+
 
 &contract.mantle_of_frost [v(d.dd)]=1
 
 &tags.contract.mantle_of_frost [v(d.dt)]=changeling.winter.royal.fae-touched
 
+&prerequisite.contract.mantle_of_frost [v(d.dd)]=cand(u(.is, %0, bio.court, Winter), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.mantle_of_frost [v(d.dd)]=Winter Mantle 3+
+
 &contract.winter's_curse [v(d.dd)]=1
 
 &tags.contract.winter's_curse [v(d.dt)]=changeling.winter.royal.fae-touched
+
+&prerequisite.contract.winter's_curse [v(d.dd)]=cand(u(.is, %0, bio.court, Winter), u(.at_least, %0, merit.mantle, 3))
+
+&prereq-text.contract.winter's_curse [v(d.dd)]=Winter Mantle 3+
 
 &contract.blessing_of_forgetfulness [v(d.dd)]=1
 
