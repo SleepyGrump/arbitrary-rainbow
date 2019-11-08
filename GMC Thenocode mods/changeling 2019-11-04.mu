@@ -7,6 +7,8 @@ Currently working on:
 
 - Fae-touched wyrd is going to be weird.
 
+- According to the book: you must have dots of Mantle to take Royal Court contracts. I don't currently check for that in CG/check. Please be aware that it could be an issue.
+
 ================================================================================
 
 This is a COMPILED version of the following files, code credit to Thenomain:
