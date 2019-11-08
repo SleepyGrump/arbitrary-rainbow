@@ -4,6 +4,8 @@ https://raw.githubusercontent.com/thenomain/GMCCG/master/4%20-%20XP%20and%20Cost
 
 Compiled 2019-11-07
 
+Added escaping to the spend insert. It allows stat names like Helios' Judgement and reasons like 'She's crazy'.
+
 */
 
 think Entering 7 lines.
@@ -18,7 +20,7 @@ think Entering 7 lines.
 
 &sql.select.entry_num [v(d.xpas)]=SELECT enactor_objid, enactor_name, target_objid, target_name, log_time, xp_amt, action, reason, trait_category, trait_name, trait_value, xp_type, trait_value_old FROM xp_log WHERE entry_num=%0
 
-&sql.insert.spend [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, trait_category, trait_name, trait_value, trait_value_old, action, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', '[u(f.sql.escape, name(%1))]', '%2', %3, '[lcstr(first(%4, .))]', '[lcstr(rest(%4, .))]', '%6', '%7', [if(eq(%3, 0), 'freebie', 'spend')], '%5')
+&sql.insert.spend [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, trait_category, trait_name, trait_value, trait_value_old, action, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', '[u(f.sql.escape, name(%1))]', '%2', %3, '[u(f.sql.escape, lcstr(first(%4, .)))]', '[u(f.sql.escape, lcstr(rest(%4, .)))]', '[u(f.sql.escape, %6)]', '[u(f.sql.escape, %7)]', [if(eq(%3, 0), 'freebie', 'spend')], '[u(f.sql.escape, %5)]')
 
 &sql.select.last-touched [v(d.xpas)]=SELECT MAX(log_time) FROM xp_log WHERE target_objid ='[u(.objid, %0)]' AND trait_category ='[lcstr(first(%1, .))]' AND trait_name LIKE '[if(strlen(rest(%1, .)), lcstr(rest(%1, .)), %%)]';
 

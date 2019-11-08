@@ -4,6 +4,8 @@ https://raw.githubusercontent.com/thenomain/GMCCG/master/4%20-%20XP%20and%20Cost
 
 Compiled 2019-11-07
 
+Escaped SQL Insert "reason" field because it allows apostrophes.
+
 SQL CODE:
 
 
@@ -95,7 +97,7 @@ think Entering 81 lines.
 
 &f.transaction.end [v(d.xpas)]=strcat(sql(COMMIT), sql(SET autocommit =1))
 
-&sql.xp_log.add [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, action, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', '[u(f.sql.escape, name(%1))]', '%2', %3, '%5', '%4')
+&sql.xp_log.add [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, action, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', '[u(f.sql.escape, name(%1))]', '%2', %3, '%5', '[u(f.sql.escape, %4)]')
 
 &sql.xp_log.auto-add [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', 'Auto-Experience System', '%2', %3, 'Daily Auto')
 
