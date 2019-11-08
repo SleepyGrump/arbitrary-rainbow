@@ -49,6 +49,8 @@ There are some changes below from the base code:
 
 - Added the prereq for Fair Harvest
 
+- Added missing merits as I found them
+
 - Turns out Goblin Debt is available to EVERYONE so I added it to the default Advantages block and set up the regain/spend stuff to not be locked to Changeling/Fae-touched.
 
 - Goblin Debt only goes to 9 according to the book: A changeling can never rack up more than nine Debt points - subsequent points wash right off her. Instead, when she would incur a 10th point, she immediately gains the Hedge Denizen Condition (p. 340).
@@ -603,6 +605,13 @@ think Merit time!
 @edit v(d.dt)/tags.merit.status_()=$, .motley
 
 @fo me=&notes.merit.status_() [v(d.dt)]=[trim(strcat(get(v(d.dt)/notes.merit.status_()), |Anyone sharing a Changeling Motley with points in this merit gains benefits from all points totaled%, max 5.), b, |)]
+
+think Adding missing merits as I find them...
+
+&merit.lethal_mein [v(d.dd)]=2
+
+&tags.merit.lethal_mein [v(d.dt)]=changeling
+
 
 think Contracts going in now...
 
