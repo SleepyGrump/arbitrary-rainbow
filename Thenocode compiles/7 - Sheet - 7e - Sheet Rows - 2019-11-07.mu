@@ -6,7 +6,7 @@ Compiled 2019-11-07
 
 */
 
-think Entering 28 lines.
+think Entering 24 lines.
 
 @create Sheet: Rows
 
@@ -45,14 +45,6 @@ think Entering 28 lines.
 &display.value.pool [v(d.nsc)]=strcat(repeat(o, ladd(%0, .)), ansi(xh, repeat(., mul(-1, ladd(rest(%0, .), .)))), ansi(xh, repeat(#, mul(-1, ladd(rest(%1, .), .)))))
 
 &block.traits [v(d.sheet)]=strcat(setq(w, 38), setq(t, 10), setq(x, ulocal(traits.willpower.default, %0)), setq(c, rest(setr(y, first(%qx, |)), :)), setq(p, last(%qx, :)), setq(z, iter(udefault(traits.morality.[get(%0/_bio.template)], u(traits.morality.default, %0), %0), udefault(display.integrity.[get(%0/_bio.template)], u(display.trait-and-value, %i0, %qt, %qw, string), %i0, %qt, %qw), |, |)), divider(Traits), %r, vcolumns(%qw:[u(display.trait-and-value, %qy, %qt, %qw, pool, %b, %qp)], %qw:%qz, |, %b))
-
-&_ADVANTAGE.WILLPOWER me=derived
-
-&_ADVANTAGE.WILLPOWER_MAXIMUM me=derived
-
-&_ADVANTAGE.WILLPOWER me=derived.-2
-
-&_ADVANTAGE.WILLPOWER_MAXIMUM me=derived.-1
 
 &block.merits [v(d.sheet)]=strcat(setq(w, 79), setq(t, 70), setq(d, u(merits.default, %0)), setq(b, iter(%qd, strcat(setq(c, ulocal(v(d.sfp)/f.get-class, merit.[edit(first(%i0, :), %b, _)])), u(display.trait-and-value, %i0, %qt, %qw, %qc, .)), |, |)), divider(Merits), %r, iter(%qb, %i0, |, %r))
 
