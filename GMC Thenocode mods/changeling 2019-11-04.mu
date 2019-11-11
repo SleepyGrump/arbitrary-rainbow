@@ -23,11 +23,9 @@ This file was created on 2019-11-04. Future versions will be updated to the newe
 
 There are some changes below from the base code:
 
-- Added CG checks. (These are currently testing-in-progress. Bugs are expected.)
+- Added CG checks. (These are currently testing-in-progress. Bugs are expected.) This includes the check for the free dot of mantle one gets for joining a court.
 
 - Changed every reference re: ghouls and vampires, to fae-touched and changelings.
-
-- Threw in some very basic Contract checks, not sure I got those right.
 
 - Did the XP thing, including the super-favored type of contracts. Need to test and see if this is accurate. Also need to test XP cost for out-of-seeming stuff.
 
@@ -50,6 +48,10 @@ There are some changes below from the base code:
 - Added the prereq for Fair Harvest
 
 - Added missing merits as I found them
+
+- Changed "accute senses" to "acute senses" and made room for it to be shared by vamps and changelings
+
+- Changed Token to a () merit, made it 1-5, and took away the Motley aspect since it is not shared.
 
 - According to the book: you must have a dot of Mantle to take Court contracts. You must have 3 dots of mantle to take Royal court contracts. Added prereqs for all Court contracts.
 
@@ -238,13 +240,13 @@ think Setting up advantages.
 
 think Merit time!
 
-&merit.accute_senses [v(d.dd)]=1
+&merit.acute_senses [v(d.dd)]=1
 
-&prerequisite.merit.accute_senses [v(d.dd)]=u(.at_least_one, %0, attribute.wits:3 attribute.composure:3)
+&prerequisite.merit.acute_senses [v(d.dd)]=if(u(.is, %0, bio.template, changeling), u(.at_least_one, %0, attribute.wits:3 attribute.composure:3))
 
-&prereq-text.merit.accute_senses [v(d.dd)]=Wits 3+ or Composure 3+
+&prereq-text.merit.acute_senses [v(d.dd)]=If Changeling, Wits 3+ or Composure 3+
 
-&tags.merit.accute_senses [v(d.dt)]=changeling
+&tags.merit.acute_senses [v(d.dt)]=changeling.vampire
 
 &merit.arcadian_metabolism [v(d.dd)]=2
 
@@ -466,11 +468,9 @@ think Merit time!
 
 &notes.merit.stable_trod [v(d.dt)]=Anyone sharing a Changeling Motley with points in this merit gains benefits from all points totaled%, max 5.
 
-&merit.token [v(d.dd)]=#
+&merit.token_() [v(d.dd)]=1.2.3.4.5|*
 
-&tags.merit.token [v(d.dt)]=changeling.motley
-
-&notes.merit.token [v(d.dt)]=Anyone sharing a Changeling Motley with points in this merit gains benefits from all points totaled%, max 5.
+&tags.merit.token_() [v(d.dt)]=changeling
 
 &merit.touchstone [v(d.dd)]=1.2.3.4.5
 
@@ -610,9 +610,9 @@ think Merit time!
 
 think Adding missing merits as I find them...
 
-&merit.lethal_mein [v(d.dd)]=2
+&merit.lethal_mien [v(d.dd)]=2
 
-&tags.merit.lethal_mein [v(d.dt)]=changeling
+&tags.merit.lethal_mien [v(d.dt)]=changeling
 
 
 think Contracts going in now...
@@ -1269,7 +1269,9 @@ think Chargen checks being created.
 
 &d.changeling.blessing_attributes.wizened [v(d.cg)]=wits dexterity manipulation
 
-&check.chargen.changeling [v(d.cg)]=u(check.contracts, %0, changeling)
+&f.allocated.merits.changeling [v(d.cg)]=get(%0/_merit.mantle)
+
+&check.chargen.changeling [v(d.cg)]=strcat(setq(0, u(f.allocated.merits.changeling, %0)), setq(1, get(%0/_bio.court)), if(and(t(%q1), not(match(%q1, Courtless))), strcat(%b, %b, ansi( h, Free Mantle ), :, %b, u( display.check.ok-no, gte(%q0, 1)), %r)), u(check.contracts, %0, changeling))
 
 &check.chargen.fae-touched [v(d.cg)]=u(check.contracts, %0, fae-touched)
 
@@ -1300,6 +1302,8 @@ think Chargen checks being created.
 think XP stuff.
 
 &xp.advantage.glamour [v(d.xpcd)]=u(cost.standard, 5, %1, %2)
+
+&xp.advantage.wyrd [v(d.xpcd)]=u(cost.standard, 5, %1, %2)
 
 &xp.contract [v(d.xpcd)]=strcat(setq(c, u(.value, %0, bio.chosen_regalia)), setq(s, u(.value, %0, bio.seeming_regalia)),
 u(cost.standard, case(1, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qc.common), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qs.common), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, goblin), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, common), 3, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qc.royal), 3, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qs.royal), 3, 4), %1, %2))
