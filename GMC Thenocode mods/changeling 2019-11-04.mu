@@ -1305,8 +1305,7 @@ think XP stuff.
 
 &xp.advantage.wyrd [v(d.xpcd)]=u(cost.standard, 5, %1, %2)
 
-&xp.contract [v(d.xpcd)]=strcat(setq(c, u(.value, %0, bio.chosen_regalia)), setq(s, u(.value, %0, bio.seeming_regalia)),
-u(cost.standard, case(1, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qc.common), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qs.common), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, goblin), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, common), 3, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qc.royal), 3, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qs.royal), 3, 4), %1, %2))
+&xp.contract [v(d.xpcd)]=strcat(setq(c, u(.value, %0, bio.chosen_regalia)), setq(s, u(.value, %0, bio.seeming_regalia)), u(cost.standard, case(1, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qc.common), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qs.common), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, goblin), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, common), 3, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qc.royal), 3, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qs.royal), 3, 4), %1, %2))
 
 &xp.contract.?.? [v( d.xpcd )]=1
 
