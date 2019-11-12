@@ -9,12 +9,14 @@
 Commands:
 
 	+channel - list all channels
+	+channel/create <title>
 	+channel/create <title>=<details>
 	+channel/destroy <title> - nukes a channel (must be the owner or staff)
 
 Only the owner (or staff) can perform the following commands:
 
 	+channel/header <title>=<value> - set a channel's header (the "<format>" part)
+	+channel/desc <title>=<value> - set a channel's description
 
 	+channel/public <title> - set a channel public
 	+channel/private <title> - set a channel private
@@ -56,7 +58,7 @@ Only the owner (or staff) can perform the following commands:
 
 @force me=&vD CHF=[num(CDB)]
 
-@desc CHC=%RCommands:%R%R%T+channel - list all channels%R%T+channel/create <title>=<details>%R%T+channel/destroy <title> - nukes a channel (must be the owner or staff)%R%ROnly the owner (or staff) can perform the following commands:%R%R%T+channel/header <title>=<value> - set a channel's header (the "<format>" part)%R%R%T+channel/public <title> - set a channel public%R%T+channel/private <title> - set a channel private%R%R%T+channel/spoof <title> - set a channel spoofable (anonymous)%R%T+channel/nospoof <title> - set a channel non-spoofable (not anonymous)%R%R%T+channel/loud <title> - set a channel noisy (emits connects/disconnects)%R%T+channel/quiet <title> - set a channel quiet (no connects/disconnects)%R
+@desc CHC=%RCommands:%R%R%T+channel - list all channels%R%T+channel/create <title>%R%T+channel/create <title>=<details>%R%T+channel/destroy <title> - nukes a channel (must be the owner or staff)%R%ROnly the owner (or staff) can perform the following commands:%R%R%T+channel/header <title>=<value> - set a channel's header (the "<format>" part)%R%T+channel/desc <title>=<value> - set a channel's description%R%R%T+channel/public <title> - set a channel public%R%T+channel/private <title> - set a channel private%R%R%T+channel/spoof <title> - set a channel spoofable (anonymous)%R%T+channel/nospoof <title> - set a channel non-spoofable (not anonymous)%R%R%T+channel/loud <title> - set a channel noisy (emits connects/disconnects)%R%T+channel/quiet <title> - set a channel quiet (no connects/disconnects)%R
 
 @@ Add your channels here, separated by |'s.
 @@ This should be whatever shows up in @clist.
@@ -142,6 +144,8 @@ Only the owner (or staff) can perform the following commands:
 
 &switch.2.header CHC=@trigger me/tr.channel-header=%0, before(rest(%1), =), rest(%1, =);
 
+&switch.2.desc CHC=@trigger me/tr.channel-desc=%0, before(rest(%1), =), rest(%1, =);
+
 &switch.3.spoof CHC=@trigger me/tr.channel-spoof=%0, rest(%1);
 
 &switch.3.nospoof CHC=@trigger me/tr.channel-nospoof=%0, rest(%1);
@@ -164,13 +168,19 @@ Only the owner (or staff) can perform the following commands:
 @@ Input:
 @@ %0 - %#
 @@ %1 - channel title
-&tr.channel-create CHC=@switch setr(E, trim(squish(strcat(if(not(ulocal(f.can-create-channels, %0)), You are not allowed to create channels. This could be because players are not permitted to create channels or because you have already created your max quota of channels.), %b, if(not(t(setr(T, ulocal(f.clean-channel-name, %1)))), You need to include a title for the new channel.), %b, if(t(ulocal(f.is-banned-name, %qT)), You can't use the name '%qT' because it is in use or not allowed.)))))=, { @switch setr(E, if(t(setr(N, create(%qT Channel Object, 10))),, Could not create '%qT Channel Object'. %qN))=, { @set %vD=channel.%qN:[strcat(%qT was created by, %b, moniker(%0) %(%0%) on, %b, time().)]; @set %qN=channel-name:%qT; @set %qN=creator-dbref:%0; @ccreate %qT; @cset/object %qT=%qN; @cset/log %qT=200; @cset/timestamp_logs %qT=1; @cset/private %qT; @set %0=_channels-created:[setunion(%qN, xget(%0, _channels-created))]; @pemit %0=ulocal(layout.msg, Channel '%qT' created. It was automatically set 'Private'. +channel/public %qT if you want to change it. It was automatically set 'Nospoof'. To set your channel header%, type +channel/header %qT=<%1>. Color codes are allowed.); }, { @pemit %0=ulocal(layout.error, %qE); }; }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.channel-create CHC=@switch setr(E, trim(squish(strcat(if(not(ulocal(f.can-create-channels, %0)), You are not allowed to create channels. This could be because players are not permitted to create channels or because you have already created your max quota of channels.), %b, if(not(t(setr(T, ulocal(f.clean-channel-name, first(%1, =))))), You need to include a title for the new channel.), %b, if(t(ulocal(f.is-banned-name, %qT)), You can't use the name '%qT' because it is in use or not allowed.), setq(D, rest(%1, =))))))=, { @switch setr(E, if(t(setr(N, create(%qT Channel Object, 10))),, Could not create '%qT Channel Object'. %qN))=, { @set %vD=channel.%qN:[strcat(%qT was created by, %b, moniker(%0) %(%0%) on, %b, time()., if(t(%qD), %bIts description was set to: '%qD'))]; @set %qN=channel-name:%qT; @set %qN=creator-dbref:%0; @ccreate %qT; @cset/object %qT=%qN; @desc %qN=[if(t(%qD), %qD, The '%qT' channel.)]; @cset/log %qT=200; @cset/timestamp_logs %qT=1; @cset/private %qT; @set %0=_channels-created:[setunion(%qN, xget(%0, _channels-created))]; @pemit %0=ulocal(layout.msg, Channel '%qT' created. It was automatically set 'Private'. +channel/public %qT if you want to change it. It was automatically set 'Nospoof'. To set your channel header%, type +channel/header %qT=<%1>. Color codes are allowed.); }, { @pemit %0=ulocal(layout.error, %qE); }; }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
 @@ %1 - channel title
 @@ %2 - header
 &tr.channel-header CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.), %b, if(not(t(%2)), You need to include a header value for the channel.)))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Header changed to '%2' on, %b, time(), %b, by, %b, name(%0) %(%0%).)]; @cset/header %qT=%2; @pemit %0=ulocal(layout.msg, Changed the header of '%qT' to '%2'.); }, { @pemit %0=ulocal(layout.error, %qE); }
+
+@@ Input:
+@@ %0 - %#
+@@ %1 - channel title
+@@ %2 - description
+&tr.channel-desc CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.), setq(D, if(not(t(%2)), The '%qT' channel., %2))))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Desc changed to '%qD' on, %b, time(), %b, by, %b, name(%0) %(%0%).)]; @desc %qN=%qD; @pemit %0=ulocal(layout.msg, Changed the desc of '%qT' to '%qD'.); }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
