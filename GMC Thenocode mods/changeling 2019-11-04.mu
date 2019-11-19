@@ -1269,7 +1269,7 @@ think Chargen checks being created.
 
 &d.changeling.blessing_attributes.wizened [v(d.cg)]=wits dexterity manipulation
 
-&f.allocated.merits.changeling [v(d.cg)]=get(%0/_merit.mantle)
+&f.allocated.merits.changeling [v(d.cg)]=t(get(%0/_merit.mantle))
 
 &check.chargen.changeling [v(d.cg)]=strcat(setq(0, u(f.allocated.merits.changeling, %0)), setq(1, get(%0/_bio.court)), if(and(t(%q1), not(match(%q1, Courtless))), strcat(%b, %b, ansi( h, Free Mantle ), :, %b, u( display.check.ok-no, gte(%q0, 1)), %r)), u(check.contracts, %0, changeling))
 
