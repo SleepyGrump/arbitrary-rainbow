@@ -474,7 +474,7 @@ think Entering 362 lines.
 
 &xp.devotion.whisper_of_war [v(d.xpcd)]=3
 
-&d.bloodline.nosferatu [v(d.dd)]=Adroanzi.Azerkatil.Cimitiere
+&d.bloodline.nosferatu [v(d.dd)]=Adroanzi.Azerkatil.Cimitiere.Galloi
 
 @fo me=&BIO.BLOODLINE [v(d.dd)]=[trim(setunion(get(v(d.dd)/bio.bloodline), get(v(d.dd)/d.bloodline.nosferatu), .), b, .)]
 
@@ -603,6 +603,48 @@ think Entering 362 lines.
 &tags.devotion.the_loa's_presence [v(d.dt)]=vampire.cimitiere
 
 &xp.devotion.the_loa's_presence [v(d.xpcd)]=3
+
+@edit v(d.dt)/tags.discipline.majesty=$, .Galloi
+
+&devotion.transgression_of_attis [v(d.dd)]=Presence + Occult + Blood Potency
+
+&prerequisite.devotion.transgression_of_attis [v(d.dd)]=cand(u(.is, %0, bio.bloodline, Galloi), u(.at_least_all, %0, discipline.majesty:2 discipline.nightmare:2 discipline.obfuscate:2))
+
+&prereq-text.transgression_of_attis [v(d.dd)]=Galloi Bloodline Devotion;Majesty 2, Nightmare 2, Obfuscate 2
+
+&tags.devotion.transgression_of_attis [v(d.dt)]=vampire.Galloi
+
+&xp.devotion.transgression_of_attis [v(d.xpcd)]=3
+
+&devotion.enliven_the_flesh [v(d.dd)]=Presence + Occult + Majesty
+
+&prerequisite.devotion.enliven_the_flesh [v(d.dd)]=cand(u(.is, %0, bio.bloodline, Galloi), u(.at_least_all, %0, discipline.obfuscate:2 discipline.majesty:2 discipline.vigor:1))
+
+&prereq-text.enliven_the_flesh [v(d.dd)]=Galloi Bloodline Devotion; Obfuscate 2, Majesty 2, Vigor 1
+
+&tags.devotion.enliven_the_flesh [v(d.dt)]=vampire.Galloi
+
+&xp.devotion.enliven_the_flesh [v(d.xpcd)]=2
+
+&devotion.even_the_servant_shines [v(d.dd)]=-
+
+&prerequisite.devotion.even_the_servant_shines [v(d.dd)]=cand(u(.is, %0, bio.bloodline, Galloi), u(.at_least_all, %0, discipline.obfucate:2 discipline.majesty:2 discipline.vigor:1))
+
+&prereq-text.even_the_servant_shines [v(d.dd)]=Galloi Bloodline Devotion; Obfuscate 2, Majesty 2, Vigor 1
+
+&tags.devotion.even_the_servant_shines [v(d.dt)]=vampire.Galloi
+
+&xp.devotion.even_the_servant_shines [v(d.xpcd)]=2
+
+&devotion.fooling_the_eye [v(d.dd)]=Manipulation + Stealth + Obfuscate vs subject's Composure + Blood Potency (if unwilling)
+
+&prerequisite.devotion.fooling_the_eye [v(d.dd)]=cand(u(.is, %0, bio.bloodline, Galloi), u(.at_least_all, %0, discipline.obfuscate:3))
+
+&prereq-text.fooling_the_eye [v(d.dd)]=Galloi Bloodline Devotion; Obfuscate 3
+
+&tags.devotion.fooling_the_eye [v(d.dt)]=vampire.Galloi
+
+&xp.devotion.fooling_the_eye [v(d.xpcd)]=1
 
 &d.bloodline.ventrue [v(d.dd)]=Apollinaire.Icarians.Rotgrafen
 
