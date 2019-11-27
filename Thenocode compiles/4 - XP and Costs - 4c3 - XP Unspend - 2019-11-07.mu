@@ -26,7 +26,7 @@ think Entering 12 lines.
 
 &display.xp/unspend.list [v(d.xpas)]=ldelete(%0, match(%0, rest(%1, !), .), .)
 
-&sql.insert.unspend.log [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, trait_category, trait_name, trait_value, trait_value_old, action, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', '[u(f.sql.escape, name(%1))]', '%2', %3, '[lcstr(first(%4, .))]', '[lcstr(rest(%4, .))]', '%6', '%7', 'unspend', '%5')
+&sql.insert.unspend.log [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, trait_category, trait_name, trait_value, trait_value_old, action, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', '[u(f.sql.escape, name(%1))]', '[u(f.sql.escape, %2)]', %3, '[lcstr(first(%4, .))]', '[lcstr(rest(%4, .))]', '%6', '%7', 'unspend', '%5')
 
 &sql.insert.unspend.reference [v(d.xpas)]=INSERT INTO xp_log_unspend (entry_num_spend, entry_num_unspend) VALUES (%0, LAST_INSERT_ID())
 

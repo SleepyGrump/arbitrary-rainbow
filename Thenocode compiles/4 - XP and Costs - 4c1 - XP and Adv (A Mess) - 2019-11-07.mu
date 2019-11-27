@@ -16,12 +16,12 @@ think Entering 7 lines.
 
 &sql.insert.award [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, action, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', '[u(f.sql.escape, name(%1))]', '%2', %3, 'gain', '%4')
 
-&sql.select.type-character [v(d.xpas)]=SELECT entry_num, enactor_objid, enactor_name, log_time, xp_amt, action, reason, trait_name, trait_value FROM xp_log WHERE target_objid='[u(.objid, %0)]' AND xp_type='[lcstr(%1)]' [case(%2, all, null(show all), null(null), AND action!='auto', AND action='%2')] [if(strlen(%3), AND trait_name LIKE '[edit(%3, %b, _)]%%%%')]
+&sql.select.type-character [v(d.xpas)]=SELECT entry_num, enactor_objid, enactor_name, log_time, xp_amt, action, reason, trait_name, trait_value FROM xp_log WHERE target_objid='[u(.objid, %0)]' AND xp_type='[lcstr(%1)]' [case(%2, all, null(show all), null(null), AND action!='auto', AND action='%2')] [if(strlen(%3), AND trait_name LIKE '[u(f.sql.escape, edit(%3, %b, _))]%%%%')]
 
 &sql.select.entry_num [v(d.xpas)]=SELECT enactor_objid, enactor_name, target_objid, target_name, log_time, xp_amt, action, reason, trait_category, trait_name, trait_value, xp_type, trait_value_old FROM xp_log WHERE entry_num=%0
 
-&sql.insert.spend [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, trait_category, trait_name, trait_value, trait_value_old, action, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', '[u(f.sql.escape, name(%1))]', '%2', %3, '[u(f.sql.escape, lcstr(first(%4, .)))]', '[u(f.sql.escape, lcstr(rest(%4, .)))]', '[u(f.sql.escape, %6)]', '[u(f.sql.escape, %7)]', [if(eq(%3, 0), 'freebie', 'spend')], '[u(f.sql.escape, %5)]')
+&sql.insert.spend [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, trait_category, trait_name, trait_value, trait_value_old, action, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', '[u(f.sql.escape, name(%1))]', '[u(f.sql.escape, %2)]', %3, '[u(f.sql.escape, lcstr(first(%4, .)))]', '[u(f.sql.escape, lcstr(rest(%4, .)))]', '[u(f.sql.escape, %6)]', '[u(f.sql.escape, %7)]', [if(eq(%3, 0), 'freebie', 'spend')], '[u(f.sql.escape, %5)]')
 
-&sql.select.last-touched [v(d.xpas)]=SELECT MAX(log_time) FROM xp_log WHERE target_objid ='[u(.objid, %0)]' AND trait_category ='[lcstr(first(%1, .))]' AND trait_name LIKE '[if(strlen(rest(%1, .)), lcstr(rest(%1, .)), %%)]';
+&sql.select.last-touched [v(d.xpas)]=SELECT MAX(log_time) FROM xp_log WHERE target_objid ='[u(.objid, %0)]' AND trait_category ='[u(f.sql.escape, lcstr(first(%1, .)))]' AND trait_name LIKE '[u(f.sql.escape, if(strlen(rest(%1, .)), lcstr(rest(%1, .)), %%))]';
 
 think Entry complete.

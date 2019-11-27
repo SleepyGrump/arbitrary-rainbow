@@ -6,6 +6,8 @@ Compiled 2019-11-07
 
 Escaped SQL Insert "reason" field because it allows apostrophes.
 
+Escaped some other stuff, and removed an escape from the "freebie" command because it was already being escaped in the SQL command.
+
 SQL CODE:
 
 
@@ -97,11 +99,11 @@ think Entering 81 lines.
 
 &f.transaction.end [v(d.xpas)]=strcat(sql(COMMIT), sql(SET autocommit =1))
 
-&sql.xp_log.add [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, action, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', '[u(f.sql.escape, name(%1))]', '%2', %3, '%5', '[u(f.sql.escape, %4)]')
+&sql.xp_log.add [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, action, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', '[u(f.sql.escape, name(%1))]', '[u(f.sql.escape, %2)]', %3, '[u(f.sql.escape, %5)]', '[u(f.sql.escape, %4)]')
 
 &sql.xp_log.auto-add [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', 'Auto-Experience System', '%2', %3, 'Daily Auto')
 
-&sql.xp_log.type-character [v(d.xpas)]=SELECT entry_num, enactor_objid, enactor_name, log_time, xp_amt, reason FROM xp_log WHERE target_objid='[u(.objid, %0)]' AND xp_type='[lcstr(%1)]' [if(strlen(%2), AND trait_name LIKE '[edit(%2, %b, _)]%%%%')]
+&sql.xp_log.type-character [v(d.xpas)]=SELECT entry_num, enactor_objid, enactor_name, log_time, xp_amt, reason FROM xp_log WHERE target_objid='[u(.objid, %0)]' AND xp_type='[u(f.sql.escape, lcstr(%1))]' [if(strlen(%2), AND trait_name LIKE '[u(f.sql.escape, edit(%2, %b, _))]%%%%')]
 
 &c.xp.general [v(d.xpas)]=$^\+?xp$:@assert not(isapproved(%#, guest))={@pemit %#=u(.msg, xp, Players only)}; @pemit %#=strcat(wheader(XP & Beats), %r, iter(v(d.xp_types), u(display.xp-and-beats.one-line, %#, %i0),, %r), %r, wdivider(), %r, if(isapproved(%#), u(display.approval-deets, %#)), %r, wfooter())
 
@@ -163,7 +165,7 @@ think Entering 81 lines.
 
 &d.regex.freebie [v(d.xpas)]=(.+)/(.+?)(=(.+))? for (.+)
 
-&f.xp/freebie [v(d.xpas)]=strcat(setq(0, regmatchi(%0, v(d.regex.freebie), -1 p n -1 v r)), setq(p, pmatch(%qp)), setq(w, ulocal(v(d.sfp)/f.find-sheet, %qp)), setq(s, ulocal(v(d.sfp)/f.statpath.workhorse, %qn, %qp)), setq(t, ulocal(.value, %qw, %qs)), if(not(%qv), setq(v, ulocal(f.stat.next_rank, %qw, _%qs))), case(1, not(isstaff(%#)), u(.msg, xp/freebie, Staff only), not(strlen(%qr)), u(.msg, xp/freebie, Must provide a reason this is free), t(setr(e, ulocal(validate.player, %qp, %qw, 1))), u(.msg, xp/freebie, %qe), t(setr(e, ulocal(validate.stat, %qw, %qs, %qt, %qv))), u(.msg, xp/freebie, %qe), t(setr(e, ulocal(validate.value, %qs, %qt, %qv))), u(.msg, xp/freebie, %qe), t(setr(e, ulocal(validate.restricted, %qs, %qv))), u(.msg, xp/freebie, %qe), strmatch(v(d.transaction.begin), *#-*), u(.msg, xp/freebie, Transaction begin failed%; freebie not processed), strmatch(setr(e, sql(u(sql.insert.spend, %qp, %#, normal, 0, u(f.sql.escape, %qs), %qr, %qv, %qt))), #-*), u(.msg, xp/freebie, Unable to connect to database%; freebie not processed[null(v(f.transaction.end))]), strmatch(setr(e, ulocal(v(d.sfp)/f.setstat.workhorse, %qw, %qs, %qv)), #-*), u(.msg, xp/freebie, Error from Setstat: %qe [null(v(f.transaction.end))]), strcat(setq(n, statname(%qp/%qn)), u(.msg, xp/freebie, strcat(if(strmatch(%qp, %#), Your, [name(%qp)]'s), %b, %qn, %b, has been set to '%qv' for Free because '%qr')), null(v(f.transaction.end)))))
+&f.xp/freebie [v(d.xpas)]=strcat(setq(0, regmatchi(%0, v(d.regex.freebie), -1 p n -1 v r)), setq(p, pmatch(%qp)), setq(w, ulocal(v(d.sfp)/f.find-sheet, %qp)), setq(s, ulocal(v(d.sfp)/f.statpath.workhorse, %qn, %qp)), setq(t, ulocal(.value, %qw, %qs)), if(not(%qv), setq(v, ulocal(f.stat.next_rank, %qw, _%qs))), case(1, not(isstaff(%#)), u(.msg, xp/freebie, Staff only), not(strlen(%qr)), u(.msg, xp/freebie, Must provide a reason this is free), t(setr(e, ulocal(validate.player, %qp, %qw, 1))), u(.msg, xp/freebie, %qe), t(setr(e, ulocal(validate.stat, %qw, %qs, %qt, %qv))), u(.msg, xp/freebie, %qe), t(setr(e, ulocal(validate.value, %qs, %qt, %qv))), u(.msg, xp/freebie, %qe), t(setr(e, ulocal(validate.restricted, %qs, %qv))), u(.msg, xp/freebie, %qe), strmatch(v(d.transaction.begin), *#-*), u(.msg, xp/freebie, Transaction begin failed%; freebie not processed), strmatch(setr(e, sql(u(sql.insert.spend, %qp, %#, normal, 0, %qs, %qr, %qv, %qt))), #-*), u(.msg, xp/freebie, Unable to connect to database%; freebie not processed[null(v(f.transaction.end))]), strmatch(setr(e, ulocal(v(d.sfp)/f.setstat.workhorse, %qw, %qs, %qv)), #-*), u(.msg, xp/freebie, Error from Setstat: %qe [null(v(f.transaction.end))]), strcat(setq(n, statname(%qp/%qn)), u(.msg, xp/freebie, strcat(if(strmatch(%qp, %#), Your, [name(%qp)]'s), %b, %qn, %b, has been set to '%qv' for Free because '%qr')), null(v(f.transaction.end)))))
 
 @fo me=&d.ars [v(d.xpas)]=[search(name=Alt Registration <ars>)]
 
