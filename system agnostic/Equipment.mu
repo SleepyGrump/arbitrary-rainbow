@@ -1,6 +1,14 @@
 @@ Requires: Layout functions (Boxtext and fitcolumns)
 
 /*
+TO DO:
+
+* There's a bug where you +eq/view <name> and if there's a note it doesn't show up right.
+* Make it dupe-check before allowing an equipment item to be added.
+* Have a special "+eq/list untagged" to list equipment without tags.
+* +eq/rename <name 1>=<name 2>
+* +eq/update <name>=<details>
+
 Staff commands:
 
 * +eq/create <title>=<details>
@@ -60,7 +68,7 @@ Changelog:
 
 @@ %0 - player
 @@ %1 - target
-&layout.players-equipment EQF=strcat(wheader(name(%1)'s equipment, %0), %R, iter(lattr(%1/_eq-*), strcat(ulocal(layout.equipment-line, %1, trim(itext(0), l, _)), %R, space(3), rest(xget(%1, itext(0)), |)),, %R), %R, wfooter(, %0))
+&layout.players-equipment EQF=strcat(wheader(name(%1)'s equipment, %0), %R, iter(lattr(%1/_eq-*-name), strcat(ulocal(layout.equipment-line, %1, trim(itext(0), l, _)), %R, space(3), rest(xget(%1, itext(0)), |)),, %R), %R, wfooter(, %0))
 
 
 @@ %0 - player
