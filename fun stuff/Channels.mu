@@ -11,7 +11,10 @@ Commands:
 	+channel - list all channels
 	+channel/create <title>
 	+channel/create <title>=<details>
-	+channel/destroy <title> - nukes a channel (must be the owner or staff)
+
+	+channel/claim <existing channel> - (staff only) claim an existing channel and make it possible to administer the channel via this system. Will automatically create a channel log for this channel. If one already exists, use the second form of this command.
+
+	+channel/claim <existing channel>=<dbref> - as above, but with an existing log object.
 
 Only the owner (or staff) can perform the following commands:
 
@@ -26,6 +29,11 @@ Only the owner (or staff) can perform the following commands:
 
 	+channel/loud <title> - set a channel noisy (emits connects/disconnects)
 	+channel/quiet <title> - set a channel quiet (no connects/disconnects)
+
+	+channel/destroy <title> - nukes a channel (must be the owner or staff)
+
+@@ Planned feature:
+	+channel/give <title>=<player> - give a channel to someone else
 
 @@ @ccreate <name>
 @@ @create <name> Channel
@@ -58,7 +66,7 @@ Only the owner (or staff) can perform the following commands:
 
 @force me=&vD CHF=[num(CDB)]
 
-@desc CHC=%RCommands:%R%R%T+channel - list all channels%R%T+channel/create <title>%R%T+channel/create <title>=<details>%R%T+channel/destroy <title> - nukes a channel (must be the owner or staff)%R%ROnly the owner (or staff) can perform the following commands:%R%R%T+channel/header <title>=<value> - set a channel's header (the "<format>" part)%R%T+channel/desc <title>=<value> - set a channel's description%R%R%T+channel/public <title> - set a channel public%R%T+channel/private <title> - set a channel private%R%R%T+channel/spoof <title> - set a channel spoofable (anonymous)%R%T+channel/nospoof <title> - set a channel non-spoofable (not anonymous)%R%R%T+channel/loud <title> - set a channel noisy (emits connects/disconnects)%R%T+channel/quiet <title> - set a channel quiet (no connects/disconnects)%R
+@desc CHC=%RCommands:%R%R%T+channel - list all channels%R%T+channel/create <title>%R%T+channel/create <title>=<details>%R%R%T+channel/claim <existing channel> - (staff only) claim an existing channel and make it possible to administer the channel via this system. Will automatically create a channel log for this channel. If one already exists, use the second form of this command.%R%R%T+channel/claim <existing channel>=<dbref> - as above, but with an existing log object.%R%ROnly the owner (or staff) can perform the following commands:%R%R%T+channel/header <title>=<value> - set a channel's header (the "<format>" part)%R%T+channel/desc <title>=<value> - set a channel's description%R%R%T+channel/public <title> - set a channel public%R%T+channel/private <title> - set a channel private%R%R%T+channel/spoof <title> - set a channel spoofable (anonymous)%R%T+channel/nospoof <title> - set a channel non-spoofable (not anonymous)%R%R%T+channel/loud <title> - set a channel noisy (emits connects/disconnects)%R%T+channel/quiet <title> - set a channel quiet (no connects/disconnects)%R%R%T+channel/destroy <title> - nukes a channel (must be the owner or staff)%R
 
 @@ Add your channels here, separated by |'s.
 @@ This should be whatever shows up in @clist.
@@ -158,6 +166,8 @@ Only the owner (or staff) can perform the following commands:
 
 &switch.5.quiet CHC=@trigger me/tr.channel-quiet=%0, rest(%1);
 
+&switch.6.claim CHC=@trigger me/tr.channel-claim=%0, first(%1, =), rest(%1, =);
+
 &switch.99.destroy CHC=@switch/first %1=*=*, { @trigger me/tr.destroy-channel=%0, first(rest(%1), =), rest(%1, =); }, { @trigger me/tr.confirm-destroy=%0, rest(%1); }
 
 
@@ -212,6 +222,12 @@ Only the owner (or staff) can perform the following commands:
 @@ %1 - channel title
 &tr.channel-nospoof CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.)))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Set non-spoofable on, %b, time(), %b, by, %b, name(%0) %(%0%).)]; @cset/nospoof %qT; @pemit %0=ulocal(layout.msg, Changed '%qT' to 'Non-spoofable'.); }, { @pemit %0=ulocal(layout.error, %qE); }
 
+
+@@ Input:
+@@ %0 - %#
+@@ %1 - channel title
+@@ %2 - existing log object (if exists)
+&tr.channel-claim CHC=@assert isstaff(%0)={ @pemit %0=ulocal(layout.error, Staff only.); }; @assert t(comalias(%0, %1))={ @pemit %0=ulocal(layout.error, Can't find a channel you joined named '%1'. Please enter the exact name of the channel - it is case sensitive - and make sure you have joined the channel.); }; @assert or(cand(isdbref(%2), match(type(%2), THING), t(setr(N, %2))), t(setr(N, create(%1 Channel Object, 10))))={ @pemit %0=ulocal(layout.error, if(t(%2), '%2' is not a valid channel log object., Could not create '%1 Channel Object'.)); }; @set %vD=channel.%qN:[strcat(%1 was claimed by, %b, moniker(%0) %(%0%) on, %b, time().)]; @set %qN=channel-name:%1; @set %qN=creator-dbref:%0; @cset/object %1=%qN; @desc %qN=[default(%qN/desc, The '%1' channel.)]; @cset/log %1=200; @cset/timestamp_logs %1=1; @set %0=_channels-created:[setunion(%qN, xget(%0, _channels-created))]; @set %vD=d.existing-channels:[setdiff(xget(%vD, d.existing-channels), %1, |)]; @pemit %0=ulocal(layout.msg, Channel '%1' claimed. It's yours now. Take good care of it!);
 
 @@ Input:
 @@ %0 - %#
