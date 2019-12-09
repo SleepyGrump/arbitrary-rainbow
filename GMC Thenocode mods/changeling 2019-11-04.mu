@@ -420,7 +420,7 @@ think Merit time!
 
 &merit.manymask [v(d.dd)]=3
 
-&prerequisite.merit.manymask [v(d.dd)]=u(.at_least_all, advantage.wyrd:2 attribute.manipulation:3)
+&prerequisite.merit.manymask [v(d.dd)]=u(.at_least_all, %0, advantage.wyrd:2 attribute.manipulation:3)
 
 &prereq-text.merit.manymask [v(d.dd)]=Wyrd 2+, Manipulation 3+
 
@@ -1305,7 +1305,7 @@ think XP stuff.
 
 &xp.advantage.wyrd [v(d.xpcd)]=u(cost.standard, 5, %1, %2)
 
-&xp.contract [v(d.xpcd)]=strcat(setq(c, u(.value, %0, bio.chosen_regalia)), setq(s, u(.value, %0, bio.seeming_regalia)), u(cost.standard, case(1, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qc.common), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qs.common), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, goblin), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, common), 3, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qc.royal), 3, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qs.royal), 3, 4), %1, %2))
+&xp.contract [v(d.xpcd)]=strcat(setq(c, u(.value, %0, bio.chosen_regalia)), setq(s, u(.value, %0, bio.seeming_regalia)), u(cost.standard, case(1, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, common), case(1, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qc.%qs), 2, 3), u(v(d.sfp)/f.hastag?.workhorse, contract.%3, goblin), 2, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, royal), case(1, u(v(d.sfp)/f.hastag?.workhorse, contract.%3, %qc.%qs), 3, 4), 4), %1, %2))
 
 &xp.contract.?.? [v( d.xpcd )]=1
 
