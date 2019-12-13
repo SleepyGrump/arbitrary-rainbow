@@ -7,6 +7,7 @@ TO DO:
 * Have a special "+eq/list untagged" to list equipment without tags.
 * +eq/rename <name 1>=<name 2>
 * +eq/update <name>=<details>
+* There's a bug with +eq/find which only finds the first item matching the string.
 
 Staff commands:
 
