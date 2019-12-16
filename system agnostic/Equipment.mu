@@ -5,7 +5,7 @@ TO DO:
 
 * Make it dupe-check before allowing an equipment item to be added.
 * Have a special "+eq/list untagged" to list equipment without tags.
-* +eq/rename <name 1>=<name 2>
+* +eq/rename <name 1>=<name 2> - maybe skip this because it doesn't rename the equipment on the players? Or find every instance on the grid and rename it. Meep.
 * +eq/update <name>=<details>
 * There's a bug with +eq/find which only finds the first item matching the string.
 
