@@ -4,10 +4,16 @@
 TO DO:
 
 * Make it dupe-check before allowing an equipment item to be added.
+
 * Have a special "+eq/list untagged" to list equipment without tags.
-* +eq/rename <name 1>=<name 2> - maybe skip this because it doesn't rename the equipment on the players? Or find every instance on the grid and rename it. Meep.
-* +eq/update <name>=<details>
+
 * There's a bug with +eq/find which only finds the first item matching the string.
+
+* +eq/update <name>=<details> - change the details
+
+* +eq/clone <name>=<new name> - copy a piece of equipment to a new name. This lets you rename equipment without breaking it for the players who have it. You can then +eq/destroy the old one if necessary.
+
+* +eq/players <name> - find all players with <name> equipment
 
 Staff commands:
 
