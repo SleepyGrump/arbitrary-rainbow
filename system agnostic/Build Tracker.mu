@@ -83,7 +83,7 @@ Other code:
 
 */
 
-@@ WARNING: Not drop-in ready, change the name below to match your grid.
+@@ WARNING: Not drop-in ready, change the name below to match your grid. If you don't already have a room parent... @dig one, and in the netmux.conf file for your game, set room_parent <the dbref without the #>.
 
 @force me=&d.rp me=[search(name=Room Parent)]
 
@@ -93,7 +93,7 @@ Other code:
 
 @dolist children(v(d.rp))={@pemit %#=@@ [name(##)]%R@set ##=!HALTED;}
 
-@@ If you don't do the above, none of this will work.
+@@ If you don't run the output of the code above, none of this will work. Of course, that presumes your original room parent was halted, like mine. :P If not, doesn't matter.
 
 @@ OK, on to the actual code.
 
