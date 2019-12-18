@@ -4,11 +4,15 @@ https://raw.githubusercontent.com/thenomain/GMCCG/master/6%20-%20Roller/6e%20-%2
 
 Compiled 2019-11-07
 
+BUGFIX: Removed % in front of the = sign in c.roll. This was causing "paged" rolls to fail.
+	OLD: &c.roll [v(d.nr)]=$^\+?roll(/.+?)? (.+?)(%=.*)?
+	NEW: &c.roll [v(d.nr)]=$^\+?roll(/.+?)? (.+?)(=.*)?
+
 */
 
 think Entering 9 lines.
 
-&c.roll [v(d.nr)]=$^\+?roll(/.+?)? (.+?)(%=.*)?$:@assert cor(isstaff(%#), not(isapproved(%#, chargen)))={@pemit %#=[u(.alert, roll)] You are 'in chargen', and so cannot use this command. If you need something on your sheet rolled, please contact a staffer.}; @pemit %#=strcat(setq(7, squish(edit(strip(%2, %%%,;<>%[%]), %(, %b%())), null(u(f.roll.workhorse, %q7, %#, remove(%1, blind, /, /))), setq(9, u(f.build.to-list, %#, trim(rest(%3, =)), %1)), if(t(words(%qe, `)), cat(u(.alert, roll), u(display.roll-items, %qe)), u(display.roll-to-[first(%q9, |)], %#, rest(%q9, |))))
+&c.roll [v(d.nr)]=$^\+?roll(/.+?)? (.+?)(=.*)?$:@assert cor(isstaff(%#), not(isapproved(%#, chargen)))={@pemit %#=[u(.alert, roll)] You are 'in chargen', and so cannot use this command. If you need something on your sheet rolled, please contact a staffer.}; @pemit %#=strcat(setq(7, squish(edit(strip(%2, %%%,;<>%[%]), %(, %b%())), null(u(f.roll.workhorse, %q7, %#, remove(%1, blind, /, /))), setq(9, u(f.build.to-list, %#, trim(rest(%3, =)), %1)), if(t(words(%qe, `)), cat(u(.alert, roll), u(display.roll-items, %qe)), u(display.roll-to-[first(%q9, |)], %#, rest(%q9, |))))
 
 @set v(d.nr)/c.roll=regex
 
