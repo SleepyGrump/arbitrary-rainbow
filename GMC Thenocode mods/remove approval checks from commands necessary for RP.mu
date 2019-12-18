@@ -1,4 +1,4 @@
-think Entering 6 lines.
+think Updates to various bits of code to remove the 'approved' requirements...
 
 &c.init/clear init=switch(1, not(or(isstaff(%#), not(comp(%0, YES)))), If you're sure you want to clear the roster%, type +init/clear YES[oemit(%#, [alert(+init, alert)] %N may be clearing initiatives at this location.)], [setq(l, loc(%#))][monitor(+init/clear: %N at [name(loc(%#))] %([loc(%#)]%))][iter(lattr(%ql/_init.*), set(%ql, %i0:),, @@)][remit(%ql, [alert(+init)] %N clears the initiative roster in this location.)])
 
@@ -8,8 +8,14 @@ think Entering 6 lines.
 
 &c.init/remove init=[setq(s, ulocal(f.validate.init-subject, %0, %#))][setq(l, loc(%#))][case(0, comp(%0,), [alert(Error, alert)] Must enter name to remove., t(%qs), [alert(Error, alert)] [rest(%qs)]., hasattr(%ql, setr(a, _init.[edit(%qs, %b, _)])), [alert(Error, alert)] Subject has has no initiative to remove., not(isdbref(%qs)), [set(%ql, %qa:)][remit(%ql, [alert(+init)] %N removes %oself from the initiative roster.)], isdbref(%qs), [set(%ql, %qa:)][remit(%ql, [alert(+init)] %N removes "%qs" from the initiative roster.)], [alert(Error, alert)] An error has occurred - please report it with +bug.)]
 
-&c.spend [v(d.psrs)]=$(?s)^\+?spend(/[^\s]+)*(.*)$:think u(f.registers.extract, %1, trim(%2)); @assert t(%qp)={@pemit %#=u(.msg, spend, I don't know '%qt');}; @assert cor(isstaff(%#), strmatch(%#, %qp))={@pemit %#=u(.msg, spend, Only staff may spend for someone else);}; @assert hasattr(%!, spend.trigger.%qw)={@pemit %#=u(.msg, spend, I don't know how to spend '[edit(%qw, _, %b)]'. I know: [itemize(edit(lcstr(lattr(%!/spend.trigger.*)), spend.trigger.,))]);}; @trigger %!/spend.trigger.%qw=%#, %qp, %qi, %qs, %qr;@set v(d.psrs)/c.spend=regexp
+&c.spend [v(d.psrs)]=$(?s)^\+?spend(/[^\s]+)*(.*)$:think u(f.registers.extract, %1, trim(%2)); @assert t(%qp)={@pemit %#=u(.msg, spend, I don't know '%qt');}; @assert cor(isstaff(%#), strmatch(%#, %qp))={@pemit %#=u(.msg, spend, Only staff may spend for someone else);}; @assert hasattr(%!, spend.trigger.%qw)={@pemit %#=u(.msg, spend, I don't know how to spend '[edit(%qw, _, %b)]'. I know: [itemize(edit(lcstr(lattr(%!/spend.trigger.*)), spend.trigger.,))]);}; @trigger %!/spend.trigger.%qw=%#, %qp, %qi, %qs, %qr;
 
-&c.regain [v(d.psrs)]=$(?s)^\+?regain(/[^\s]+)*(.*)$:think u(f.registers.extract, %1, trim(%2)); @assert t(%qp)={@pemit %#=u(.msg, regain, I don't know '%qt');}; @assert cor(isstaff(%#), strmatch(%#, %qp))={@pemit %#=u(.msg, regain, Only staff may regain for someone else);}; @assert hasattr(%!, regain.trigger.%qw)={@pemit %#=u(.msg, regain, I don't know how to regain '[edit(%qw, _, %b)]'. I know: [itemize(edit(lcstr(lattr(%!/regain.trigger.*)), regain.trigger.,))]);}; @trigger %!/regain.trigger.%qw=%#, %qp, %qi, %qs, %qr;@set v(d.psrs)/c.regain=regexp
+@set v(d.psrs)/c.spend=regexp
+
+&c.regain [v(d.psrs)]=$(?s)^\+?regain(/[^\s]+)*(.*)$:think u(f.registers.extract, %1, trim(%2)); @assert t(%qp)={@pemit %#=u(.msg, regain, I don't know '%qt');}; @assert cor(isstaff(%#), strmatch(%#, %qp))={@pemit %#=u(.msg, regain, Only staff may regain for someone else);}; @assert hasattr(%!, regain.trigger.%qw)={@pemit %#=u(.msg, regain, I don't know how to regain '[edit(%qw, _, %b)]'. I know: [itemize(edit(lcstr(lattr(%!/regain.trigger.*)), regain.trigger.,))]);}; @trigger %!/regain.trigger.%qw=%#, %qp, %qi, %qs, %qr;
+
+@set v(d.psrs)/c.regain=regexp
+
+&c.roll [v(d.nr)]=$^\+?roll(/.+?)? (.+?)(%=.*)?$:@pemit %#=strcat(setq(7, squish(edit(strip(%2, %%%,;<>%[%]), %(, %b%())), null(u(f.roll.workhorse, %q7, %#, remove(%1, blind, /, /))), setq(9, u(f.build.to-list, %#, trim(rest(%3, =)), %1)), if(t(words(%qe, `)), cat(u(.alert, roll), u(display.roll-items, %qe)), u(display.roll-to-[first(%q9, |)], %#, rest(%q9, |))))
 
 think Entry complete.
