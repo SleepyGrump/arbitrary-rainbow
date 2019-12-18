@@ -10,7 +10,7 @@ think Entering 5 lines.
 
 &c.action [v(d.nr)]=$^\+?actions?(.*)$:@pemit %#=strcat(setq(0, %1), setq(s, first(rest(%q0, /))), setq(r, if(t(%qs), rest(%q0), trim(%q0))), setq(n, first(%qr)), setq(r, rest(%qr)), setq(a, grab(sort(lattr(%#/action.*)), action.%qn*)), case(0, t(%q0), u(f.action.list, %#), t(%qn), u(.msg, Action, Action name not entered), t(%qa), u(.msg, Action, Action '%qn' not found), u(f.action.workhorse, %#, %qa, %qs, %qr)))
 
-@set nWoD Roller <nr>/c.action=regex
+@set [v(d.nr)]/c.action=regex
 
 &f.action.workhorse [v(d.nr)]=strcat(setq(e, objeval(%0, u(%0/%1))), setq(s, first(rest(%qe, /))), setq(r, trim(before(if(t(%qs), rest(%qe), %qe), =))), if(t(%qs), setq(s, /%qs)), setq(r, %qr %3), setq(s, [if(t(%2), /%2)]%qs), case(0, t(%qe), u(Action, Action has no content%, so use roll), [setq(e,)][trigger(tr.action, %0, %qr, %qs)]))
 
