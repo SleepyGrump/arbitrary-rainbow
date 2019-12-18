@@ -16,6 +16,7 @@ think Updates to various bits of code to remove the 'approved' requirements...
 
 @set v(d.psrs)/c.regain=regexp
 
-&c.roll [v(d.nr)]=$^\+?roll(/.+?)? (.+?)(%=.*)?$:@pemit %#=strcat(setq(7, squish(edit(strip(%2, %%%,;<>%[%]), %(, %b%())), null(u(f.roll.workhorse, %q7, %#, remove(%1, blind, /, /))), setq(9, u(f.build.to-list, %#, trim(rest(%3, =)), %1)), if(t(words(%qe, `)), cat(u(.alert, roll), u(display.roll-items, %qe)), u(display.roll-to-[first(%q9, |)], %#, rest(%q9, |))))
+&c.roll [v(d.nr)]=$^\+?roll(/.+?)? (.+?)(=.*)?$:@pemit %#=strcat(setq(7, squish(edit(strip(%2, %%%,;<>%[%]), %(, %b%())), null(u(f.roll.workhorse, %q7, %#, remove(%1, blind, /, /))), setq(9, u(f.build.to-list, %#, trim(rest(%3, =)), %1)), if(t(words(%qe, `)), cat(u(.alert, roll), u(display.roll-items, %qe)), u(display.roll-to-[first(%q9, |)], %#, rest(%q9, |))))
+
 
 think Entry complete.
