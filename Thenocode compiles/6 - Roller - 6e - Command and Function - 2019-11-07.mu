@@ -24,6 +24,6 @@ think Entering 9 lines.
 
 @trig v(d.nr)/startup
 
-&f.roll.workhorse.recurisve nr=if(cand(cor(not(%qn), lt(%0, %qn)), cor(not(%qt), lt(%1, %qt)), cor(t(%qt), t(%qn), lt(%0, 1))), strcat(setr(0, ulocal(f.roller, if(lte(%qd, 0), 1, %qd), %qa, if(u(f.hasswitch?, rote), 8))), |, setq(1, u(f.successes.%qs, %q0, 8)), setq(c, %qc %q1), u(f.roll.workhorse.recurisve, inc(%0), add(%q1, %1))),)
+&f.roll.workhorse.recurisve [v(d.nr)]=if(cand(cor(not(%qn), lt(%0, %qn)), cor(not(%qt), lt(%1, %qt)), cor(t(%qt), t(%qn), lt(%0, 1))), strcat(setr(0, ulocal(f.roller, if(lte(%qd, 0), 1, %qd), %qa, if(u(f.hasswitch?, rote), 8))), |, setq(1, u(f.successes.%qs, %q0, 8)), setq(c, %qc %q1), u(f.roll.workhorse.recurisve, inc(%0), add(%q1, %1))),)
 
 think Entry complete.
