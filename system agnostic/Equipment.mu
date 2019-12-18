@@ -17,7 +17,6 @@ TO DO: No known development remaining. Report bugs to the github!
 
 ================================================================================
 
-
 Staff commands:
 
 * +eq/create <title>=<details>
@@ -25,6 +24,7 @@ Staff commands:
 * +eq/tag <title>=<tag> - tag equipment mental, physical, whatever
 * +eq/untag <title>=<tag to remove> - untag equipment
 * +eq/clone <title>=<new piece of equipment> - copy an old equipment piece
+* +eq/update <title>=<new details>
 
 * +eq/give <player>=<title> - give 'em stuff
 * +eq/take <player>=<title> - take their stuff
@@ -94,7 +94,7 @@ e #662/eq-4-*
 @force me=&d.eqf me=[search(name=Equipment Functions <EQF>)]
 @force me=&d.eqc me=[search(name=Equipment Commands <EQC>)]
 
-@desc [v(d.eqc)]=%RStaff commands:%R%R* +eq/create <title>=<details>%R* +eq/destroy <title> - does not remove it from the players who have it!%R* +eq/tag <title>=<tag> - tag equipment mental, physical, whatever%R* +eq/untag <title>=<tag to remove> - untag equipment%R* +eq/clone <title>=<new piece of equipment> - copy an old equipment piece%R%R* +eq/give <player>=<title> - give 'em stuff%R* +eq/take <player>=<title> - take their stuff%R* +eq/takeall <title> - take it away from everybody%R* +eq/wipe <player> - wipe a player's equipment%R%R* +eq/note <player>/<title>=<note> - Anything special about this item? number, etc?%R%R* +eq/view <player> - see their stuff%R* +eq/details <player>/<title> - view details on their stuff%R* +eq/players <name> - find all players with <name> equipment%R%RPlayer commands:%R%R* +eq - list your equipment%R* +eq <player name or equipment title> - alias for /view and /details%R* +eq/details <title> - view details on a piece of equipment%R* +eq/list - list equipment tags%R* +eq/list <tag> - list all equipment in a particular tag%R* +eq/list untagged - list untagged equipment%R* +eq/find <title> - list all equipment that starts with that text%R* +eq/prove <title> - prove you have a piece of equipment to the room%R* +eq/prove <title>=<player> - prove you have a piece of equipment to a player%R
+@desc [v(d.eqc)]=%RStaff commands:%R%R* +eq/create <title>=<details>%R* +eq/destroy <title> - does not remove it from the players who have it!%R* +eq/tag <title>=<tag> - tag equipment mental, physical, whatever%R* +eq/untag <title>=<tag to remove> - untag equipment%R* +eq/clone <title>=<new piece of equipment> - copy an old equipment piece%R* +eq/update <title>=<new details>%R%R* +eq/give <player>=<title> - give 'em stuff%R* +eq/take <player>=<title> - take their stuff%R* +eq/takeall <title> - take it away from everybody%R* +eq/wipe <player> - wipe a player's equipment%R%R* +eq/note <player>/<title>=<note> - Anything special about this item? number, etc?%R%R* +eq/view <player> - see their stuff%R* +eq/details <player>/<title> - view details on their stuff%R* +eq/players <name> - find all players with <name> equipment%R%RPlayer commands:%R%R* +eq - list your equipment%R* +eq <player name or equipment title> - alias for /view and /details%R* +eq/details <title> - view details on a piece of equipment%R* +eq/list - list equipment tags%R* +eq/list <tag> - list all equipment in a particular tag%R* +eq/list untagged - list untagged equipment%R* +eq/find <title> - list all equipment that starts with that text%R* +eq/prove <title> - prove you have a piece of equipment to the room%R* +eq/prove <title>=<player> - prove you have a piece of equipment to a player%R
 
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
