@@ -1,17 +1,22 @@
-@@ Requires: Layout functions (Boxtext and fitcolumns)
-
 /*
-TO DO:
+================================================================================
 
-* There's a bug with +eq/find which only finds the first item matching the string.
+Dependencies:
+	* boxtext() - see Layout Functions
+	* fitcolumns() - see Layout Functions
+	* moniker()
+	* wheader()
+	* wfooter()
+	* alert()
 
-* +eq/update <name>=<details> - change the details
+================================================================================
 
-* +eq/clone <name>=<new name> - copy a piece of equipment to a new name. This lets you rename equipment without breaking it for the players who have it. You can then +eq/destroy the old one if necessary.
+TO DO: No known development remaining. Report bugs to the github!
 
-* +eq/players <name> - find all players with <name> equipment
+* If someone really really wants it, I'll make +eq/give work for players who have a piece of equipment and want to give it away to someone else.
 
-* Probably ought to sort equipment.
+================================================================================
+
 
 Staff commands:
 
@@ -19,14 +24,18 @@ Staff commands:
 * +eq/destroy <title> - does not remove it from the players who have it!
 * +eq/tag <title>=<tag> - tag equipment mental, physical, whatever
 * +eq/untag <title>=<tag to remove> - untag equipment
+* +eq/clone <title>=<new piece of equipment> - copy an old equipment piece
 
 * +eq/give <player>=<title> - give 'em stuff
 * +eq/take <player>=<title> - take their stuff
+* +eq/takeall <title> - take it away from everybody
+* +eq/wipe <player> - wipe a player's equipment
 
 * +eq/note <player>/<title>=<note> - Anything special about this item? number, etc?
 
 * +eq/view <player> - see their stuff
 * +eq/details <player>/<title> - view details on their stuff
+* +eq/players <name> - find all players with <name> equipment
 
 Player commands:
 
@@ -40,11 +49,32 @@ Player commands:
 * +eq/prove <title> - prove you have a piece of equipment to the room
 * +eq/prove <title>=<player> - prove you have a piece of equipment to a player
 
+================================================================================
+
 Changelog:
 
 2019-11-05: Added "+eq/note" and made "+eq/details" accept a player/title syntax.
 2019-12-13: Consolidated +eq/view and +eq layouts. Made equipment notes show up in the default layout.
 2019-12-17: Added dupe-checking to +eq/create. Created a default parsing for +eq <thing> where it'll execute either /view or /details depending what you typed.
+2019-12-18:
+	* Fixed the +eq/find bug.
+	* Added +eq/players. That naturally led to +eq/takeall and +eq/wipe.
+	* Added +eq/clone.
+	* Did +eq/update just to wrap up new functionality.
+	* Added sorting of equipment lists because why the heck not.
+
+================================================================================
+
+Process to move equipment that previously existed and was a duplicate from before we had dupe-checking:
+
+e #662/eq-99-*
+e #662/eq-4-*
+
+@dolist search(type=player)={@switch/first hasattr(##, _EQ-99-NAME)=1, { @mvattr ##=_EQ-99-NAME,_EQ-4-NAME; @mvattr ##=_EQ-99-NOTE,_EQ-4-NOTE;};}
+
+@wipe #662/eq-99-*
+
+================================================================================
 
 */
 
@@ -64,7 +94,7 @@ Changelog:
 @force me=&d.eqf me=[search(name=Equipment Functions <EQF>)]
 @force me=&d.eqc me=[search(name=Equipment Commands <EQC>)]
 
-@desc [v(d.eqc)]=%RStaff commands:%RStaff commands:%R%R%T+eq/create <title>=<details>%R%T+eq/destroy <title> - does not remove it from the players who have it!%R%T+eq/tag <title>=<tag> - tag equipment mental, physical, whatever%R%T+eq/untag <title>=<tag to remove> - untag equipment%R%R%T+eq/give <player>=<title> - give 'em stuff%R%T+eq/take <player>=<title> - take their stuff%R%R%T+eq/note <player>/<title>=<note> - Anything special about this item? number, etc?%R%R%T+eq/view <player> - see their stuff%R%T+eq/details <player>/<title> - view details on their stuff%R%RPlayer commands:%R%R%T+eq - list your equipment%R%T+eq/details <title> - view details on a piece of equipment%R%T+eq/list - list equipment tags%R%T+eq/list <tag> - list all equipment in a particular tag%R%T+eq/find <title> - list all equipment that starts with that text%R%T+eq/prove <title> - prove you have a piece of equipment to the room%R%T+eq/prove <title>=<player> - prove you have a piece of equipment to a player%R
+@desc [v(d.eqc)]=%RStaff commands:%R%R* +eq/create <title>=<details>%R* +eq/destroy <title> - does not remove it from the players who have it!%R* +eq/tag <title>=<tag> - tag equipment mental, physical, whatever%R* +eq/untag <title>=<tag to remove> - untag equipment%R* +eq/clone <title>=<new piece of equipment> - copy an old equipment piece%R%R* +eq/give <player>=<title> - give 'em stuff%R* +eq/take <player>=<title> - take their stuff%R* +eq/takeall <title> - take it away from everybody%R* +eq/wipe <player> - wipe a player's equipment%R%R* +eq/note <player>/<title>=<note> - Anything special about this item? number, etc?%R%R* +eq/view <player> - see their stuff%R* +eq/details <player>/<title> - view details on their stuff%R* +eq/players <name> - find all players with <name> equipment%R%RPlayer commands:%R%R* +eq - list your equipment%R* +eq <player name or equipment title> - alias for /view and /details%R* +eq/details <title> - view details on a piece of equipment%R* +eq/list - list equipment tags%R* +eq/list <tag> - list all equipment in a particular tag%R* +eq/list untagged - list untagged equipment%R* +eq/find <title> - list all equipment that starts with that text%R* +eq/prove <title> - prove you have a piece of equipment to the room%R* +eq/prove <title>=<player> - prove you have a piece of equipment to a player%R
 
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -76,7 +106,7 @@ Changelog:
 
 @@ %0 - player
 @@ %1 - target
-&layout.equipment [v(d.eqf)]=strcat(wheader(if(match(%0, %1), Your, name(%1)'s) equipment, %0), %R, iter(lattr(%1/_eq-*-name), strcat(ulocal(layout.equipment-line, %1, trim(itext(0), l, _)), setq(0, ulocal(f.get-equipment-note, %1, itext(0))), if(t(%q0), strcat(%R, space(3), Note:, %b, %q0))),, %R), %R, wfooter(, %0))
+&layout.equipment [v(d.eqf)]=strcat(wheader(if(match(%0, %1), Your, name(%1)'s) equipment, %0), %R, iter(ulocal(f.sort-equipment-attrs, lattr(%1/_eq-*-name), %b), strcat(ulocal(layout.equipment-line, %1, trim(itext(0), l, _)), setq(0, ulocal(f.get-equipment-note, %1, itext(0))), if(t(%q0), strcat(%R, space(3), Note:, %b, %q0))),, %R), %R, wfooter(, %0))
 
 @@ %0 - player
 @@ %1 - equipment attribute
@@ -84,16 +114,16 @@ Changelog:
 
 @@ %0 - player
 @@ %1 - tag if there is one
-&layout.list-equipment [v(d.eqf)]=strcat(wheader(if(t(%1), Equipment in tags matching '%1', Equipment tags), %0), %R, if(t(%1), iter(ulocal(f.list-equipment-by-tag, %1), ulocal(layout.equipment-line, %vD, itext(0)),, %R), fitcolumns(ulocal(f.list-equipment-tags, %1), |, %0)), %R, wfooter(, %0))
+&layout.list-equipment [v(d.eqf)]=strcat(wheader(if(t(%1), Equipment tagged '%1', Equipment tags), %0), %R, if(t(%1), iter(ulocal(f.sort-equipment-attrs, ulocal(f.list-equipment-by-tag, %1), %b), ulocal(layout.equipment-line, %vD, itext(0)),, %R), fitcolumns(ulocal(f.list-equipment-tags, %1), |, %0)), %R, wfooter(, %0))
 
 @@ %0 - player
 @@ %1 - title if there is one
-&layout.find-equipment [v(d.eqf)]=strcat(wheader(Equipment matching '%1', %0), %R, setq(0, ulocal(f.find-equipment-by-title, %0, %1)), if(t(%q0), iter(%q0, ulocal(layout.equipment-line, %vD, trim(itext(0), l, _)),, %R), No equipment by the title '%1' found.), %R, wfooter(, %0))
+&layout.find-equipment [v(d.eqf)]=strcat(wheader(Equipment matching '%1', %0), %R, setq(0, ulocal(f.sort-equipment-attrs, ulocal(f.find-equipment-by-title, %0, %1), |)), if(t(%q0), iter(%q0, ulocal(layout.equipment-line, %vD, trim(itext(0), l, _)), |, %R), No equipment by the title '%1' found.), %R, wfooter(, %0))
 
 @@ %0 - player viewing
 @@ %1 - title of the presumed equipment
 @@ %2 - player the equipment is on
-&layout.equipment-details [v(d.eqf)]=if(t(setr(0, ulocal(f.find-all-equipment-by-title, %1))), strcat(wheader(ulocal(f.get-equipment-title, %q0), %0), %R, boxtext(ulocal(f.get-equipment-details, %q0),,, %0), %R%R, boxtext(strcat(Tags:, %b, setq(1, ulocal(f.get-equipment-tags, %q0)), if(t(%q1), itemize(%q1, |), None.)),,, %0), %R%R, if(t(%2), strcat(if(hasattr(%2, _%q0), boxtext(rest(xget(%2, _%q0), |),,, %0)), if(hasattr(%2, edit(_%q0, NAME, note)), strcat(%r%r%b, Note:, %b, xget(%2, edit(_%q0, NAME, note)))))), %r, wfooter(, %0)), ulocal(layout.error, Could not find equipment '%1'.))
+&layout.equipment-details [v(d.eqf)]=if(t(setr(0, first(ulocal(f.find-all-equipment-by-title, %1), |))), strcat(wheader(ulocal(f.get-equipment-title, %q0), %0), %R, boxtext(ulocal(f.get-equipment-details, %q0),,, %0), %R%R, boxtext(strcat(Tags:, %b, setq(1, ulocal(f.get-equipment-tags, %q0)), if(t(%q1), itemize(%q1, |), None.)),,, %0), %R%R, if(t(%2), strcat(if(hasattr(%2, _%q0), boxtext(rest(xget(%2, _%q0), |),,, %0)), if(hasattr(%2, edit(_%q0, NAME, note)), strcat(%r%r%b, Note:, %b, xget(%2, edit(_%q0, NAME, note)))))), %r, wfooter(, %0)), ulocal(layout.error, Could not find equipment '%1'.))
 
 @@ %0 - player
 @@ %1 - equipment found
@@ -101,21 +131,39 @@ Changelog:
 @@ %3 - "to" string - to "you", "the room".
 &layout.prove-equipment [v(d.eqf)]=strcat(alert(Equipment), name(%0) proves, %b, poss(%0), %b, equipment ', setr(0, ulocal(f.get-equipment-title, trim(%1, l, _))), ', %b, to %3:, %R%R, u(layout.equipment-details, %2, %q0, %0))
 
+@@ %0 - list of equipment attributes separated by pipes
+&layout.list-equipment-names [v(d.eqf)]=itemize(iter(ulocal(f.sort-equipment-attrs, %0, |), xget(%vD, itext(0)), |, |), |)
+
+@@ %0 - equipment attr
+&layout.list-players-with-equipment [v(d.eqf)]=strcat(setq(0, ulocal(f.find-equipment-on-players, %0)), alert(Equipment), %b, if(t(%q0), strcat(The following players have the equipment ', xget(%vD, %0), ':, %b, itemize(iter(%q0, moniker(itext(0)),, |), |)), strcat(No players have the equipment, %b, ', xget(%vD, %0), '.)))
+
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Local functions
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-@@ %0 - player
-@@ %1 - title
-&f.find-equipment-on-player-by-title [v(d.eqf)]=first(trim(squish(iter(lattr(%0/_eq-*), if(strmatch(first(xget(%0, itext(0)), |), %1*), itext(0)),, |), |), b, |), |)
+@@ %0 - list of equipment attributes
+@@ %1 - delimiter
+&f.sort-equipment-attrs [v(d.eqf)]=strcat(setq(0, edit(%0, %1, |)), setq(1, iter(%q0, xget(%vD, edit(itext(0), _,)), |, |)), setq(2, munge(me/sort_alphabetic, %q1, %q0, |)), edit(%q2, |, %1))
+
+&sort_alphabetic [v(d.eqf)]=sort(%0, i, |, |)
 
 @@ %0 - title
-&f.find-all-equipment-by-title [v(d.eqf)]=first(trim(squish(iter(lattr(%vD/eq-*), if(strmatch(first(xget(%vD, itext(0)), |), %0*), itext(0)),, |), |), b, |), |)
+&f.find-equipment-on-players [v(d.eqf)]=search(eval=hasattr(##, _%0))
 
 @@ %0 - player
 @@ %1 - title
-&f.find-equipment-by-title [v(d.eqf)]=case(1, t(setr(0, ulocal(f.find-equipment-on-player-by-title, %0, %1))), %q0, t(setr(1, ulocal(f.find-all-equipment-by-title, %1))), %q1, #-1 NOT FOUND)
+@@ %2 - 1 if exact search
+&f.find-equipment-on-player-by-title [v(d.eqf)]=first(trim(squish(iter(lattr(%0/_eq-*-name), if(strmatch(first(xget(%0, itext(0)), |), %1[case(t(%2), 0, *)]), itext(0)),, |), |), b, |), |)
+
+@@ %0 - title
+@@ %1 - 1 if exact search
+&f.find-all-equipment-by-title [v(d.eqf)]=trim(squish(iter(lattr(%vD/eq-*-name), if(strmatch(xget(%vD, itext(0)), %0[case(t(%2), 0, *)]), itext(0)),, |), |), b, |)
+
+@@ %0 - player
+@@ %1 - title
+@@ %2 - 1 if exact search
+&f.find-equipment-by-title [v(d.eqf)]=case(1, t(setr(0, ulocal(f.find-equipment-on-player-by-title, %0, %1, %2))), %q0, t(setr(1, ulocal(f.find-all-equipment-by-title, %1, %2))), %q1, #-1 NOT FOUND)
 
 @@ %0 - tag
 &f.list-equipment-by-tag [v(d.eqf)]=switch(%0, untag*, u(f.list-untagged-equipment), trim(squish(iter(lattr(%vD/eq-*-tags), iter(xget(%vD, itext(0)), if(strmatch(itext(0), %0*), edit(itext(1), TAGS, NAME)), |)))))
@@ -176,6 +224,10 @@ Changelog:
 
 &switch.5.untag [v(d.eqc)]=@trigger me/tr.equipment-untag=%0, before(rest(%1), =), rest(%1, =);
 
+&switch.5.update [v(d.eqc)]=@trigger me/tr.equipment-update=%0, before(rest(%1), =), rest(%1, =);
+
+&switch.5.clone [v(d.eqc)]=@trigger me/tr.equipment-clone=%0, before(rest(%1), =), rest(%1, =);
+
 &switch.6.give [v(d.eqc)]=@trigger me/tr.equipment-give=%0, before(rest(%1), =), rest(%1, =);
 
 &switch.6.take [v(d.eqc)]=@trigger me/tr.equipment-take=%0, before(rest(%1), =), rest(%1, =);
@@ -183,6 +235,12 @@ Changelog:
 &switch.6.view [v(d.eqc)]=@trigger me/tr.equipment-view=%0, rest(%1);
 
 &switch.6.note [v(d.eqc)]=@trigger me/tr.equipment-note=%0, first(rest(%1), /), last(first(%1, =), /), rest(%1, =);
+
+&switch.7.players [v(d.eqc)]=@trigger me/tr.find-players-with-equipment=%0, rest(%1);
+
+&switch.8.takeall [v(d.eqc)]=@trigger me/tr.take-equipment-from-all-players=%0, rest(%1);
+
+&switch.98.wipe [v(d.eqc)]=@switch/first %1=*=*, { @trigger me/tr.wipe-equipment=%0, first(rest(%1), =), rest(%1, =); }, { @trigger me/tr.wipe-single-player-equipment=%0, rest(%1); }
 
 &switch.99.destroy [v(d.eqc)]=@switch/first %1=*=*, { @trigger me/tr.destroy-equipment=%0, first(rest(%1), =), rest(%1, =); }, { @trigger me/tr.confirm-destroy=%0, rest(%1); }
 
@@ -195,26 +253,37 @@ Changelog:
 @@ %0 - %#
 @@ %1 - equipment title
 @@ %2 - details
-&tr.equipment-create [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot create equipment.), %b, if(not(t(%1)), You need to include a title for the new equipment.), %b, if(not(t(%2)), You need to include details for the new equipment.)))))=, { @assert t(ulocal(f.find-equipment-by-title, %0, %1))=, {@pemit %0=u(layout.error, There's already equipment named '%1'.); }; @set %vD=eq-count:[setr(N, add(default(%vD/eq-count, 0), 1))]; @set %vD=eq-%qN-name:%1; @set %vD=eq-%qN-details:%2; @pemit %0=u(layout.equipment-details, %0, %1); }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.equipment-create [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot create equipment.), %b, if(not(t(%1)), You need to include a title for the new equipment.), %b, if(not(t(%2)), You need to include details for the new equipment.)))))=, { @assert not(t(ulocal(f.find-equipment-by-title, %0, %1, 1)))={@pemit %0=u(layout.error, There's already equipment named '%1'.); }; @set %vD=eq-count:[setr(N, add(default(%vD/eq-count, 0), 1))]; @set %vD=eq-%qN-name:%1; @set %vD=eq-%qN-details:%2; @pemit %0=u(layout.equipment-details, %0, %1); }, { @pemit %0=ulocal(layout.error, %qE); }
+
+@@ Input:
+@@ %0 - %#
+@@ %1 - equipment title
+@@ %2 - new equipment
+&tr.equipment-clone [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot clone equipment.), %b, if(not(t(setr(O, ulocal(f.find-all-equipment-by-title, %1)))), Can't figure out what equipment to copy from.), %b, if(not(t(%2)), You need to include a name for the new equipment.), %b, if(t(ulocal(f.find-equipment-by-title, %0, %2, 1)), There is already a piece of equipment named '%2'.), %b, if(gt(words(%qO, |), 1), Found multiple pieces of equipment named '%1' so I can't tell which one you're cloning: [ulocal(layout.list-equipment-names, %qO)])))))=, { @set %vD=eq-count:[setr(N, add(default(%vD/eq-count, 0), 1))]; @set %vD=eq-%qN-name:%2; @set %vD=eq-%qN-details:[xget(%vD, edit(%qO, NAME, DETAILS))]; @set %vD=eq-%qN-tags:[xget(%vD, edit(%qO, NAME, TAGS))]; @pemit %0=u(layout.equipment-details, %0, %2); }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
 @@ %1 - equipment title
 @@ %2 - tag
-&tr.equipment-tag [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot tag equipment.), %b, if(not(t(setr(A, ulocal(f.find-all-equipment-by-title, %1)))), Could not find equipment named '%1'.), %b, if(not(t(%2)), You need to include a tag for the equipment.)))))=, { @set %vD=setr(A, edit(%qA, NAME, TAGS)):[setunion(ulocal(f.get-equipment-tags, %qA), %2, |)]; @pemit %0=u(layout.equipment-details, %0, %1); }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.equipment-tag [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot tag equipment.), %b, if(not(t(setr(A, ulocal(f.find-all-equipment-by-title, %1)))), Could not find equipment named '%1'.), %b, if(gt(words(%qA, |), 1), More than one piece of equipment was returned: [u(layout.list-equipment-names, %qA)]), %b, if(not(t(%2)), You need to include a tag for the equipment.)))))=, { @set %vD=setr(A, edit(%qA, NAME, TAGS)):[setunion(ulocal(f.get-equipment-tags, %qA), %2, |)]; @pemit %0=u(layout.equipment-details, %0, %1); }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
 @@ %1 - equipment title
 @@ %2 - tag
-&tr.equipment-untag [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot tag equipment.), %b, if(not(t(setr(A, ulocal(f.find-all-equipment-by-title, %1)))), Could not find equipment named '%1'.), %b, if(or(not(t(%2)), not(member(setr(T, ulocal(f.get-equipment-tags, %qA)), %2, |))), You need to include the exact tag you wish to remove.)))))=, { @set %vD=setr(A, edit(%qA, NAME, TAGS)):[setdiff(%qT, %2, |)]; @pemit %0=u(layout.equipment-details, %0, %1); }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.equipment-untag [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot tag equipment.), %b, if(not(t(setr(A, ulocal(f.find-all-equipment-by-title, %1)))), Could not find equipment named '%1'.), %b, if(gt(words(%qA, |), 1), More than one piece of equipment was returned: [u(layout.list-equipment-names, %qA)]), %b, if(or(not(t(%2)), not(member(setr(T, ulocal(f.get-equipment-tags, %qA)), %2, |))), You need to include the exact tag you wish to remove.)))))=, { @set %vD=setr(A, edit(%qA, NAME, TAGS)):[setdiff(%qT, %2, |)]; @pemit %0=u(layout.equipment-details, %0, %1); }, { @pemit %0=ulocal(layout.error, %qE); }
 
+@@ Input:
+@@ %0 - %#
+@@ %1 - equipment title
+@@ %2 - new details
+&tr.equipment-update [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot change equipment details.), %b, if(not(t(setr(A, ulocal(f.find-all-equipment-by-title, %1)))), Could not find equipment named '%1'.), %b, if(gt(words(%qA, |), 1), More than one piece of equipment was returned: [u(layout.list-equipment-names, %qA)]), setq(D, xget(%vD, edit(%qA, NAME, DETAILS)))))))=, { @set %vD=setr(A, edit(%qA, NAME, DETAILS)):%2; @pemit %0=alert(Equipment) You changed the details for '[xget(%vD, %qA)]' from:%R[alert(Equipment Details)] %qD%R[alert(Equipment)] To:%R[alert(Equipment Details)] %2; }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
 @@ %1 - player
 @@ %2 - equipment title
-&tr.equipment-give [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot give equipment.), %b, if(not(t(setr(A, ulocal(f.find-all-equipment-by-title, %2)))), Could not find equipment named '%2'.), %b, if(or(not(t(%2)), not(t(setr(P, ulocal(f.get-player, %1))))), Could not find player '%1'.)))))=, { @set %qP=_%qA:[ulocal(f.get-equipment-title, %qA)]|[strcat(Given to, %b, name(%qP), %(, %qP, %), %b, by, %b, moniker(%0), %b, %(, %0, %), %b, on, %b, time(), .)]; @pemit %0=alert(Equipment) You gave [name(%qP)] the equipment [ulocal(f.get-equipment-title, %qA)].; }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.equipment-give [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot give equipment.), %b, if(not(t(setr(A, ulocal(f.find-all-equipment-by-title, %2)))), Could not find equipment named '%2'.), %b, if(gt(words(%qA, |), 1), More than one piece of equipment was returned: [u(layout.list-equipment-names, %qA)]), %b, if(or(not(t(%2)), not(t(setr(P, ulocal(f.get-player, %1))))), Could not find player '%1'.)))))=, { @set %qP=_%qA:[ulocal(f.get-equipment-title, %qA)]|[strcat(Given to, %b, name(%qP), %(, %qP, %), %b, by, %b, moniker(%0), %b, %(, %0, %), %b, on, %b, time(), .)]; @pemit %0=alert(Equipment) You gave [name(%qP)] the equipment [ulocal(f.get-equipment-title, %qA)].; }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
@@ -237,25 +306,30 @@ Changelog:
 @@ Input:
 @@ %0 - %#
 @@ %1 - title
-&tr.confirm-destroy [v(d.eqc)]=@switch setr(E, strcat(if(not(isstaff(%0)), You are not staff and cannot destroy equipment.), setq(N, ulocal(f.find-all-equipment-by-title, %1)), if(not(t(%qN)), Couldn't figure out which equipment you meant by '%1'.)))=, { @set %0=eq-nuke:%qN|[secs()]; @pemit %0=alert(Equipment) Before you continue, make absolutely certain that [xget(%vD, %qN)] is the equipment you want to destroy. If you're absolutely certain you want to destroy this equipment, type +eq/destroy %1=YES; }, { @pemit %0=ulocal(layout.error, %qE); }
-
-&tr.destroy-equipment [v(d.eqc)]=@switch strcat(if(not(isstaff(%0)), You are not staff and cannot destroy equipment.), setq(N, ulocal(f.find-all-equipment-by-title, %1)), setq(P, xget(%vD, %qN)), or(not(strmatch(%qN, first(setr(W, xget(%0, eq-nuke)), |))), gt(sub(secs(), rest(%qW, |)), 300), not(match(%2, YES))))=1, { @trigger me/tr.confirm-destroy=%0, %1; }, { @switch setr(E, if(not(t(%qN)), Couldn't figure out which equipment you meant by '%1'.))=, { @pemit %0=alert(Equipment) Decompiling equipment data so you can recreate it if this was a mistake...%R%R[iter(lattr(%vD/eq-[first(rest(%qN, -), -)]-*), &[itext(0)] %vD=[xget(%vD, itext(0))],, %R)]%R; @pemit %0=alert(Equipment) Deleting data for %qP equipment...; @wipe %vD/eq-[first(rest(%qN, -), -)]-*; @pemit %0=alert(Equipment) The equipment '%qP' has been destroyed. This does not remove it from players that have it set, but they will no longer be able to view equipment details for that equipment; }, { @pemit %0=ulocal(layout.error, %qE); }; }
-
+@@ %2 - target player (optional)
+&tr.prove-equipment [v(d.eqc)]=@switch setr(E, strcat(setq(F, ulocal(f.find-equipment-on-player-by-title, %0, %1)), setq(P, if(t(%2), ulocal(f.get-player, %2), strcat(lcon(loc(%0), CONNECT), setq(T, the room)))), if(not(t(%qP)), Couldn't figure out who '%2' is.), if(not(t(%qF)), Couldn't find a piece of equipment on you named '%1'.)))=, { @dolist/notify %qP={ @pemit ##=ulocal(layout.prove-equipment, %0, %qF, ##, if(t(%qT), %qT, you)); }; @wait me=@switch/first %qT=, { @pemit %0=alert(Equipment) You showed [if(t(%qT), %qT, itemize(iter(%qP, name(itext(0)),, |), |))] your [first(xget(%0, %qF), |)] equipment.; } }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
 @@ %1 - title
-@@ %2 - target player (optional)
-&tr.prove-equipment [v(d.eqc)]=@switch setr(E, strcat(setq(F, ulocal(f.find-equipment-on-player-by-title, %0, %1)), setq(P, if(t(%2), ulocal(f.get-player, %2), strcat(lcon(loc(%0), CONNECT), setq(T, the room)))), if(not(t(%qP)), Couldn't figure out who '%2' is.), if(not(t(%qF)), Couldn't find a piece of equipment on you named '%1'.)))=, { @dolist/notify %qP={ @pemit ##=ulocal(layout.prove-equipment, %0, %qF, ##, if(t(%qT), %qT, you)); }; @wait me=@switch/first %qT=, { @pemit %0=alert(Equipment) You showed [if(t(%qT), %qT, itemize(iter(%qP, name(itext(0)),, |), |))] your [first(xget(%0, %qF), |)] equipment.; } }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.find-players-with-equipment [v(d.eqc)]=@assert isstaff(%0)={ @pemit %0=u(layout.error, You must be staff to find players with a piece of equipment.); }; @assert t(setr(N, ulocal(f.find-all-equipment-by-title, %1)))={ @pemit %0=u(layout.error, Could not find equipment named '%1'.); }; @assert eq(words(%qN, |), 1)={ @pemit %0=u(layout.error, More than one piece of equipment was returned: [u(layout.list-equipment-names, %qN)]); }; @pemit %0=ulocal(layout.list-players-with-equipment, %qN);
 
+@@ Input:
+@@ %0 - %#
+@@ %1 - title
+&tr.take-equipment-from-all-players [v(d.eqc)]=@assert isstaff(%0)={ @pemit %0=u(layout.error, You must be staff to take a piece of equipment away from everybody.); }; @assert t(setr(N, ulocal(f.find-all-equipment-by-title, %1)))={ @pemit %0=u(layout.error, Could not find equipment named '%1'.); }; @assert eq(words(%qN, |), 1)={ @pemit %0=u(layout.error, More than one piece of equipment was returned: [u(layout.list-equipment-names, %qN)]); }; @assert t(setr(P, ulocal(f.find-equipment-on-players, %qN)))={ @pemit %0=u(layout.error, No players have the equipment '%1'.); }; @dolist/notify %qP={ @set ##=_%qN:; }; @wait me=@pemit %0=alert(Equipment) Removed '[xget(%vD, %qN)]' from the following players: [itemize(iter(%qP, moniker(itext(0)),, |), |)];
 
-/*
+@@ Input:
+@@ %0 - %#
+@@ %1 - title
+&tr.wipe-single-player-equipment [v(d.eqc)]=@asert isstaff(%0)={ @pemit %0=u(layout.error, You are not staff and cannot wipe players' equipment.); }; @assert t(setr(P, ulocal(f.get-player, %1)))={ @pemit %0=u(layout.error, Could not find player '%1'.); }; @assert t(lattr(%qP/_eq-*-name))={ @pemit %0=u(layout.error, moniker(%qP) does not have equipment to wipe.); }; @set %0=eq-player-wipe:%qP|[secs()]; @pemit %0=alert(Equipment) Are you sure you want to wipe all of [moniker(%qP)]'s equipment? If you're sure, type +eq/wipe %1=YES; }, { @pemit %0=ulocal(layout.error, %qE); }
 
-Sample use:
+&tr.wipe-equipment [v(d.eqc)]=@asert isstaff(%0)={ @pemit %0=u(layout.error, You are not staff and cannot wipe players' equipment.); }; @assert t(setr(P, ulocal(f.get-player, %1)))={ @pemit %0=u(layout.error, Could not find player '%1'.); }; @assert t(lattr(%qP/_eq-*-name))={ @pemit %0=u(layout.error, moniker(%qP) does not have equipment to wipe.); }; @assert not(or(not(strmatch(%qP, first(setr(W, xget(%0, eq-player-wipe)), |))), gt(sub(secs(), rest(%qW, |)), 300), not(match(%2, YES))))={ @trigger me/tr.wipe-single-player-equipment=%0, %1; }; @pemit %0=alert(Equipment) Decompiling [moniker(%qP)]'s' equipment data so you can recreate it if this was a mistake...%R%R[iter(lattr(%qP/_eq-*-name), &[itext(0)] %qP=[xget(%qP, itext(0))],, %R)]%R; @pemit %0=alert(Equipment) Wiping [moniker(%qP)]'s equipment...; @wipe %qP/_eq-*-name; @pemit %0=alert(Equipment) [moniker(%qP)]'s equipment has been wiped.;
 
-+eq/create Light Pistol=Damage 1, Range 25/50/10, Capacity Medium, Init -0, Str 2, Size 1, Availability 2. HL Pg.152.
-+eq/tag Light Pis=Weapon|Firearm
-+eq/details Light
+@@ Input:
+@@ %0 - %#
+@@ %1 - title
+&tr.confirm-destroy [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot destroy equipment.), setq(N, ulocal(f.find-all-equipment-by-title, %1)), if(not(t(%qN)), Couldn't find equipment named '%1'.), %b, if(gt(words(%qN, |), 1), More than one piece of equipment was returned: [u(layout.list-equipment-names, %qN)])))))=, { @set %0=eq-nuke:%qN|[secs()]; @pemit %0=alert(Equipment) Before you continue, make absolutely certain that [xget(%vD, %qN)] is the equipment you want to destroy. If you're absolutely certain you want to destroy this equipment, type +eq/destroy %1=YES; }, { @pemit %0=ulocal(layout.error, %qE); }
 
-*/
+&tr.destroy-equipment [v(d.eqc)]=@asert isstaff(%0)={ @pemit %0=u(layout.error, You are not staff and cannot wipe players' equipment.); }; @switch strcat(setq(N, ulocal(f.find-all-equipment-by-title, %1)), setq(P, xget(%vD, %qN)), or(not(strmatch(%qN, first(setr(W, xget(%0, eq-nuke)), |))), gt(sub(secs(), rest(%qW, |)), 300), not(match(%2, YES))))=1, { @trigger me/tr.confirm-destroy=%0, %1; }, { @switch setr(E, if(not(t(%qN)), Couldn't figure out which equipment you meant by '%1'.))=, { @pemit %0=alert(Equipment) Decompiling equipment data so you can recreate it if this was a mistake...%R%R[iter(lattr(%vD/eq-[first(rest(%qN, -), -)]-*), &[itext(0)] %vD=[xget(%vD, itext(0))],, %R)]%R; @pemit %0=alert(Equipment) Deleting data for %qP equipment...; @wipe %vD/eq-[first(rest(%qN, -), -)]-*; @pemit %0=alert(Equipment) The equipment '%qP' has been destroyed. This does not remove it from players that have it set, but they will no longer be able to view equipment details for that equipment; }, { @pemit %0=ulocal(layout.error, %qE); }; }
 
