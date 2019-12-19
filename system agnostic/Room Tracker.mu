@@ -126,6 +126,9 @@ Other code:
 @@ Studying old temproom code to see how it's done currently.
 
 /*
+
+@@ Turns out temproom is only that complicated because it's meant to be executed by players. If you only let staff do it, it's easier.
+
 C.TEMPROOM [R]: $^\+?temproom (.*)$:@assert [or( isstaff( %# ), u( f.valid-room?
  , loc( %# )))]={ @pemit %#=You're not in a location that can take a temproom.
  }; think >> [setr( s, u( f.scrub_name, %1 ))] %r >> [setr( n, u( f.format.
