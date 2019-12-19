@@ -11,27 +11,60 @@ Dependencies:
 
 ================================================================================
 
+Problems we're trying to solve:
+
+Players want to build things and put them on the grid, where they become "official" and changes have to go through staff. That's annoying for staff, especially for little changes like descs and views.
+
+There's no standardized way to tie the player to the rooms they've built so that they get notified when someone wants to set fire to their build.
+
+There's no way to tell when a build has been "abandoned" - the character who owned it is frozen and no one's running the store, so some other player could take over and change it.
+
+There's no standardized way to tie builds together - each "build" is a collection of rooms and exits that can be managed as a whole together, but that's only a conceptual definition - nothing backs it up.
+
+A build consists of:
+ - A name - "Lee Circle Library" (note, grid location is separate from name)
+ - A short-desc - "An old but pleasant library - also, vampire Elysium"
+ - Tags - Library, Resources 0, Vampire, Elysium
+ - A list of rooms and exits that belong to that build - ### ### ###
+ - A list of players who have administrator access to that build - ### ###
+ - A list of players who live in that build - ###
+ - An alias (so players don't have to look up the dbrefs)
+ - A "list in the directory" setting
+
+A room consists of:
+ - A name - "Lee Circle Library - Basement"
+ - A desc
+ - Views
+ - Public or private setting
+ - Linkable setting
+
+Builds are not created all at once. There's just no syntax for it. They're static objects that get new rooms added to them.
+
+================================================================================
+
 Anyone can do this stuff:
 
-	+room/info - tells you all about the room - residents, guests, settings, etc. Basically "Who do I call when my players decide to burn this place to the ground?"
+	+room/info or +build/info - tells you all about the room or build - residents, guests, settings, etc. Basically "Who do I call when my players decide to burn this place to the ground?"
 
-	+room/mail <text> - automatically mails the text you write to everyone who lives in the location. Note: if no one lives there, open a +request.
+	+room/mail or +build/mail <text> - automatically mails the text you write to everyone who lives in the location. Note: if no one lives there, open a +request.
 
-	+room/list - list all your rooms. (A room is "yours" if you live there or are an administrator.)
+	+room/list or +build/list - list all your rooms and builds. (A room is "yours" if you live there or are an administrator.)
 
-	+room/travel <room> - go to your rooms.
+	+room/travel or +build/travel <room> - go to your rooms or builds.
 
 If the room is linkable or you are on the "administrators" list for the room, the following commands are available within the room:
 
-	+room/movein - Move in. Your name will be added to the Guests or Residents list depending on whether you're on the "administrators" list for the room. When you type 'home', you'll go to the place.
+	+build/movein or +room/movein - Move in. Your name will be added to the Guests or Residents list depending on whether you're on the "administrators" list for the room. When you type 'home', you'll go to the room you're in when you fire this command.
 
-	+room/moveout - Move out whenever you like. Your 'home' will be set to the OOC Room.
+	+build/moveout or +room/moveout - Move out whenever you like. Your 'home' will be set to the OOC Room.
 
 The following can only be performed by staff or the residents of a location:
 
-	+room/authorize <player> - add a player to the "administrators" list - they can change descs, views, settings, etc. They can also add other administrators.
+	+build/authorize <player> - add a player to the "administrators" list - they can change descs, views, settings, etc. They can also add other administrators.
 
-	+room/deauthorize <player> - remove a player from the "administrators" list.
+	+build/deauthorize <player> - remove a player from the "administrators" list.
+
+	+build/publish on|off - list the build in the directory
 
 Now actual room management commands:
 
@@ -39,20 +72,20 @@ Now actual room management commands:
 	+room/view <name>=<value> - set a +view
 
 	+room/set linkable - lets people add themselves as guests freely.
-	+room/set public - open to the public at large, OK to be published in the directory
+	+room/set public - open to the public at large
 	+room/set private - private space for a player or players (default)
 
 	@desc here=<desc> - lets you desc if you're a resident or if you're staff
 
 Directory admin stuff, consider doing this but nothing uses it yet:
 
-	+room/shortdesc <shortdesc> - a short description for the directory
+	+build/shortdesc <shortdesc> - a short description for the directory
 
-	+room/tag <words> - tag the rooms with things like "Residential", "OOC", "Cult hangout", "Unclaimed", etc.
+	+build/tag <words> - tag the rooms with things like "Residential", "OOC", "Cult hangout", "Unclaimed", etc.
 
-	+room/untag <words> - remove a tag
+	+build/untag <words> - remove a tag
 
-	+room/alias <alias> - must be a short version of the room name, must be unique from all the other aliases on the grid. This would be what people would type to travel to a place once we implement +travel. If you haven't got an alias, people will have to use the DBRef.
+	+build/alias <alias> - must be a short version of the room name, must be unique from all the other aliases on the grid. This would be what people would type to travel to a place once we implement +travel. If you haven't got an alias, people will have to use the DBRef.
 
 Only staff can use these commands:
 
@@ -60,11 +93,17 @@ Only staff can use these commands:
 
 	+room/unlock - unlock the room to permit administrators to change it.
 
+	+build/lock - lock the entire build
+
+	+build/unlock - unlock the entire build
+
 Staff only, not sure I'll do these:
 
-	+room/dig <name> - dig a room off the location you're in, parent it to the correct room parent, and chown it to the GridOwner. Teleport the user into it. Basically this is a dupe of +temproom code but instead of a temp room it's permanent by default.
+	+build/create <place> - digs the first room
 
-	+room/check - look over every room and exit in the area for missing descs, permissions, etc. "Room 3 doesn't have any authorized players" would be a valid error. We'd have to spider-walk the build but that's doable. Set a max limit for spidering? 10 rooms?
+	+build/add <place> - adds to the build you're in, errors if you're not in a build
+
+	+build/
 
 ================================================================================
 
