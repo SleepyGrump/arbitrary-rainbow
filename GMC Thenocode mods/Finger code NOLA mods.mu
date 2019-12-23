@@ -130,7 +130,7 @@ think Entering 48 lines.
 
 &finger.ic_pronouns FTO=default(%0/finger-ic_pronouns, switch(xget(%0, sex), M*, he/him, F*, she/her, they/them))
 
-&finger.ooc_pronouns FTO=default(%0/finger-ooc_pronouns, switch(xget(%0, sex), M*, he/him, F*, she/her, they/them))
+&finger.ooc_pronouns FTO=xget(%0, finger-ooc_pronouns)
 
 &finger.template FTO=getstat(%0/template)
 
