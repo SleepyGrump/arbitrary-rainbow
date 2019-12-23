@@ -24,7 +24,7 @@ Available fields are as follows:
 * Wiki: A link to your wiki page. This is a great thing to do, as names will eventually get reused.
 * Accorded: Whether or not you are a signatory of the Accords.
 * IC pronouns: The pronouns your character prefers to be addressed by. Will guess based on your @gender if not set.
-* Shadowname: No idea what this is, but it sounded cool so I left it in.
+* Shadowname: For mages.
 * Occupation: Your IC job.
 * Quote: A quote from your character.
 
@@ -114,7 +114,7 @@ think Entering 48 lines.
 
 &finger.note FTO=u(%0/finger-note)
 
-&finger.rp_preferences FTO=get(%0/finger-rp-prefs)
+&finger.rp_preferences FTO=get(%0/rp-prefs)
 
 &finger.shadowname FTO=get(%0/finger-shadowname)
 
