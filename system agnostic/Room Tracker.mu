@@ -25,7 +25,7 @@ A build consists of:
  - A name - "Lee Circle Library" (note, grid location is separate from name)
  - A short-desc - "An old but pleasant library - also, vampire Elysium"
  - Tags - Library, Resources 0, Vampire, Elysium
- - A list of rooms and exits that belong to that build - ### ### ###
+ - A list of rooms that belong to that build - ### ### ###
  - A list of players who have administrator access to that build - ### ###
  - A list of players who live in that build - ###
  - An alias (so players don't have to look up the dbrefs)
@@ -35,10 +35,12 @@ A room consists of:
  - A name - "Lee Circle Library - Basement"
  - A desc
  - Views
- - Public or private setting
+ - Public or private setting (useful more as a flag for players so they know whether it's OK to walk into the room)
  - Linkable setting
 
 Builds are not created all at once. There's just no syntax for it. They're static objects that get new rooms added to them.
+
+Do we even care about exits and how they link builds up?
 
 ================================================================================
 
