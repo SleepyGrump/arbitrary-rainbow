@@ -5,7 +5,10 @@ WORK IN PROGRESS. But should drop in cleanly. Just... well, expect bugs and read
 
 Currently working on:
 
-- Fae-touched wyrd is going to be weird.
+- Incorporating Theno's latest updates.
+
+	- Decided to skip the prereqs code for contracts - it seemed complex for something that could be handled with a simple search/replace given I'd already written up prereqs. Did incorporate the rules change to allow Court Goodwill to substitute for Mantle (Court).
+
 
 ================================================================================
 
@@ -198,7 +201,11 @@ think Setting up advantages.
 
 &advantage.wyrd [v(d.dd)]=0.1.2.3.4.5.6.7.8.9.10
 
-&default.advantage.wyrd [v(d.dd)]=1
+&prerequisite.advantage.wyrd [v( d.dd )]=if( u( .is, %0, bio.template, fae-touched ), lte( add( u( .value, %0, advantage.wyrd ), %2 ), 0 ), gte( add( u( .value, %0, advantage.wyrd ), %2 ), 1 ))
+
+&prereq-text.advantage.wyrd [v( d.dd )]=1+ for Changelings, 0 for Fae-Touched
+
+&default.advantage.wyrd [v( d.dd )]=[if( u( .is, %0, bio.template, changeling ), 1, 0 )]
 
 &tags.advantage.wyrd [v(d.dt)]=power.changeling.fae-touched
 
@@ -258,17 +265,17 @@ think Merit time!
 
 &merit.cloak_of_leaves [v(d.dd)]=3
 
-&prerequisite.merit.cloak_of_leaves [v(d.dd)]=cand(u(.is, %0, bio.court, autumn), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.merit.cloak_of_leaves [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Autumn), 5), cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.merit.cloak_of_leaves [v(d.dd)]=Autumn Mantle 3+
+&prereq-text.merit.cloak_of_leaves [v(d.dd)]=Must have Mantle 3 and be of the Autumn court, or have Court Goodwill (Autumn) 5.
 
 &tags.merit.cloak_of_leaves [v(d.dt)]=changeling.court.autumn
 
 &merit.cold_hearted [v(d.dd)]=3
 
-&prerequisite.merit.cold_hearted [v(d.dd)]=cand(u(.is, %0, bio.court, winter), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.merit.cold_hearted [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Winter), 5), cand(u(.is, %0, bio.court, Winter), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.merit.cold_hearted [v(d.dd)]=Winter Mantle 3+
+&prereq-text.merit.cold_hearted [v(d.dd)]=Must have Mantle 3 and be of the Winter court, or have Court Goodwill (Winter) 5.
 
 &tags.merit.cold_hearted [v(d.dt)]=changeling.court.winter
 
@@ -354,9 +361,9 @@ think Merit time!
 
 &merit.firebrand [v(d.dd)]=2
 
-&prerequisite.merit.firebrand [v(d.dd)]=cand(u(.is, %0, bio.court, summer), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.merit.firebrand [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Summer), 5), cand(u(.is, %0, bio.court, Summer), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.merit.firebrand [v(d.dd)]=Summer Mantle 3+
+&prereq-text.merit.firebrand [v(d.dd)]=Must have Mantle 3 and be of the Summer court, or have Court Goodwill (Summer) 5.
 
 &tags.merit.firebrand [v(d.dt)]=changeling.court.summer
 
@@ -378,9 +385,9 @@ think Merit time!
 
 &merit.grounded [v(d.dd)]=3
 
-&prerequisite.merit.grounded [v(d.dd)]=cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.merit.grounded [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Spring), 5), cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.merit.grounded [v(d.dd)]=Spring Mantle 3+
+&prereq-text.merit.grounded [v(d.dd)]=Must have Mantle 3+ and be of the Spring court, or have Court Goodwill (Spring) 5.
 
 &tags.merit.grounded [v(d.dt)]=changeling.court.spring
 
@@ -496,9 +503,13 @@ think Merit time!
 
 &merit.dream_shaper [v(d.dd)]=2
 
-&prerequisite.merit.dream_shaper [v(d.dt)]=u(.has, %0, merit.lucid_dreamer)
+&prerequisite.merit.dream_shaper [v(d.dt)]=
 
-&prereq-text.merit.dream_shaper [v(d.dt)]=Merit: Lucid Dreamer
+&prereq-text.merit.dream_shaper [v(d.dt)]=
+
+&prerequisite.merit.dream_shaper [v( d.dd )]=u( .has, %0, merit.lucid_dreamer )
+
+&prereq-text.merit.dream_shaper [v( d.dd )]=Merit: Lucid Dreamer
 
 &tags.merit.dream_shaper [v(d.dt)]=fae-touched
 
@@ -510,25 +521,37 @@ think Merit time!
 
 &merit.find_the_oathbreaker [v(d.dd)]=2
 
-&prerequisite.merit.find_the_oathbreaker [v(d.dt)]=u(.has, %0, merit.sense_vows)
+&prerequisite.merit.find_the_oathbreaker [v(d.dt)]=
 
-&prereq-text.merit.find_the_oathbreaker [v(d.dt)]=Merit: Sense Vows
+&prereq-text.merit.find_the_oathbreaker [v(d.dt)]=
+
+&prerequisite.merit.find_the_oathbreaker [v(d.dd)]=u(.has, %0, merit.sense_vows)
+
+&prereq-text.merit.find_the_oathbreaker [v(d.dd)]=Merit: Sense Vows
 
 &tags.merit.find_the_oathbreaker [v(d.dt)]=fae-touched
 
 &merit.hedge_delver [v(d.dd)]=2
 
-&prerequisite.merit.hedge_delver [v(d.dt)]=u(.at_least, %0, skill.survival, 2)
+&prerequisite.merit.hedge_delver [v(d.dt)]=
 
-&prereq-text.merit.hedge_delver [v(d.dt)]=Survival 2+
+&prereq-text.merit.hedge_delver [v(d.dt)]=
+
+&prerequisite.merit.hedge_delver [v(d.dd)]=u(.at_least, %0, skill.survival, 2)
+
+&prereq-text.merit.hedge_delver [v(d.dd)]=Survival 2+
 
 &tags.merit.hedge_delver [v(d.dt)]=fae-touched
 
 &merit.oathkeeper [v(d.dd)]=3
 
-&prerequisite.merit.oathkeeper [v(d.dt)]=u(.at_least, %0, attribute.resolve, 3)
+&prerequisite.merit.oathkeeper [v(d.dt)]=
 
-&prereq-text.merit.oathkeeper [v(d.dt)]=Resolve 3+
+&prereq-text.merit.oathkeeper [v(d.dt)]=
+
+&prerequisite.merit.oathkeeper [v(d.dd)]=u(.at_least, %0, attribute.resolve, 3)
+
+&prereq-text.merit.oathkeeper [v(d.dd)]=Resolve 3+
 
 &tags.merit.oathkeeper [v(d.dt)]=fae-touched
 
@@ -558,9 +581,13 @@ think Merit time!
 
 &merit.punish_the_oathbreaker [v(d.dd)]=2
 
-&prerequisite.merit.punish_the_oathbreaker [v(d.dt)]=u(.has, %0, merit.find_the_oathbreaker)
+&prerequisite.merit.punish_the_oathbreaker [v(d.dt)]=
 
-&prereq-text.merit.punish_the_oathbreaker [v(d.dt)]=Merit: Find the Oathbreaker
+&prereq-text.merit.punish_the_oathbreaker [v(d.dt)]=
+
+&prerequisite.merit.punish_the_oathbreaker [v(d.dd)]=u(.has, %0, merit.find_the_oathbreaker)
+
+&prereq-text.merit.punish_the_oathbreaker [v(d.dd)]=Merit: Find the Oathbreaker
 
 &tags.merit.punish_the_oathbreaker [v(d.dt)]=fae-touched
 
@@ -821,321 +848,321 @@ think Contracts going in now...
 
 &tags.contract.cupid's_arrow [v(d.dt)]=changeling.spring.common.fae-touched
 
-&prerequisite.contract.cupid's_arrow [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Spring))
+&prerequisite.contract.cupid's_arrow [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Spring), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Spring)))
 
-&prereq-text.contract.cupid's_arrow [v(d.dd)]=Must have Mantle 1 and be of the Spring court.
+&prereq-text.contract.cupid's_arrow [v(d.dd)]=Must have Mantle 1 and be of the Spring court, or have Court Goodwill (Spring) 3.
 
 &contract.dreams_of_the_earth [v(d.dd)]=1
 
 &tags.contract.dreams_of_the_earth [v(d.dt)]=changeling.spring.common.fae-touched
 
-&prerequisite.contract.dreams_of_the_earth [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Spring))
+&prerequisite.contract.dreams_of_the_earth [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Spring), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Spring)))
 
-&prereq-text.contract.dreams_of_the_earth [v(d.dd)]=Must have Mantle 1 and be of the Spring court.
+&prereq-text.contract.dreams_of_the_earth [v(d.dd)]=Must have Mantle 1 and be of the Spring court, or have Court Goodwill (Spring) 3.
 
 &contract.gift_of_warm_breath [v(d.dd)]=1
 
 &tags.contract.gift_of_warm_breath [v(d.dt)]=changeling.spring.common.fae-touched
 
-&prerequisite.contract.gift_of_warm_breath [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Spring))
+&prerequisite.contract.gift_of_warm_breath [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Spring), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Spring)))
 
-&prereq-text.contract.gift_of_warm_breath [v(d.dd)]=Must have Mantle 1 and be of the Spring court.
+&prereq-text.contract.gift_of_warm_breath [v(d.dd)]=Must have Mantle 1 and be of the Spring court, or have Court Goodwill (Spring) 3.
 
 &contract.spring's_kiss [v(d.dd)]=1
 
 &tags.contract.spring's_kiss [v(d.dt)]=changeling.spring.common.fae-touched
 
-&prerequisite.contract.spring's_kiss [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Spring))
+&prerequisite.contract.spring's_kiss [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Spring), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Spring)))
 
-&prereq-text.contract.spring's_kiss [v(d.dd)]=Must have Mantle 1 and be of the Spring court.
+&prereq-text.contract.spring's_kiss [v(d.dd)]=Must have Mantle 1 and be of the Spring court, or have Court Goodwill (Spring) 3.
 
 &contract.wyrd-faced_stranger [v(d.dd)]=1
 
 &tags.contract.wyrd-faced_stranger [v(d.dt)]=changeling.spring.common.fae-touched
 
-&prerequisite.contract.wyrd-faced_stranger [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Spring))
+&prerequisite.contract.wyrd-faced_stranger [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Spring), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Spring)))
 
-&prereq-text.contract.wyrd-faced_stranger [v(d.dd)]=Must have Mantle 1 and be of the Spring court.
+&prereq-text.contract.wyrd-faced_stranger [v(d.dd)]=Must have Mantle 1 and be of the Spring court, or have Court Goodwill (Spring) 3.
 
 &contract.blessing_of_spring [v(d.dd)]=1
 
 &tags.contract.blessing_of_spring [v(d.dt)]=changeling.spring.royal.fae-touched
 
-&prerequisite.contract.blessing_of_spring [v(d.dd)]=cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.blessing_of_spring [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Spring), 5), cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.blessing_of_spring [v(d.dd)]=Spring Mantle 3+
+&prereq-text.contract.blessing_of_spring [v(d.dd)]=Must have Mantle 3+ and be of the Spring court, or have Court Goodwill (Spring) 5.
 
 &contract.gift_of_warm_blood [v(d.dd)]=1
 
 &tags.contract.gift_of_warm_blood [v(d.dt)]=changeling.spring.royal.fae-touched
 
-&prerequisite.contract.gift_of_warm_blood [v(d.dd)]=cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.gift_of_warm_blood [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Spring), 5), cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.gift_of_warm_blood [v(d.dd)]=Spring Mantle 3+
+&prereq-text.contract.gift_of_warm_blood [v(d.dd)]=Must have Mantle 3+ and be of the Spring court, or have Court Goodwill (Spring) 5.
 
 &contract.pandora's_gift [v(d.dd)]=1
 
 &tags.contract.pandora's_gift [v(d.dt)]=changeling.spring.royal.fae-touched
 
-&prerequisite.contract.pandora's_gift [v(d.dd)]=cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.pandora's_gift [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Spring), 5), cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.pandora's_gift [v(d.dd)]=Spring Mantle 3+
+&prereq-text.contract.pandora's_gift [v(d.dd)]=Must have Mantle 3+ and be of the Spring court, or have Court Goodwill (Spring) 5.
 
 &contract.prince_of_ivy [v(d.dd)]=1
 
 &tags.contract.prince_of_ivy [v(d.dt)]=changeling.spring.royal.fae-touched
 
-&prerequisite.contract.prince_of_ivy [v(d.dd)]=cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.prince_of_ivy [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Spring), 5), cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.prince_of_ivy [v(d.dd)]=Spring Mantle 3+
+&prereq-text.contract.prince_of_ivy [v(d.dd)]=Must have Mantle 3+ and be of the Spring court, or have Court Goodwill (Spring) 5.
 
 &contract.waking_the_inner_fae [v(d.dd)]=1
 
 &tags.contract.waking_the_inner_fae [v(d.dt)]=changeling.spring.royal.fae-touched
 
-&prerequisite.contract.waking_the_inner_fae [v(d.dd)]=cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.waking_the_inner_fae [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Spring), 5), cand(u(.is, %0, bio.court, spring), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.waking_the_inner_fae [v(d.dd)]=Spring Mantle 3+
+&prereq-text.contract.waking_the_inner_fae [v(d.dd)]=Must have Mantle 3+ and be of the Spring court, or have Court Goodwill (Spring) 5.
 
 &contract.baleful_sense [v(d.dd)]=1
 
 &tags.contract.baleful_sense [v(d.dt)]=changeling.summer.common.fae-touched
 
-&prerequisite.contract.baleful_sense [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Summer))
+&prerequisite.contract.baleful_sense [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Summer), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Summer)))
 
-&prereq-text.contract.baleful_sense [v(d.dd)]=Must have Mantle 1 and be of the Summer court.
+&prereq-text.contract.baleful_sense [v(d.dd)]=Must have Mantle 1 and be of the Summer court, or have Court Goodwill (Summer) 3.
 
 &contract.child_of_the_hearth [v(d.dd)]=1
 
 &tags.contract.child_of_the_hearth [v(d.dt)]=changeling.summer.common.fae-touched
 
-&prerequisite.contract.child_of_the_hearth [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Summer))
+&prerequisite.contract.child_of_the_hearth [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Summer), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Summer)))
 
-&prereq-text.contract.child_of_the_hearth [v(d.dd)]=Must have Mantle 1 and be of the Summer court.
+&prereq-text.contract.child_of_the_hearth [v(d.dd)]=Must have Mantle 1 and be of the Summer court, or have Court Goodwill (Summer) 3.
 
 &contract.helios'_light [v(d.dd)]=1
 
 &tags.contract.helios'_light [v(d.dt)]=changeling.summer.common.fae-touched
 
-&prerequisite.contract.helios'_light [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Summer))
+&prerequisite.contract.helios'_light [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Summer), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Summer)))
 
-&prereq-text.contract.helios'_light [v(d.dd)]=Must have Mantle 1 and be of the Summer court.
+&prereq-text.contract.helios'_light [v(d.dd)]=Must have Mantle 1 and be of the Summer court, or have Court Goodwill (Summer) 3.
 
 &contract.high_summer's_zeal [v(d.dd)]=1
 
 &tags.contract.high_summer's_zeal [v(d.dt)]=changeling.summer.common.fae-touched
 
-&prerequisite.contract.high_summer's_zeal [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Summer))
+&prerequisite.contract.high_summer's_zeal [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Summer), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Summer)))
 
-&prereq-text.contract.high_summer's_zeal [v(d.dd)]=Must have Mantle 1 and be of the Summer court.
+&prereq-text.contract.high_summer's_zeal [v(d.dd)]=Must have Mantle 1 and be of the Summer court, or have Court Goodwill (Summer) 3.
 
 &contract.vigilance_of_ares [v(d.dd)]=1
 
 &tags.contract.vigilance_of_ares [v(d.dt)]=changeling.summer.common.fae-touched
 
-&prerequisite.contract.vigilance_of_ares [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Summer))
+&prerequisite.contract.vigilance_of_ares [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Summer), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Summer)))
 
-&prereq-text.contract.vigilance_of_ares [v(d.dd)]=Must have Mantle 1 and be of the Summer court.
+&prereq-text.contract.vigilance_of_ares [v(d.dd)]=Must have Mantle 1 and be of the Summer court, or have Court Goodwill (Summer) 3.
 
 &contract.fiery_tongue [v(d.dd)]=1
 
 &tags.contract.fiery_tongue [v(d.dt)]=changeling.summer.royal.fae-touched
 
-&prerequisite.contract.fiery_tongue [v(d.dd)]=cand(u(.is, %0, bio.court, Summer), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.fiery_tongue [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Summer), 5), cand(u(.is, %0, bio.court, Summer), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.fiery_tongue [v(d.dd)]=Summer Mantle 3+
+&prereq-text.contract.fiery_tongue [v(d.dd)]=Must have Mantle 3 and be of the Summer court, or have Court Goodwill (Summer) 5.
 
 &contract.flames_of_summer [v(d.dd)]=1
 
 &tags.contract.flames_of_summer [v(d.dt)]=changeling.summer.royal.fae-touched
 
-&prerequisite.contract.flames_of_summer [v(d.dd)]=cand(u(.is, %0, bio.court, Summer), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.flames_of_summer [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Summer), 5), cand(u(.is, %0, bio.court, Summer), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.flames_of_summer [v(d.dd)]=Summer Mantle 3+
+&prereq-text.contract.flames_of_summer [v(d.dd)]=Must have Mantle 3 and be of the Summer court, or have Court Goodwill (Summer) 5.
 
 &contract.helios'_judgement [v(d.dd)]=1
 
 &tags.contract.helios'_judgement [v(d.dt)]=changeling.summer.royal.fae-touched
 
-&prerequisite.contract.helios'_judgement [v(d.dd)]=cand(u(.is, %0, bio.court, Summer), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.helios'_judgement [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Summer), 5), cand(u(.is, %0, bio.court, Summer), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.helios'_judgement [v(d.dd)]=Summer Mantle 3+
+&prereq-text.contract.helios'_judgement [v(d.dd)]=Must have Mantle 3 and be of the Summer court, or have Court Goodwill (Summer) 5.
 
 &contract.solstice_revelation [v(d.dd)]=1
 
 &tags.contract.solstice_revelation [v(d.dt)]=changeling.summer.royal.fae-touched
 
-&prerequisite.contract.solstice_revelation [v(d.dd)]=cand(u(.is, %0, bio.court, Summer), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.solstice_revelation [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Summer), 5), cand(u(.is, %0, bio.court, Summer), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.solstice_revelation [v(d.dd)]=Summer Mantle 3+
+&prereq-text.contract.solstice_revelation [v(d.dd)]=Must have Mantle 3 and be of the Summer court, or have Court Goodwill (Summer) 5.
 
 &contract.sunburnt_heart [v(d.dd)]=1
 
 &tags.contract.sunburnt_heart [v(d.dt)]=changeling.summer.royal.fae-touched
 
-&prerequisite.contract.sunburnt_heart [v(d.dd)]=cand(u(.is, %0, bio.court, Summer), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.sunburnt_heart [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Summer), 5), cand(u(.is, %0, bio.court, Summer), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.sunburnt_heart [v(d.dd)]=Summer Mantle 3+
+&prereq-text.contract.sunburnt_heart [v(d.dd)]=Must have Mantle 3 and be of the Summer court, or have Court Goodwill (Summer) 5.
 
 &contract.autumn's_fury [v(d.dd)]=1
 
 &tags.contract.autumn's_fury [v(d.dt)]=changeling.autumn.common.fae-touched
 
-&prerequisite.contract.autumn's_fury [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Autumn))
+&prerequisite.contract.autumn's_fury [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Autumn), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Autumn)))
 
-&prereq-text.contract.autumn's_fury [v(d.dd)]=Must have Mantle 1 and be of the Autumn court.
+&prereq-text.contract.autumn's_fury [v(d.dd)]=Must have Mantle 1 and be of the Autumn court, or have Court Goodwill (Autumn) 3.
 
 &contract.last_harvest [v(d.dd)]=1
 
 &tags.contract.last_harvest [v(d.dt)]=changeling.autumn.common.fae-touched
 
-&prerequisite.contract.last_harvest [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Autumn))
+&prerequisite.contract.last_harvest [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Autumn), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Autumn)))
 
-&prereq-text.contract.last_harvest [v(d.dd)]=Must have Mantle 1 and be of the Autumn court.
+&prereq-text.contract.last_harvest [v(d.dd)]=Must have Mantle 1 and be of the Autumn court, or have Court Goodwill (Autumn) 3.
 
 &contract.tale_of_the_baba_yaga [v(d.dd)]=1
 
 &tags.contract.tale_of_the_baba_yaga [v(d.dt)]=changeling.autumn.common.fae-touched
 
-&prerequisite.contract.tale_of_the_baba_yaga [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Autumn))
+&prerequisite.contract.tale_of_the_baba_yaga [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Autumn), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Autumn)))
 
-&prereq-text.contract.tale_of_the_baba_yaga [v(d.dd)]=Must have Mantle 1 and be of the Autumn court.
+&prereq-text.contract.tale_of_the_baba_yaga [v(d.dd)]=Must have Mantle 1 and be of the Autumn court, or have Court Goodwill (Autumn) 3.
 
 &contract.twilight's_harbinger [v(d.dd)]=1
 
 &tags.contract.twilight's_harbinger [v(d.dt)]=changeling.autumn.common.fae-touched
 
-&prerequisite.contract.twilight's_harbinger [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Autumn))
+&prerequisite.contract.twilight's_harbinger [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Autumn), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Autumn)))
 
-&prereq-text.contract.twilight's_harbinger [v(d.dd)]=Must have Mantle 1 and be of the Autumn court.
+&prereq-text.contract.twilight's_harbinger [v(d.dd)]=Must have Mantle 1 and be of the Autumn court, or have Court Goodwill (Autumn) 3.
 
 &contract.witches'_intuition [v(d.dd)]=1
 
 &tags.contract.witches'_intuition [v(d.dt)]=changeling.autumn.common.fae-touched
 
-&prerequisite.contract.witches'_intuition [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Autumn))
+&prerequisite.contract.witches'_intuition [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Autumn), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Autumn)))
 
-&prereq-text.contract.witches'_intuition [v(d.dd)]=Must have Mantle 1 and be of the Autumn court.
+&prereq-text.contract.witches'_intuition [v(d.dd)]=Must have Mantle 1 and be of the Autumn court, or have Court Goodwill (Autumn) 3.
 
 &contract.famine's_bulwark [v(d.dd)]=1
 
 &tags.contract.famine's_bulwark [v(d.dt)]=changeling.autumn.royal.fae-touched
 
-&prerequisite.contract.famine's_bulwark [v(d.dd)]=cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.famine's_bulwark [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Autumn), 5), cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.famine's_bulwark [v(d.dd)]=Autumn Mantle 3+
+&prereq-text.contract.famine's_bulwark [v(d.dd)]=Must have Mantle 3 and be of the Autumn court, or have Court Goodwill (Autumn) 5.
 
 &contract.mien_of_the_baba_yaga [v(d.dd)]=1
 
 &tags.contract.mien_of_the_baba_yaga [v(d.dt)]=changeling.autumn.royal.fae-touched
 
-&prerequisite.contract.mien_of_the_baba_yaga [v(d.dd)]=cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.mien_of_the_baba_yaga [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Autumn), 5), cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.mien_of_the_baba_yaga [v(d.dd)]=Autumn Mantle 3+
+&prereq-text.contract.mien_of_the_baba_yaga [v(d.dd)]=Must have Mantle 3 and be of the Autumn court, or have Court Goodwill (Autumn) 5.
 
 &contract.riding_the_falling_leaves [v(d.dd)]=1
 
 &tags.contract.riding_the_falling_leaves [v(d.dt)]=changeling.autumn.royal.fae-touched
 
-&prerequisite.contract.riding_the_falling_leaves [v(d.dd)]=cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.riding_the_falling_leaves [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Autumn), 5), cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.riding_the_falling_leaves [v(d.dd)]=Autumn Mantle 3+
+&prereq-text.contract.riding_the_falling_leaves [v(d.dd)]=Must have Mantle 3 and be of the Autumn court, or have Court Goodwill (Autumn) 5.
 
 &contract.sorcerer's_rebuke [v(d.dd)]=1
 
 &tags.contract.sorcerer's_rebuke [v(d.dt)]=changeling.autumn.royal.fae-touched
 
-&prerequisite.contract.sorcerer's_rebuke [v(d.dd)]=cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.sorcerer's_rebuke [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Autumn), 5), cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.sorcerer's_rebuke [v(d.dd)]=Autumn Mantle 3+
+&prereq-text.contract.sorcerer's_rebuke [v(d.dd)]=Must have Mantle 3 and be of the Autumn court, or have Court Goodwill (Autumn) 5.
 
 &contract.tasting_the_harvest [v(d.dd)]=1
 
 &tags.contract.tasting_the_harvest [v(d.dt)]=changeling.autumn.royal.fae-touched
 
-&prerequisite.contract.tasting_the_harvest [v(d.dd)]=cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.tasting_the_harvest [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Autumn), 5), cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.tasting_the_harvest [v(d.dd)]=Autumn Mantle 3+
+&prereq-text.contract.tasting_the_harvest [v(d.dd)]=Must have Mantle 3 and be of the Autumn court, or have Court Goodwill (Autumn) 5.
 
 &contract.the_dragon_knows [v(d.dd)]=1
 
 &tags.contract.the_dragon_knows [v(d.dt)]=changeling.winter.common.fae-touched
 
-&prerequisite.contract.the_dragon_knows [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Winter))
+&prerequisite.contract.the_dragon_knows [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Winter), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Winter)))
 
-&prereq-text.contract.the_dragon_knows [v(d.dd)]=Must have Mantle 1 and be of the Winter court.
+&prereq-text.contract.the_dragon_knows [v(d.dd)]=Must have Mantle 1 and be of the Winter court, or have Court Goodwill (Winter) 3.
 
 &contract.heart_of_ice [v(d.dd)]=1
 
 &tags.contract.heart_of_ice [v(d.dt)]=changeling.winter.common.fae-touched
 
-&prerequisite.contract.heart_of_ice [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Winter))
+&prerequisite.contract.heart_of_ice [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Winter), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Winter)))
 
-&prereq-text.contract.heart_of_ice [v(d.dd)]=Must have Mantle 1 and be of the Winter court.
+&prereq-text.contract.heart_of_ice [v(d.dd)]=Must have Mantle 1 and be of the Winter court, or have Court Goodwill (Winter) 3.
 
 &contract.ice_queen's_call [v(d.dd)]=1
 
 &tags.contract.ice_queen's_call [v(d.dt)]=changeling.winter.common.fae-touched
 
-&prerequisite.contract.ice_queen's_call [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Winter))
+&prerequisite.contract.ice_queen's_call [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Winter), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Winter)))
 
-&prereq-text.contract.ice_queen's_call [v(d.dd)]=Must have Mantle 1 and be of the Winter court.
+&prereq-text.contract.ice_queen's_call [v(d.dd)]=Must have Mantle 1 and be of the Winter court, or have Court Goodwill (Winter) 3.
 
 &contract.slipknot_dreams [v(d.dd)]=1
 
 &tags.contract.slipknot_dreams [v(d.dt)]=changeling.winter.common.fae-touched
 
-&prerequisite.contract.slipknot_dreams [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Winter))
+&prerequisite.contract.slipknot_dreams [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Winter), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Winter)))
 
-&prereq-text.contract.slipknot_dreams [v(d.dd)]=Must have Mantle 1 and be of the Winter court.
+&prereq-text.contract.slipknot_dreams [v(d.dd)]=Must have Mantle 1 and be of the Winter court, or have Court Goodwill (Winter) 3.
 
 &contract.touch_of_winter [v(d.dd)]=1
 
 &tags.contract.touch_of_winter [v(d.dt)]=changeling.winter.common.fae-touched
 
-&prerequisite.contract.touch_of_winter [v(d.dd)]=cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Winter))
+&prerequisite.contract.touch_of_winter [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Winter), 3), cand(u(.has, %0, merit.mantle), u(.is, %0, bio.court, Winter)))
 
-&prereq-text.contract.touch_of_winter [v(d.dd)]=Must have Mantle 1 and be of the Winter court.
+&prereq-text.contract.touch_of_winter [v(d.dd)]=Must have Mantle 1 and be of the Winter court, or have Court Goodwill (Winter) 3.
 
 &contract.ermine's_winter_coat [v(d.dd)]=1
 
 &tags.contract.ermine's_winter_coat [v(d.dt)]=changeling.winter.royal.fae-touched
 
-&prerequisite.contract.ermine's_winter_coat [v(d.dd)]=cand(u(.is, %0, bio.court, Winter), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.ermine's_winter_coat [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Winter), 5), cand(u(.is, %0, bio.court, Winter), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.ermine's_winter_coat [v(d.dd)]=Winter Mantle 3+
+&prereq-text.contract.ermine's_winter_coat [v(d.dd)]=Must have Mantle 3 and be of the Winter court, or have Court Goodwill (Winter) 5.
 
 &contract.fallow_fields [v(d.dd)]=1
 
 &tags.contract.fallow_fields [v(d.dt)]=changeling.winter.royal.fae-touched
 
-&prerequisite.contract.fallow_fields [v(d.dd)]=cand(u(.is, %0, bio.court, Winter), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.fallow_fields [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Winter), 5), cand(u(.is, %0, bio.court, Winter), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.fallow_fields [v(d.dd)]=Winter Mantle 3+
+&prereq-text.contract.fallow_fields [v(d.dd)]=Must have Mantle 3 and be of the Winter court, or have Court Goodwill (Winter) 5.
 
 &contract.field_of_regret [v(d.dd)]=1
 
 &tags.contract.field_of_regret [v(d.dt)]=changeling.winter.royal.fae-touched
 
-&prerequisite.contract.field_of_regret [v(d.dd)]=cand(u(.is, %0, bio.court, Winter), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.field_of_regret [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Winter), 5), cand(u(.is, %0, bio.court, Winter), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.field_of_regret [v(d.dd)]=Winter Mantle 3+
+&prereq-text.contract.field_of_regret [v(d.dd)]=Must have Mantle 3 and be of the Winter court, or have Court Goodwill (Winter) 5.
 
 &contract.mantle_of_frost [v(d.dd)]=1
 
 &tags.contract.mantle_of_frost [v(d.dt)]=changeling.winter.royal.fae-touched
 
-&prerequisite.contract.mantle_of_frost [v(d.dd)]=cand(u(.is, %0, bio.court, Winter), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.mantle_of_frost [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Winter), 5), cand(u(.is, %0, bio.court, Winter), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.mantle_of_frost [v(d.dd)]=Winter Mantle 3+
+&prereq-text.contract.mantle_of_frost [v(d.dd)]=Must have Mantle 3 and be of the Winter court, or have Court Goodwill (Winter) 5.
 
 &contract.winter's_curse [v(d.dd)]=1
 
 &tags.contract.winter's_curse [v(d.dt)]=changeling.winter.royal.fae-touched
 
-&prerequisite.contract.winter's_curse [v(d.dd)]=cand(u(.is, %0, bio.court, Winter), u(.at_least, %0, merit.mantle, 3))
+&prerequisite.contract.winter's_curse [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Winter), 5), cand(u(.is, %0, bio.court, Winter), u(.at_least, %0, merit.mantle, 3)))
 
-&prereq-text.contract.winter's_curse [v(d.dd)]=Winter Mantle 3+
+&prereq-text.contract.winter's_curse [v(d.dd)]=Must have Mantle 3 and be of the Winter court, or have Court Goodwill (Winter) 5.
 
 &contract.blessing_of_forgetfulness [v(d.dd)]=1
 
@@ -1255,7 +1282,7 @@ think Chargen checks being created.
 
 &check.bio.changeling [v(d.cg)]=seeming kith court needle thread chosen_regalia
 
-&check.chargen.attributes.changeling [v(d.cg)]=strcat(setq(f, v(d.changeling.blessing_attributes.[get(%0/_bio.seeming)])), setq(a, lcstr(iter(lattr(%0/_attribute.*.royal), edit(elements(%i0, 2, .), BASE_, )))), setq(i, setinter(%qa, %qf)), setq(c, ulocal(f.pts-valid?.attributes, %0, attribute.%qi:-1)), ulocal(f.allocated.attributes, %0), %b, %(of 5/4/3 + favored%), %b, ulocal(display.check.stats, %0, attributes, attribute.%qa:-1), %r, %b %b%b, ansi(h, Favored Attribute), :, %b, titlestr(itemize(%qa)), %b, %[, case(1, eq(words(%qa), 0), ansi(r, none set), gt(words(%qa), 1), ansi(r, too many set), neq(words(%qi), 1), ansi(r, not allowed for your seeming), not(%qc), ansi(r, bonus point not spent), ansi(g, OK)), %])
+&check.chargen.attributes.changeling [v(d.cg)]=strcat(setq(f, v(d.changeling.blessing_attributes.[get(%0/_bio.seeming)])), setq(a, lcstr(iter(lattr(%0/_attribute.*.favored), edit(elements(%i0, 2, .), BASE_, )))), setq(i, setinter(%qa, %qf)), setq(c, ulocal(f.pts-valid?.attributes, %0, attribute.%qi:-1)), ulocal(f.allocated.attributes, %0), %b, %(of 5/4/3 + favored%), %b, ulocal(display.check.stats, %0, attributes, attribute.%qa:-1), %r, %b %b%b, ansi(h, Favored Attribute), :, %b, titlestr(itemize(%qa)), %b, %[, case(1, eq(words(%qa), 0), ansi(r, none set), gt(words(%qa), 1), ansi(r, too many set), neq(words(%qi), 1), ansi(r, not allowed for your seeming), not(%qc), ansi(r, bonus point not spent), ansi(g, OK)), %])
 
 &d.changeling.blessing_attributes.darkling [v(d.cg)]=wits dexterity manipulation
 
@@ -1269,7 +1296,7 @@ think Chargen checks being created.
 
 &d.changeling.blessing_attributes.wizened [v(d.cg)]=wits dexterity manipulation
 
-&f.allocated.merits.changeling [v(d.cg)]=t(get(%0/_merit.mantle))
+&f.allocated.merits.changeling [v(d.cg)]=cand(not( strmatch( get( %0/_bio.court ), Courtless )), hasattr( %0, _merit.mantle ))
 
 &check.chargen.changeling [v(d.cg)]=strcat(setq(0, u(f.allocated.merits.changeling, %0)), setq(1, get(%0/_bio.court)), if(and(t(%q1), not(match(%q1, Courtless))), strcat(%b, %b, ansi( h, Free Mantle ), :, %b, u( display.check.ok-no, gte(%q0, 1)), %r)), u(check.contracts, %0, changeling))
 
@@ -1277,7 +1304,7 @@ think Chargen checks being created.
 
 &check.contracts [v(d.cg)]=udefault(check.contracts.[get(%0/_bio.template)], ** check failed **, %0)
 
-&check.contracts.changeling [v(d.cg)]=strcat(setq(9, u(f.allocated.contracts, %0)), setq(a, first(%q9, `)), setq(f, extract(%q9, 2, 1, `)), setq(c, extract(%q9, 3, 1, `)), setq(r, extract(%q9, 4, 1, `)), setq(o, extract(%q9, 5, 1, `)), setq(i, extract(%q9, 6, 1, `)), setq(n, extract(%q9, 7, 1, `)), setq(m, get(%0/_bio.seeming)), %b, %b, ansi(h, Total contracts), :, %b, if(eq(%qa, 0), ansi(xh, <none>), %qa), %b, %(of 6%), %b, u(check.contracts.changeling.total, %qa), %r, %b, %b, %b, %b, ansi(h, Common Chosen or Seeming Regalia), :, %b, if(eq(%qf, 0), ansi(xh, <none>), %qf), %b, %(at least 2%), %b, u(check.contracts.changeling.favored, %qf), %r, %b, %b, %b, %b, ansi(h, Common or Goblin), :, %b, if(eq(%qc, 0), ansi(xh, <none>), %qc), %b, %(at least 2%), %b, u(check.contracts.changeling.common, %qc), %r, %b, %b, %b, %b, ansi(h, Royal Chosen Regalia%, Seeming Regalia%, or Court), :, %b, if(eq(%qr, 0), ansi(xh, <none>), %qr), %b, %(at least 2%), %b, u(check.contracts.changeling.royal, %qr), %r, %b, %b, %b, %b, ansi(h, Out-of-seeming Benefits), :, %b, if(eq(%qo, 0), ansi(xh, <none>), %qo), %b, %(of none%), %b, u(check.contracts.changeling.out-of-seeming, %qo), %r, %b, %b, %b, %b, ansi(h, In-seeming Benefits), :, %b, if(t(%qi), strcat(u(display.check.ok-no, 0), iter(%qn, strcat(%r, space(6), stat/set, %b, statname(rest(itext(0), .)), ., %qm, =1),, null(1))), u(display.check.ok-no, 1)))
+&check.contracts.changeling [v(d.cg)]=strcat(setq(9, u(f.allocated.contracts, %0)), setq(a, first(%q9, `)), setq(f, extract(%q9, 2, 1, `)), setq(c, extract(%q9, 3, 1, `)), setq(r, extract(%q9, 4, 1, `)), setq(o, extract(%q9, 5, 1, `)), setq(i, extract(%q9, 6, 1, `)), setq(n, extract(%q9, 7, 1, `)), setq(m, get(%0/_bio.seeming)), %b, %b, ansi(h, Total contracts), :, %b, if(eq(%qa, 0), ansi(xh, <none>), %qa), %b, %(of 6%), %b, u(check.contracts.changeling.total, %qa), %r, %b, %b, %b, %b, ansi(h, Common Chosen or Seeming Regalia), :, %b, if(eq(%qf, 0), ansi(xh, <none>), %qf), %b, %(at least 2%), %b, u(check.contracts.changeling.favored, %qf), %r, %b, %b, %b, %b, ansi(h, Common or Goblin), :, %b, if(eq(%qc, 0), ansi(xh, <none>), %qc), %b, %(at least 2%), %b, u(check.contracts.changeling.common, %qc), %r, %b, %b, %b, %b, ansi(h, Royal Chosen Regalia%, Seeming Regalia%, or Court), :, %b, if(eq(%qr, 0), ansi(xh, <none>), %qr), %b, %(at least 2%), %b, u(check.contracts.changeling.royal, %qr), %r, %b, %b, %b, %b, ansi(h, Out-of-seeming Benefits), :, %b, if(eq(%qo, 0), ansi(xh, <none>), %qo), %b, %(of none%), %b, u(check.contracts.changeling.out-of-seeming, %qo), %r, %b, %b, %b, %b, ansi(h, In-seeming Benefits), :, %b, if(t(%qi), strcat(u(display.check.ok-no, 0), iter(%qn, strcat(%r, space(6), stat/set, %b, statname(rest(itext(0), .)), ., %qm, =1),, null(1))), u(display.check.ok-no, 1)), %r)
 
 &check.contracts.changeling.total [v(d.cg)]=u(display.check.ok-no, eq(%0, 6))
 
