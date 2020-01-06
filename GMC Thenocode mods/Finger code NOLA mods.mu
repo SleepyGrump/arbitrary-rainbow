@@ -52,7 +52,7 @@ think Entering 48 lines.
 
 @set FTO=INHERIT SAFE
 
-&c.finger FTO=$^\+?finger(.*)$:think strcat(p:, setr(p, if(t(%1), pmatch(switch(trim(%1), me, %#, trim(%1))), %#))); @assert not(strmatch(%1, /set*))={}; @assert t(%qP)={@pemit %#=}; @assert hastype(%qp, PLAYER)={@pemit %#=u(.msg, finger, Target not found)}; @pemit %#=strcat(wheader(u(display.finger.header, %qp)), %r, u(display.finger.ic, %qp), %r, wdivider(OOC info), %r, u(display.finger.ooc, %qp), %r, if(setr(x, u(display.finger.user, %qp)), strcat(wdivider(Extra info), %r, %qx, %r)), if(isstaff(%#), strcat(wdivider(Staff-only info), %r, u(display.finger.staff, %qp), %r)), wfooter(u(display.finger.footer, %qp)));
+&c.finger FTO=$^\+?finger(.*)$:think strcat(p:, setr(p, if(t(%1), pmatch(switch(trim(%1), me, %#, trim(%1))), %#))); @assert not(strmatch(%1, /set*))={}; @assert t(%qP)={@pemit %#=u(.msg, finger, Target not found)}; @assert hastype(%qp, PLAYER)={@pemit %#=u(.msg, finger, Target not found)}; @pemit %#=strcat(wheader(u(display.finger.header, %qp)), %r, u(display.finger.ic, %qp), %r, wdivider(OOC info), %r, u(display.finger.ooc, %qp), %r, if(setr(x, u(display.finger.user, %qp)), strcat(wdivider(Extra info), %r, %qx, %r)), if(isstaff(%#), strcat(wdivider(Staff-only info), %r, u(display.finger.staff, %qp), %r)), wfooter(u(display.finger.footer, %qp)));
 
 @set FTO/c.finger=regex
 
