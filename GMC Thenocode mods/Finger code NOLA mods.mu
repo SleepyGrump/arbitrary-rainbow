@@ -110,7 +110,7 @@ think Entering 48 lines.
 
 &finger.email FTO=default(%0/_finger-email, Not set.)
 
-&finger.mail FTO=strcat(setq(M, mail(%0)), extract(%qM, 2, 1) unread out of, %b, first(%qM), %b, messages.)
+&finger.mail FTO=strcat(setq(M, mail(%0)), extract(%qM, 2, 1) unread out of, %b, ladd(%qM), %b, messages.)
 
 &finger.note FTO=u(%0/finger-note)
 
