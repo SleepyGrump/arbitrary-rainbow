@@ -63,6 +63,7 @@ Changelog:
 	* Added +eq/clone.
 	* Did +eq/update just to wrap up new functionality.
 	* Added sorting of equipment lists because why the heck not.
+2020-01-07: Made +eq/view work without a name for players. Made it show the untruncated version of the equipment.
 
 ================================================================================
 
