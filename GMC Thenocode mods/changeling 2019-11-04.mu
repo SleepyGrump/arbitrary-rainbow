@@ -285,7 +285,7 @@ think Merit time!
 
 &prereq-text.merit.court_goodwill_() [v(d.dd)]=Cannot have Court Goodwill in your own Court.
 
-&tags.merit.court_goodwill_() [v(d.dt)]=changeling.court
+&tags.merit.court_goodwill_() [v(d.dt)]=changeling.court.fae-touched
 
 &notes.merit.court_goodwill_() [v(d.dt)]=Each court in which a character has Court Goodwill comes with a single dot of Mentor, a changeling who serves as the character's court liaison and helps him understand its rituals, its customs, and its very essence.
 
