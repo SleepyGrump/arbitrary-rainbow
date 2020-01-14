@@ -1,6 +1,11 @@
 /*
+================================================================================
 
-On NOLA, we've already got custom and good-enough +who/+where/etc, but our +finger sucked. Because of the way Theno grouped the commands, replacing +finger with straight-up drop-in code would've been a pain. Besides, we needed to make lots of modifications to ensure that players' existing +finger info showed up, and add our custom fields (of which there are a ton), so... I ported Theno's +finger code from here:
+Dependencies: Thenomain's isapproved() function; Layout functions (wheader, wfooter, wdivider)
+
+================================================================================
+
+On NOLA, we've already got custom and good-enough +who/+where/etc, but our +finger sucked. Because of the way Theno grouped the commands, replacing our +finger with straight-up drop-in copy of his code would've been a pain. Besides, we needed to make lots of modifications to ensure that players' existing +finger info showed up, and add our custom fields (of which there are a ton), so... I ported Theno's +finger code from here:
 
 https://github.com/thenomain/Mu--Support-Systems/blob/master/Brand%20New%20Who%20Where/bnww%20-%2004%20-%20Finger.txt
 
@@ -43,6 +48,11 @@ Available fields are as follows:
 
 * Email: An email address. Only viewable by staff.
 
+================================================================================
+
+Changelog:
+
+2020-01-14: added coloration to staff view of people's alts cuz we have players with over a dozen and sorting the dead from the living was getting hard! This added the dependency of the "isapproved(##, status)" function.
 
 */
 
@@ -138,7 +148,7 @@ think Entering 48 lines.
 
 &finger.last_ip FTO=get(%0/lastip)
 
-&finger.alts FTO=iter(search(eplayer=strmatch(get(##/lastip), extract(get(%0/lastip), 1, 2, .).*), 2), moniker(%i0),, %,%b)
+&finger.alts FTO=iter(search(eplayer=strmatch(get(##/lastip), extract(get(%0/lastip), 1, 2, .).*), 2), switch(isapproved(%i0, status), chargen, ansi(g, name(%i0)), guest, ansi(gh, name(%i0)), unapproved, ansi(xh, name(%i0)), frozen, ansi(xh, name(%i0)), moniker(%i0)),, %,%b)
 
 &finger.badges FTO=itemize(iter(lattr(%0/_badge-*), titlestr(edit(delete(itext(%i0), 0, 7), _, %b)),, %,), %,)
 
