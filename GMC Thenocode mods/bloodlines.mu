@@ -282,6 +282,16 @@ think Entering 362 lines.
 
 &xp.devotion.urshul [v(d.xpcd)]=3
 
+&devotion.first_tongue [v(d.dd)]=-
+
+&prerequisite.devotion.first_tongue [v(d.dd)]=cand(u(.is, %0, bio.bloodline, Dead Wolves), u(.at_least_all, %0, discipline.animalism:1 discipline.protean:2))
+
+&prereq-text.devotion.first_tongue [v(d.dd)]=Dead Wolves Bloodline Devotion;Animalism 1, Protean 2
+
+&tags.devotion.first_tongue [v(d.dt)]=vampire.dead wolves
+
+&xp.devotion.first_tongue [v(d.xpcd)]=1
+
 &d.bloodline.mekhet [v(d.dd)]=Alucinor.Khaibit.Norvegi.Sta-Au
 
 @fo me=&BIO.BLOODLINE [v(d.dd)]=[trim(setunion(get(v(d.dd)/bio.bloodline), get(v(d.dd)/d.bloodline.mekhet), .), b, .)]
