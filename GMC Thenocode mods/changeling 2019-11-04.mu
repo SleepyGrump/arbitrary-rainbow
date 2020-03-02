@@ -22,6 +22,8 @@ https://github.com/thenomain/GMCCG/blob/master/Z%20-%20Game%20Lines/Changeling%2
 
 This file was created on 2019-11-04. Future versions will be updated to the newest date OF THE SOURCE MATERIAL. (Not the date I worked on it.) This will help bug fixers hunt down which commits may not be included in the output.
 
+2020-03-02: updated Touchstone prereq code to get values correctly.
+
 ================================================================================
 
 There are some changes below from the base code:
@@ -1526,7 +1528,7 @@ think Entering clarity info.
 
 &merit.touchstone_() [v(d.dd)]=1|*
 
-&prerequisite.merit.touchstone_() [v(d.dd)]=lte(add(words(lattr(%0/_merit.touchstone_(*))), t(strlen(%2))), sub(u(.value_stat, %0, clarity.maximum), u(.value_stat, %0, attribute.composure)))
+&prerequisite.merit.touchstone_() [v(d.dd)]=lte(add(words(lattr(%0/_merit.touchstone_(*))), t(strlen(%2))), sub(u(.value, %0, clarity.maximum), u(.value, %0, attribute.composure)))
 
 &prereq-text.merit.touchstone_() [v(d.dd)]=May not have more Touchstones than Clairty track allows
 
