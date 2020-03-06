@@ -11,7 +11,7 @@
 
 &layout.list SSP=iter(lnum(add(div(words(%0), 3), t(mod(words(%0), 3)))), u(layout.row-no-values, u(f.lookup-from-list-of-attributes, %0, itext(0), 0), u(f.lookup-from-list-of-attributes, %0, itext(0), 1), u(f.lookup-from-list-of-attributes, %0, itext(0), 2)),, %r)
 
-&layout.note SSP=wrap(strcat(space(3), if(t(%1), strcat(ljust(strcat(%0, :%b), 13), v(%1)), v(%0))), if(t(%1), 60, 74), Left,, space(3), if(t(%1), 16, 3), %r, 74)
+&layout.note SSP=wrap(strcat(space(3), if(t(%1), strcat(ljust(strcat(%0, :%b), 13), v(%1)), v(%0))), if(t(%1), 61, 74), Left,, space(3), if(t(%1), 16, 3), %r, 74)
 l upg
 
 @@ %0 - list to extract from
