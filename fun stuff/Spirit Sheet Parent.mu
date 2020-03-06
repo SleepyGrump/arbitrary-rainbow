@@ -38,6 +38,7 @@ th u(SSP/layout.list, lattr(ssp/influence-*))|
 Sample sheet:
 
 @create Upgrade
+@parent Upgrade=SSP
 
 &power upgrade=3
 &finesse upgrade=3
