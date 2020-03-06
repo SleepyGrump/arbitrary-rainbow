@@ -1,3 +1,11 @@
+/*
+Dependencies:
+	wheader()
+	wfooter()
+	wdivider()
+
+*/
+
 @create Spirit Sheet Parent <SSP>=10
 @set SSP=SAFE
 
@@ -12,7 +20,6 @@
 &layout.list SSP=iter(lnum(add(div(words(%0), 3), t(mod(words(%0), 3)))), u(layout.row-no-values, u(f.lookup-from-list-of-attributes, %0, itext(0), 0), u(f.lookup-from-list-of-attributes, %0, itext(0), 1), u(f.lookup-from-list-of-attributes, %0, itext(0), 2)),, %r)
 
 &layout.note SSP=wrap(strcat(space(3), if(t(%1), strcat(ljust(strcat(%0, :%b), 13), v(%1)), v(%0))), if(t(%1), 61, 74), Left,, space(3), if(t(%1), 16, 3), %r, 74)
-l upg
 
 @@ %0 - list to extract from
 @@ %1 - Which row we're on. 0-index.
@@ -20,9 +27,6 @@ l upg
 @@ Assuming 3-column always.
 
 &f.lookup-from-list-of-attributes SSP=if(gte(words(%0), add(mul(%1, 3), %2, 1)), v(extract(%0, add(mul(%1, 3), %2, 1), 1)))
-
-th u(SSP/layout.list, lattr(ssp/influence-*))|
-
 
 &f.get-trait SSP=min(add(default(%0, 0), default(%1, 0), %2), switch(default(rank, 0), 0, 0, 1, 5, 2, 7, 3, 9, 4, 12, 15))
 
@@ -35,7 +39,8 @@ th u(SSP/layout.list, lattr(ssp/influence-*))|
 @desc SSP=strcat(wheader(strcat(name(me), %b-%b, switch(default(rank, 0), 4, Ensah %(Rank 4%), 3, Ensih %(Rank 3%), 2, Hursih %(Rank 2%), 1, Hursih %(Rank %), 0, Muthra %(Rank 0%), Dihir %(Rank 5+%)))), %r, u(layout.note, Concept, concept), %r, u(layout.note, Aspiration, aspiration), %r, u(layout.note, Ban, ban), %r, u(layout.note, Bane, bane), %r, wdivider(Attributes), %r, u(layout.row, Power, default(power, 0), Finesse, default(finesse, 0), Resistance, default(resistance, 0)), %r, wdivider(Advantages), %r, u(layout.row, Essence, default(essence, 0), Size, u(f.get-size), Species factor, u(f.get-species-factor)), %r, wdivider(Traits), %r, u(layout.row, Willpower, u(f.get-trait, resistance, finesse), Corpus, u(f.get-trait,, resistance, u(f.get-size)), Initiative, u(f.get-trait, finesse, resistance)), %r, u(layout.row, Defense, u(f.get-defense), Speed, u(f.get-trait, power, finesse, u(f.get-species-factor))), %r, wdivider(Influences), %r, u(layout.list-with-values, lattr(me/influence-*)), %r, wdivider(Numina), %r, u(layout.list, lattr(me/numina-*)), %r, wdivider(Notes), %r, iter(sort(lattr(me/note-*)), u(layout.note, itext(0)),, %r%r), %r, wfooter())
 
 /*
-Sample sheet:
+
+Sample spirit sheet:
 
 @create Upgrade
 @parent Upgrade=SSP
