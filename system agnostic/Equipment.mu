@@ -13,7 +13,7 @@ Dependencies:
 
 TO DO: No known development remaining. Report bugs to the github!
 
-* If someone really really wants it, I'll make +eq/give work for players who have a piece of equipment and want to give it away to someone else.
+* If someone really really wants it, I'll make +eq/give work for players who have a piece of equipment and want to give it away to someone else. Not useful for NOLA though.
 
 ================================================================================
 
@@ -41,6 +41,7 @@ Player commands:
 
 * +eq - list your equipment
 * +eq <player name or equipment title> - alias for /view and /details
+* +eq/view - view all of your equipment, untruncated.
 * +eq/details <title> - view details on a piece of equipment
 * +eq/list - list equipment tags
 * +eq/list <tag> - list all equipment in a particular tag
@@ -62,6 +63,7 @@ Changelog:
 	* Added +eq/clone.
 	* Did +eq/update just to wrap up new functionality.
 	* Added sorting of equipment lists because why the heck not.
+2020-01-07: Made +eq/view work without a name for players. Made it show the untruncated version of the equipment.
 
 ================================================================================
 
@@ -106,11 +108,16 @@ e #662/eq-4-*
 
 @@ %0 - player
 @@ %1 - target
-&layout.equipment [v(d.eqf)]=strcat(wheader(if(match(%0, %1), Your, name(%1)'s) equipment, %0), %R, iter(ulocal(f.sort-equipment-attrs, lattr(%1/_eq-*-name), %b), strcat(ulocal(layout.equipment-line, %1, trim(itext(0), l, _)), setq(0, ulocal(f.get-equipment-note, %1, itext(0))), if(t(%q0), strcat(%R, space(3), Note:, %b, %q0))),, %R), %R, wfooter(, %0))
+@@ %2 - if 1, give full details
+&layout.equipment [v(d.eqf)]=strcat(wheader(if(match(%0, %1), Your, name(%1)'s) equipment, %0), %R, iter(ulocal(f.sort-equipment-attrs, lattr(%1/_eq-*-name), %b), strcat(ulocal(if(t(%2), layout.equipment-all-lines, layout.equipment-line), %1, trim(itext(0), l, _)), setq(0, ulocal(f.get-equipment-note, %1, itext(0))), if(t(%q0), strcat(%R, space(3), Note:, %b, %q0))),, %R), %R, wfooter(, %0))
 
 @@ %0 - player
 @@ %1 - equipment attribute
 &layout.equipment-line [v(d.eqf)]=strcat(setq(0, strcat(xget(%vD, %1), :, %b, xget(%vD, edit(%1, NAME, DETAILS)))), setq(1, ulocal(f.get-width, %0)), if(lte(strlen(%q0), sub(%q1, 2)), strcat(%b, %q0), strcat(%b, strtrunc(%q0, sub(%q1, 5)), ...)))
+
+@@ %0 - player
+@@ %1 - equipment attribute
+&layout.equipment-all-lines [v(d.eqf)]=strcat(setq(0, strcat(xget(%vD, %1), :, %b, xget(%vD, edit(%1, NAME, DETAILS)))), if(lte(strlen(%q0), sub(%q1, 2)), strcat(%b, %q0), strcat(%b, %q0)))
 
 @@ %0 - player
 @@ %1 - tag if there is one
@@ -232,7 +239,7 @@ e #662/eq-4-*
 
 &switch.6.take [v(d.eqc)]=@trigger me/tr.equipment-take=%0, before(rest(%1), =), rest(%1, =);
 
-&switch.6.view [v(d.eqc)]=@trigger me/tr.equipment-view=%0, rest(%1);
+&switch.6.view [v(d.eqc)]=@trigger me/tr.equipment-view=%0, if(t(rest(%1)), rest(%1), %0);
 
 &switch.6.note [v(d.eqc)]=@trigger me/tr.equipment-note=%0, first(rest(%1), /), last(first(%1, =), /), rest(%1, =);
 
@@ -294,7 +301,7 @@ e #662/eq-4-*
 @@ Input:
 @@ %0 - %#
 @@ %1 - player
-&tr.equipment-view [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(or(not(t(%1)), not(t(setr(P, ulocal(f.get-player, %1))))), Could not find player '%1'.), %b, if(and(not(isstaff(%0)), not(match(%0, %qP))), You are not staff and cannot view players' equipment.)))))=, { @pemit %0=ulocal(layout.equipment, %0, %qP); }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.equipment-view [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(or(not(t(%1)), not(t(setr(P, ulocal(f.get-player, %1))))), Could not find player '%1'.), %b, if(and(not(isstaff(%0)), not(match(%0, %qP))), You are not staff and cannot view players' equipment.)))))=, { @pemit %0=ulocal(layout.equipment, %0, %qP, 1); }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#

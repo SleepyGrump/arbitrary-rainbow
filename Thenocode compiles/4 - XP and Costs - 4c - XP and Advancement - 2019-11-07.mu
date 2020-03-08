@@ -89,7 +89,7 @@ think Entering 81 lines.
 
 &.objid [v(d.xpas)]=localize(if(t(setr(l, locate(%#, %0, *))), [num(%ql)]:[convtime(get(%ql/created))], #-1 NOT FOUND))
 
-&f.sql.escape [v(d.xpas)]=edit(%0, \%, \\\\\%, ', \\\\', ", \\\\", \%, \\\\\\\%)(not needed at this time)
+&f.sql.escape [v(d.xpas)]=edit(stripansi(%0), \%, \\\\\%, ', \\\\', ", \\\\", \%, \\\\\\\%)
 
 &f.html.unescape [v(d.xpas)]=edit(edit(edit(edit(%0, &#37;, %%), &lt;, <), &gt;, >), &amp;, &)
 

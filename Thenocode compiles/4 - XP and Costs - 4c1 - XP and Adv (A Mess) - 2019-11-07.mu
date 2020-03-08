@@ -4,7 +4,7 @@ https://raw.githubusercontent.com/thenomain/GMCCG/master/4%20-%20XP%20and%20Cost
 
 Compiled 2019-11-07
 
-Added escaping to the spend insert. It allows stat names like Helios' Judgement and reasons like 'She's crazy'.
+Added escaping to the spend and award insert. It allows stat names like Helios' Judgement and reasons like 'That's crazy'.
 
 Changed all "reason" SELECT calls that output to a list to SELECT "SUBSTRING(reason, 1, 26)" because my players are spammy bastiges.
 
@@ -16,7 +16,7 @@ think Entering 7 lines.
 
 &sql.insert.daily-auto [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, action, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', 'Auto-Experience System <xpas>', '%2', %3, 'auto', 'Daily Auto')
 
-&sql.insert.award [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, action, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', '[u(f.sql.escape, name(%1))]', '%2', %3, 'gain', '%4')
+&sql.insert.award [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, action, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', '[u(f.sql.escape, name(%1))]', '[u(f.sql.escape, %2)]', [u(f.sql.escape, %3)], 'gain', '[u(f.sql.escape, %4)]')
 
 &sql.select.type-character [v(d.xpas)]=SELECT entry_num, enactor_objid, enactor_name, log_time, xp_amt, action, SUBSTRING(reason, 1, 26), trait_name, trait_value FROM xp_log WHERE target_objid='[u(.objid, %0)]' AND xp_type='[lcstr(%1)]' [case(%2, all, null(show all), null(null), AND action!='auto', AND action='%2')] [if(strlen(%3), AND trait_name LIKE '[u(f.sql.escape, edit(%3, %b, _))]%%%%')]
 
