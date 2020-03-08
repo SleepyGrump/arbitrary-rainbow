@@ -486,7 +486,9 @@ think Merit time!
 
 &tags.merit.warded_dreams [v(d.dt)]=changeling
 
-&merit.workshop [v(d.dd)]=&prerequisite.merit.workshop [v(d.dd)]=u(.has, %0, merit.hollow)
+&merit.workshop [v(d.dd)]=1.2.3.4.5
+
+&prerequisite.merit.workshop [v(d.dd)]=u(.has, %0, merit.hollow)
 
 &prereq-text.merit.workshop [v(d.dd)]=Hollow 1+
 
