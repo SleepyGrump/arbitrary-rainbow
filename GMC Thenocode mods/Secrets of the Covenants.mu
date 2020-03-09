@@ -1,3 +1,9 @@
+/*
+
+2020-03-09: Noticed the Lance already had a stat named "Stigmata" which is not taken by a whole lot of our players (none at this count). So I renamed that stat "Stigmata miracle" and kept the merit as "Stigmata". Games that use this code should +census Stigmata before they load it just in case a player has that stat. You might need to adjust their attributes.
+
+*/
+
 think Merits and rites - 342 lines.
 
 &merit.Chorister [v(d.dd)]=2
@@ -355,6 +361,27 @@ think Merits and rites - 342 lines.
 &prerequisite.merit.Sorcerous_Eunuch [v(d.dd)]=u(.at_least_all, %0, merit.status_(lancea_et_sanctum):1 attribute.resolve:3)
 
 &tags.merit.Sorcerous_Eunuch [v(d.dt)]=vampire.lancea et sanctum
+
+think Moving the Miracle "Stigmata" to "Stigmata miracle"
+
+&miracle.stigmata [v(d.dd)]=
+
+&prerequisite.miracle.stigmata [v(d.dd)]=
+
+&prereq-text.miracle.stigmata [v(d.dd)]=
+
+&tags.miracle.stigmata [v(d.dt)]=
+
+&miracle.stigmata_miracle [v(d.dd)]=4
+
+&prerequisite.miracle.stigmata_miracle [v(d.dd)]=cand(u(.is_full, %0, bio.covenant, lancea et sanctum), u(.at_least, %0, discipline.theban_sorcery, v(miracle.stigmata)), u(.at_least, %0, advantage.integrity, v(miracle.stigmata)))
+
+&prereq-text.miracle.stigmata_miracle [v(d.dd)]=Lancea et Sanctum, Theban Sorcery at this level or higher, Humanity at this level or higher
+
+&tags.miracle.stigmata_miracle [v(d.dt)]=vampire.lancea et sanctum
+
+think Entering the Stigmata merit
+
 
 &merit.Stigmata [v(d.dd)]=1.2.3.4.5
 
