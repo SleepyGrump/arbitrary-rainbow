@@ -39,7 +39,7 @@ Dependencies:
 
 &f.get-species-factor SSP=default(species_factor, default(rank, 1))
 
-&f.get-size SSP=default(species_factor, default(rank, 1))
+&f.get-size SSP=default(size, default(rank, 1))
 
 @desc SSP=strcat(wheader(u(layout.name)), %r, u(layout.note, Concept, concept, 13), %r, u(layout.note, Aspiration, aspiration, 13), %r, wdivider(Attributes), %r, u(layout.row, Power, default(power, 0), Finesse, default(finesse, 0), Resistance, default(resistance, 0)), %r, wdivider(Advantages), %r, u(layout.row, Essence, default(essence, 0), Size, u(f.get-size), Species factor, u(f.get-species-factor)), %r, wdivider(Traits), %r, u(layout.row, Willpower, u(f.get-trait, resistance, finesse), Corpus, u(f.get-trait,, resistance, u(f.get-size)), Initiative, u(f.get-trait, finesse, resistance)), %r, u(layout.row, Defense, u(f.get-defense), Speed, u(f.get-trait, power, finesse, u(f.get-species-factor))), %r, wdivider(Influences), %r, u(layout.list-with-values, lattr(me/influence-*)), %r, wdivider(Numina), %r, u(layout.list, lattr(me/numina-*)), %r, wdivider(Notes), %r, space(3), +view%b, name(me), /notes for notes., %r, wfooter())
 
