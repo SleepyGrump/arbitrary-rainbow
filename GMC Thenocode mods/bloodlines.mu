@@ -4,7 +4,9 @@ NOLA's bloodlines code - pure GMC, with some brought up to date from the old 1e 
 
 I've included this here because the version on Thenomain's GMCCG repo relies on old 1e unconverted rules and there are a few bugs in it.
 
-Feel free to edit and make your own, or reuse as-is with appropriate credit given to NOLA and Ganymede.
+Feel free to edit and make your own, or reuse as-is with appropriate credit given to NOLA and the various bloodline contributors, like Ganymede and TreeOfWoe.
+
+2020-03-08: Added Toreador to Daeva bloodlines.
 
 */
 
@@ -20,7 +22,7 @@ think Entering 362 lines.
 
 &notes.bio.bloodline [v(d.dt)]=iter(get(v(d.dd)/bio.clan), ansi(h, %i0, n, :%b, n, edit(get(v(d.dd)/d.bloodline.%i0), ., %,%b)), ., |)
 
-&d.bloodline.daeva [v(d.dd)]=The Carnival.Septimi.Spina
+&d.bloodline.daeva [v(d.dd)]=The Carnival.Septimi.Spina.Toreador
 
 @fo me=&BIO.BLOODLINE [v(d.dd)]=[trim(setunion(get(v(d.dd)/bio.bloodline), get(v(d.dd)/d.bloodline.daeva) .), b, .)]
 
@@ -151,6 +153,48 @@ think Entering 362 lines.
 &tags.devotion.the_light_of_truth [v(d.dt)]=vampire.septimi
 
 &xp.devotion.the_light_of_truth [v(d.xpcd)]=2
+
+@edit v(d.dt)/tags.discipline.auspex=$, .toreador
+
+&devotion.lingering_perfume_of_the_rose [v(d.dd)]=Manipulation + Persuasion + Majesty vs. target's Composure + Power Stat
+
+&prerequisite.devotion.lingering_perfume_of_the_rose [v(d.dd)]=cand(u(.is, %0, bio.bloodline, Toreador), u(.at_least_all, %0, discipline.majesty:3 discipline.auspex:4))
+
+&prereq-text.devotion.lingering_perfume_of_the_rose [v(d.dd)]=Toreador Bloodline Devotion; Majesty 3, Auspex 4
+
+&tags.devotion.lingering_perfume_of_the_rose [v(d.dt)]=vampire.toreador
+
+&xp.devotion.lingering_perfume_of_the_rose [v(d.xpcd)]=3
+
+&devotion.reach_for_the_rose [v(d.dd)]=-
+
+&prerequisite.devotion.reach_for_the_rose [v(d.dd)]=cand(u(.is, %0, bio.bloodline, Toreador), u(.at_least_all, %0, discipline.vigor:3 discipline.celerity:3 discipline.auspex:2))
+
+&prereq-text.devotion.reach_for_the_rose [v(d.dd)]=Toreador Bloodline Devotion; Vigor 3, Celerity 3, Auspex 2
+
+&tags.devotion.reach_for_the_rose [v(d.dt)]=vampire.toreador
+
+&xp.devotion.reach_for_the_rose [v(d.xpcd)]=3
+
+&devotion.ars_gratia_sanguis [v(d.dd)]=-
+
+&prerequisite.devotion.ars_gratia_sanguis [v(d.dd)]=cand(u(.is, %0, bio.bloodline, Toreador), u(.at_least_all, %0, discipline.majesty:1 discipline.celerity:1 discipline.auspex:2))
+
+&prereq-text.devotion.ars_gratia_sanguis [v(d.dd)]=Toreador Bloodline Devotion; Majesty 1, Celerity 1, Auspex 2
+
+&tags.devotion.ars_gratia_sanguis [v(d.dt)]=vampire.toreador
+
+&xp.devotion.ars_gratia_sanguis [v(d.xpcd)]=2
+
+&devotion.the_rose_chokes_the_weed [v(d.dd)]=-
+
+&prerequisite.devotion.the_rose_chokes_the_weed [v(d.dd)]=cand(u(.is, %0, bio.bloodline, Toreador), u(.at_least_all, %0, discipline.majesty:1 discipline.vigor:1 discipline.auspex:1))
+
+&prereq-text.devotion.the_rose_chokes_the_weed [v(d.dd)]=Toreador Bloodline Devotion; Majesty 1, Vigor 1, Auspex 1
+
+&tags.devotion.the_rose_chokes_the_weed [v(d.dt)]=vampire.toreador
+
+&xp.devotion.the_rose_chokes_the_weed [v(d.xpcd)]=2
 
 &d.bloodline.gangrel [v(d.dd)]=Ahrimanes.Bacchae.Dead Wolves
 
