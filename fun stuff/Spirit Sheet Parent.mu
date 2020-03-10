@@ -9,22 +9,22 @@ Dependencies:
 @create Spirit Sheet Parent <SSP>=10
 @set SSP=SAFE
 
-&layout.name-and-value SSP=strcat(%0, if(t(%0), :), space(sub(21, add(strlen(%0), strlen(%1)))), %1)
+&layout.name-and-value SSP=strcat(setq(0, ulocal(f.get-three-column-widths, %#)), %0, if(t(%0), :), space(sub(last(%q0, |), add(1, strlen(%0), strlen(%1)))), %1)
 
-&layout.row SSP=strcat(space(3), u(layout.name-and-value, %0, %1), space(4), u(layout.name-and-value, %2, %3), space(4), u(layout.name-and-value, %4, %5))
+&layout.row SSP=strcat(setq(0, ulocal(f.get-three-column-widths, %#)), space(first(%q0, |)), ulocal(layout.name-and-value, %0, %1, last(%q0, |)), space(4), ulocal(layout.name-and-value, %2, %3, last(%q0, |)), space(extract(%q0, 2, 1, |)), ulocal(layout.name-and-value, %4, %5, last(%q0, |)))
 
-&layout.row-no-values SSP=strcat(space(3), ljust(strtrunc(%0, 22), 22), space(4), ljust(strtrunc(%1, 22), 22), space(4), ljust(strtrunc(%2, 22), 22))
+&layout.row-no-values SSP=strcat(setq(0, ulocal(f.get-three-column-widths, %#)), space(first(%q0, |)), ljust(strtrunc(%0, last(%q0, |)), last(%q0, |)), space(4), ljust(strtrunc(%1, last(%q0, |)), last(%q0, |)), space(extract(%q0, 2, 1, |)), ljust(strtrunc(%2, last(%q0, |)), last(%q0, |)))
 
-&layout.list-with-values SSP=iter(lnum(add(div(words(%0), 3), t(mod(words(%0), 3)))), strcat(setq(0, u(f.lookup-from-list-of-attributes, %0, itext(0), 0)), setq(1, u(f.lookup-from-list-of-attributes, %0, itext(0), 1)), setq(2, u(f.lookup-from-list-of-attributes, %0, itext(0), 2)), u(layout.row, first(%q0, |), rest(%q0, |), first(%q1, |), rest(%q1, |), first(%q2, |), rest(%q2, |))),, %r)
+&layout.list-with-values SSP=iter(lnum(add(div(words(%0), 3), t(mod(words(%0), 3)))), strcat(setq(0, ulocal(f.lookup-from-list-of-attributes, %0, itext(0), 0)), setq(1, ulocal(f.lookup-from-list-of-attributes, %0, itext(0), 1)), setq(2, ulocal(f.lookup-from-list-of-attributes, %0, itext(0), 2)), ulocal(layout.row, first(%q0, |), rest(%q0, |), first(%q1, |), rest(%q1, |), first(%q2, |), rest(%q2, |))),, %r)
 
-&layout.list SSP=iter(lnum(add(div(words(%0), 3), t(mod(words(%0), 3)))), u(layout.row-no-values, u(f.lookup-from-list-of-attributes, %0, itext(0), 0), u(f.lookup-from-list-of-attributes, %0, itext(0), 1), u(f.lookup-from-list-of-attributes, %0, itext(0), 2)),, %r)
+&layout.list SSP=iter(lnum(add(div(words(%0), 3), t(mod(words(%0), 3)))), ulocal(layout.row-no-values, ulocal(f.lookup-from-list-of-attributes, %0, itext(0), 0), ulocal(f.lookup-from-list-of-attributes, %0, itext(0), 1), ulocal(f.lookup-from-list-of-attributes, %0, itext(0), 2)),, %r)
 
 &layout.name SSP=strcat(name(me), %b-%b, switch(default(rank, 0), 4, Ensah %(Rank 4%), 3, Ensih %(Rank 3%), 2, Hursih %(Rank 2%), 1, Hursih %(Rank %), 0, Muthra %(Rank 0%), Dihir %(Rank 5+%)))
 
 @@ %0 - title
 @@ %1 - value
 @@ %2 - title width
-&layout.note SSP=wrap(strcat(space(3), if(t(%1), strcat(ljust(strcat(%0, :%b), %2), default(%1, Unset.)), default(%0, Unset.))), if(t(%1), sub(74, %2), 74), Left,, space(3), if(t(%1), add(%2, 3), 3), %r, 74)
+&layout.note SSP=strcat(setq(0, sub(width(%#), 6)), wrap(strcat(space(3), if(t(%1), strcat(ljust(strcat(%0, :%b), %2), default(%1, Unset.)), default(%0, Unset.))), if(t(%1), sub(%q0, %2), %q0), Left,, space(3), if(t(%1), add(%2, 3), 3), %r, %q0))
 
 @@ %0 - list to extract from
 @@ %1 - Which row we're on. 0-index.
@@ -41,9 +41,12 @@ Dependencies:
 
 &f.get-size SSP=default(size, default(rank, 1))
 
-@desc SSP=strcat(wheader(u(layout.name)), %r, u(layout.note, Concept, concept, 13), %r, u(layout.note, Aspiration, aspiration, 13), %r, wdivider(Attributes), %r, u(layout.row, Power, default(power, 0), Finesse, default(finesse, 0), Resistance, default(resistance, 0)), %r, wdivider(Advantages), %r, u(layout.row, Essence, default(essence, 0), Size, u(f.get-size), Species factor, u(f.get-species-factor)), %r, wdivider(Traits), %r, u(layout.row, Willpower, u(f.get-trait, resistance, finesse), Corpus, u(f.get-trait,, resistance, u(f.get-size)), Initiative, u(f.get-trait, finesse, resistance)), %r, u(layout.row, Defense, u(f.get-defense), Speed, u(f.get-trait, power, finesse, u(f.get-species-factor))), %r, wdivider(Influences), %r, u(layout.list-with-values, lattr(me/influence-*)), %r, wdivider(Numina), %r, u(layout.list, lattr(me/numina-*)), %r, wdivider(Notes), %r, space(3), +view%b, name(me), /notes for notes., %r, wfooter())
+&f.get-three-column-widths SSP=strcat(setq(0, sub(width(%0), 7)), setq(0, sub(%q0, 4)), setq(1, mod(%q0, 3)), setq(0, sub(%q0, %q1)), add(mod(%q1, 2), div(%q1, 2), 2), |, add(div(%q1, 2), 2), |, div(%q0, 3))
 
-&view-notes SSP=strcat(wheader(u(layout.name) - Notes), %r%r, u(layout.note, Ban, ban, 13), %r%r, u(layout.note, Bane, bane, 13), %r%r, u(layout.note, Benefits, benefits, 13), %r%r, u(layout.note, Appearance, appearance, 13), %r%r, setr(0, iter(sort(lattr(me/note-*)), u(layout.note, itext(0)),, %r%r)), if(t(%q0), %r%r), wfooter())
+
+@desc SSP=strcat(wheader(ulocal(layout.name)), %r, ulocal(layout.note, Concept, concept, 13), %r, ulocal(layout.note, Aspiration, aspiration, 13), %r, wdivider(Attributes), %r, ulocal(layout.row, Power, default(power, 0), Finesse, default(finesse, 0), Resistance, default(resistance, 0)), %r, wdivider(Advantages), %r, ulocal(layout.row, Essence, default(essence, 0), Size, ulocal(f.get-size), Species factor, ulocal(f.get-species-factor)), %r, wdivider(Traits), %r, ulocal(layout.row, Willpower, ulocal(f.get-trait, resistance, finesse), Corpus, ulocal(f.get-trait,, resistance, ulocal(f.get-size)), Initiative, ulocal(f.get-trait, finesse, resistance)), %r, ulocal(layout.row, Defense, ulocal(f.get-defense), Speed, ulocal(f.get-trait, power, finesse, ulocal(f.get-species-factor))), %r, wdivider(Influences), %r, ulocal(layout.list-with-values, lattr(me/influence-*)), %r, wdivider(Numina), %r, ulocal(layout.list, lattr(me/numina-*)), %r, wdivider(Notes), %r, space(3), +view%b, name(me), /notes for notes., %r, wfooter())
+
+&view-notes SSP=strcat(wheader(ulocal(layout.name) - Notes), %r%r, ulocal(layout.note, Ban, ban, 13), %r%r, ulocal(layout.note, Bane, bane, 13), %r%r, ulocal(layout.note, Benefits, benefits, 13), %r%r, ulocal(layout.note, Appearance, appearance, 13), %r%r, setr(0, iter(sort(lattr(me/note-*)), ulocal(layout.note, itext(0)),, %r%r)), if(t(%q0), %r%r), wfooter())
 
 /*
 
