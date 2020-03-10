@@ -24,7 +24,7 @@ think Entering 362 lines.
 
 &d.bloodline.daeva [v(d.dd)]=The Carnival.Septimi.Spina.Toreador
 
-@fo me=&BIO.BLOODLINE [v(d.dd)]=[trim(setunion(get(v(d.dd)/bio.bloodline), get(v(d.dd)/d.bloodline.daeva) .), b, .)]
+@fo me=&BIO.BLOODLINE [v(d.dd)]=[trim(setunion(get(v(d.dd)/bio.bloodline), get(v(d.dd)/d.bloodline.daeva), .), b, .)]
 
 @edit v(d.dt)/tags.discipline.protean=$, .the carnival
 
