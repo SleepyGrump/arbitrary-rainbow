@@ -7,6 +7,7 @@ I've included this here because the version on Thenomain's GMCCG repo relies on 
 Feel free to edit and make your own, or reuse as-is with appropriate credit given to NOLA and the various bloodline contributors, like Ganymede and TreeOfWoe.
 
 2020-03-08: Added Toreador to Daeva bloodlines.
+2020-03-10: Fixed a missing comma on the Daeva @fo tag that wasn't noticed because when it was first fired, there were no existing bloodlines in the bio.bloodlines field.
 
 */
 
