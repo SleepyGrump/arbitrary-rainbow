@@ -7,10 +7,19 @@ Dependencies:
 
 Wiki help page:
 
+Critter code exists to help you find the stats of animals more easily. These stats will probably differ just a bit from the official Onyx Path stats because there are calculations to some of the derived stats which don't always match up with what OP wrote. If you find an error with any of the critters, please let us know!
+
 * +critters - list all the critters.
 * +critter <name> - show yourself a single critter.
 
-If you want to create your own:
+You can also create your own critters! Type +help critter2 to see how. If you need help, staff can create a critter for you.
+
+
+[[Category:RP Systems]]  [[Category:Help]]
+
+===
+
+Here's how to make your own critter! It won't be in +critters, but you can look at it any time you need to see its stats.
 
 @create Critter=10
 @parent Critter=#977
@@ -44,7 +53,10 @@ If you want to create your own:
 
 &note-0 Critter=Critter McCritterface!
 
-l Critter
+look Critter
+
+[[Category:RP Systems]]  [[Category:Help]]
+
 
 */
 
@@ -872,7 +884,11 @@ l Critter
 &empathy Wolf=0
 &intimidation Wolf=3
 
+@@ House rule for NOLA because wolves are actually pretty durn quick.
+&species_factor Wolf=10
+@@ Here's the regular value in case someone prefers that.
 &species_factor Wolf=7
+
 &size Wolf=4
 
 &damage Wolf=1L
@@ -907,15 +923,15 @@ l Critter
 &empathy Crocodile (Adult)=0
 &intimidation Crocodile (Adult)=3
 
-&species_factor Crocodile (Adult)=5
+&species_factor Crocodile (Adult)=6
 &size Crocodile (Adult)=7
 
 &damage-bite Crocodile (Adult)=2L
 &damage-tail Crocodile (Adult)=1L
 
-&attack-1 Crocodile (Adult)=Bite|When the creature succeeds on a bite attack, it immediately grapples its victim. Grappled victims take a two die penalty to counter grapple the creature once bitten.
+&attack-1 Crocodile (Adult)=Bite|When the crocodile succeeds on a bite attack, it immediately grapples its victim. Grappled victims take a two die penalty to counter grapple the crocodile once bitten.
 
-&attack-2 Crocodile (Adult)=Tail|Can only target creatures standing behind the creature.
+&attack-2 Crocodile (Adult)=Tail|Can only target creatures standing behind the crocodile.
 
 &appearance Crocodile (Adult)=Full-grown American murder log. Do not disturb.
 
