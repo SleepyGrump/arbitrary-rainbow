@@ -4,6 +4,8 @@ Dependencies:
 	wfooter()
 	wdivider()
 
+Note to self, maybe this should really be called the Totem Sheet Parent, it gets used that way a lot.
+
 Wiki help page:
 
 Spirit character sheets are available. It's basically an on-game way for STs to keep track of their spirits.
@@ -39,6 +41,8 @@ To create one of your own:
 &benefits Spirit=Merit 1 (1 XP), Merit 2 (2 XP)
 
 &appearance Spirit=Sparkling shining brand spanking new!
+
+&manifestation-1 Spirit=Twilight Form
 
 &note-1 Spirit=Fantastic power, itty bitty living space.
 
@@ -93,7 +97,7 @@ l Spirit
 &f.get-three-column-widths SSP=strcat(setq(0, sub(width(%0), 6)), setq(0, sub(%q0, 4)), setq(1, mod(%q0, 3)), setq(0, sub(%q0, %q1)), add(mod(%q1, 2), div(%q1, 2), 2), |, add(div(%q1, 2), 2), |, div(%q0, 3))
 
 
-@desc SSP=strcat(wheader(ulocal(layout.name)), %r, ulocal(layout.note, Concept, concept, 13), %r, ulocal(layout.note, Aspiration, aspiration, 13), %r, wdivider(Attributes), %r, ulocal(layout.row, Power, default(power, 0), Finesse, default(finesse, 0), Resistance, default(resistance, 0)), %r, wdivider(Advantages), %r, ulocal(layout.row, Essence, default(essence, 0), Size, ulocal(f.get-size), Species factor, ulocal(f.get-species-factor)), %r, wdivider(Traits), %r, ulocal(layout.row, Willpower, ulocal(f.get-trait, resistance, finesse), Corpus, ulocal(f.get-trait,, resistance, ulocal(f.get-size)), Initiative, ulocal(f.get-trait, finesse, resistance)), %r, ulocal(layout.row, Defense, ulocal(f.get-defense), Speed, ulocal(f.get-trait, power, finesse, ulocal(f.get-species-factor))), %r, wdivider(Influences), %r, ulocal(layout.list-with-values, lattr(me/influence-*)), %r, wdivider(Numina), %r, ulocal(layout.list, lattr(me/numina-*)), %r, wdivider(Notes), %r, space(3), +view%b, name(me), /notes for notes., %r, wfooter())
+@desc SSP=strcat(wheader(ulocal(layout.name)), %r, ulocal(layout.note, Concept, concept, 13), %r, ulocal(layout.note, Aspiration, aspiration, 13), %r, wdivider(Attributes), %r, ulocal(layout.row, Power, default(power, 0), Finesse, default(finesse, 0), Resistance, default(resistance, 0)), %r, wdivider(Advantages), %r, ulocal(layout.row, Essence, default(essence, 0), Size, ulocal(f.get-size), Species factor, ulocal(f.get-species-factor)), %r, wdivider(Traits), %r, ulocal(layout.row, Willpower, ulocal(f.get-trait, resistance, finesse), Corpus, ulocal(f.get-trait,, resistance, ulocal(f.get-size)), Initiative, ulocal(f.get-trait, finesse, resistance)), %r, ulocal(layout.row, Defense, ulocal(f.get-defense), Speed, ulocal(f.get-trait, power, finesse, ulocal(f.get-species-factor))), %r, wdivider(Influences), %r, ulocal(layout.list-with-values, lattr(me/influence-*)), %r, wdivider(Manifestations), %r, ulocal(layout.list, lattr(me/manifestation-*)), %r, wdivider(Numina), %r, ulocal(layout.list, lattr(me/numina-*)), %r, wdivider(Notes), %r, space(3), +view%b, name(me), /notes for notes., %r, wfooter())
 
 &view-notes SSP=strcat(wheader(ulocal(layout.name) - Notes), %r%r, ulocal(layout.note, Ban, ban, 13), %r%r, ulocal(layout.note, Bane, bane, 13), %r%r, ulocal(layout.note, Benefits, benefits, 13), %r%r, ulocal(layout.note, Appearance, appearance, 13), %r%r, setr(0, iter(sort(lattr(me/note-*)), ulocal(layout.note, itext(0)),, %r%r)), if(t(%q0), %r%r), wfooter())
 
@@ -106,37 +110,41 @@ l Spirit
 
 @@ ========================================================================== @@
 
-@create Beshilu
-@parent Beshilu=SSP
-@set Beshilu=NO_COMMAND
+@create The Horned Sorcerer
+@parent The Horned Sorcerer=SSP
+@set The Horned Sorcerer=NO_COMMAND
 
-&power Beshilu=3
-&finesse Beshilu=3
-&resistance Beshilu=3
-&rank Beshilu=2
-&essence Beshilu=9
+&power The Horned Sorcerer=5
+&finesse The Horned Sorcerer=4
+&resistance The Horned Sorcerer=5
+&rank The Horned Sorcerer=2
+&essence The Horned Sorcerer=14
 
-&numina-1 Beshilu=Left-Handed Spanner
-&numina-2 Beshilu=Sign
-&numina-3 Beshilu=Telekinesis
+&numina-1 The Horned Sorcerer=Blast
+&numina-2 The Horned Sorcerer=Sign
+&numina-3 The Horned Sorcerer=Implant Mission
 
-&influence-1 Beshilu=Technology|2
+&influence-1 The Horned Sorcerer=Cultists|2
 
-&concept Beshilu=
+&concept The Horned Sorcerer=The spirit of Man and Secrets.
 
-&aspiration Beshilu=
+&aspiration The Horned Sorcerer=Grow the cult.
 
-&ban Beshilu=
+&ban The Horned Sorcerer=Never reveal a secret without payment.
 
-&bane Beshilu=
+&bane The Horned Sorcerer=Cold Iron.
 
-&benefits Beshilu=
+&benefits The Horned Sorcerer=+1 Occult (2 XP) and Occult.Spirits or Interdisciplinary Specialty (Spirits) (1 XP).
 
-&appearance Beshilu=
+&appearance The Horned Sorcerer=A horned man in black robes.
 
-@force me=&note-1 Beshilu=Approved [time()] by [moniker(%#)] (%#).
+&manifestation-1 The Horned Sorcerer=Twilight Form
+&manifestation-2 The Horned Sorcerer=Manifest
+&manifestation-3 The Horned Sorcerer=Possess
 
-@wait 1=@tel Beshilu=SSP
+@force me=&note-1 The Horned Sorcerer=Approved [time()] by [moniker(%#)] (%#).
+
+@wait 1=@tel The Horned Sorcerer=SSP
 
 @@ ========================================================================== @@
 
@@ -166,6 +174,7 @@ l Spirit
 
 &bane upgrade=Unworked lead. It's a conductor, but in its raw state it foils him, and it is geologically colocated with silver, creating a sympathetic bane with the wolves.
 
+&manifestation-1 Upgrade=Twilight Form
 
 &benefits Upgrade=Hobbyist Clique (Crafts) (2 XP), Good Time Management (1 XP)
 
