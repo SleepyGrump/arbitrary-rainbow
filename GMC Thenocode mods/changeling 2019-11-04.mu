@@ -23,6 +23,7 @@ https://github.com/thenomain/GMCCG/blob/master/Z%20-%20Game%20Lines/Changeling%2
 This file was created on 2019-11-04. Future versions will be updated to the newest date OF THE SOURCE MATERIAL. (Not the date I worked on it.) This will help bug fixers hunt down which commits may not be included in the output.
 
 2020-03-02: updated Touchstone prereq code to get values correctly.
+2020-03-20: updated Clarity system to include Theno's latest changes.
 
 ================================================================================
 
@@ -1582,13 +1583,13 @@ think Creating the clarity system tracker. (May be buggy.)
 
 &f.clarity.hurt.all [v(d.ccs)]=case(%1, all, u(f.clarity.hurt, %0, severe, 9999), mild, u(f.clarity.hurt, %0, mild, 9999), severe, u(f.clarity.hurt, %0, severe, 9999), #-1 Unknown Damage Type)
 
-&f.clarity.heal [v(d.ccs)]=localize(case(0, add(setr(m, u(.value, %0, clarity.mild)), setr(s, u(.value, %0, clarity.severe))), strcat(#-1 Target is already healthy, if(u(.is_comatose, %0), %bbut is still comatose)), strlen(setr(t, setinter(mild severe all, lcstr(%1)))), #-1 Type is Mild%, Severe%, or All, not(cor(strmatch(%2, all), strmatch(%qt, all))), u(f.clarity.heal.all, %0, %qt), cand(isint(%2), gte(%2, 0)), #-1 Heal with positive integer only, strcat(setq(d, case(%qt, mild, %qm, severe, %qs)), setq(d, max(0, sub(%qd, %2))), %qm %qs|, case(%qt, mild, %qd %qs, severe, %qm %qd, #-1 Panic in f.clarity.heal))))
+&f.clarity.heal [v(d.ccs)]=localize(case(0, add(setr(m, u(.value, %0, clarity.mild)), setr(s, u(.value, %0, clarity.severe))), strcat(#-1 Target is already healthy, if(u(.is_comatose, %0), %bbut is still comatose)), strlen(setr(t, setinter(mild severe all, lcstr(%1)))), #-1 Type is Mild%, Severe%, or All, not(cor(strmatch(%2, all), strmatch(%qt, all))), u(f.clarity.heal.all, %0, %qt), cand(isint(%2), gte(%2, 0)), #-1 Heal with positive integer only, strcat(setq(d, case(%qt, mild, %qm, severe, %qs)), setq(d, max(0, sub(%qd, %2))), %qm %qs|, case(%qt, mild, %qd %qs, severe, %qm %qd, #-1 Panic in &f.clarity.heal))))
 
-&f.clarity.heal.all [v(d.ccs)]=case(0, strlen(setr(t, setinter(mild severe all, lcstr(%1)))), #-1 Type is Mild%, Severe%, or All, strcat(setq(m, u(.value, %0, clarity.mild)), setq(s, u(.value, %0, clarity.severe)), %qm %qs|, case(%1, all, 0 0, mild, 0 %qs, severe, %qm 0, #-1 Unknown bug in f.clarity.heal.all)))
+&f.clarity.heal.all [v(d.ccs)]=case(0, strlen(setr(t, setinter(mild severe all, lcstr(%1)))), #-1 Type is Mild%, Severe%, or All, strcat(setq(m, u(.value, %0, clarity.mild)), setq(s, u(.value, %0, clarity.severe)), %qm %qs|, case(%1, all, 0 0, mild, 0 %qs, severe, %qm 0, #-1 Unknown bug in &f.clarity.heal.all)))
 
 &f.test-change [v(d.ccs)]=strcat(setq(o, ladd(%1)), setq(n, ladd(%2)), case(1, cor(gt(%qa, %qo), gt(elements(%2, 2), elements(%1, 2))), ulocal(f.test-change.hurt, %0, %1, %2), lt(ladd(%2), ladd(%1)), ulocal(f.test-chage.heal, %0, %1, %2), null(no change)))
 
-&f.test-change.hurt [v(d.ccs)]=localize(case(1, u(.is_comatose, %0), null(comatose cannot gain damage), strmatch(%1, %2), null(nothing changed so ignore it), strcat(setq(m, u(.value, %0, clarity.maximum)), setq(o, ladd(%1)), setq(n, ladd(%2)), setq(s, gt(elements(%2, 2), elements(%1, 2))), setq(p, if(%qs, Persistent%b)), case(1, gte(%qn, %qm), |Gains %qpComatose Condition, lte(sub(%qm, %qn), 3), |should set a %qpClarity Condition, null(neither)))))
+&f.test-change.hurt [v(d.ccs)]=localize(case(1, u(.is_comatose, %0), null(comatose cannot gain damage), strmatch(%1, %2), null(nothing changed so ignore it), strcat(setq(m, u(.value, %0, clarity.maximum)), setq(o, ladd(%1)), setq(n, ladd(%2)), setq(s, gt(elements(%2, 2), elements(%1, 2))), setq(p, if(%qs, Persistent%b)), case(1, gte(%qn, %qm), |Gains %qpComatose Condition, lt(sub(%qm, %qn), 3), |should set a %qpClarity Condition, null(neither)))))
 
 &f.test-change.heal [v(d.ccs)]=strcat(setq(c, lattr(%0/_cond.comatose.*)), setq(p, lattr(%0/_cond.persistent_comatose.*)), case(1, strmatch(%1, %2), null(nothing changed so ignore it), cand(t(%qc), not(t(%qp))), |can resolve a normal Comatose Condition, null(nothing else happened)))
 
