@@ -3,6 +3,7 @@
 @@ - isstaff()
 @@ - wheader()
 @@ - wfooter()
+@@ - titlestr() (to capitalize words correctly)
 @@ - The "APPROVED" flag
 
 /*
@@ -15,6 +16,9 @@ Commands:
 	+channel/claim <existing channel> - (staff only) claim an existing channel and make it possible to administer the channel via this system. Will automatically create a channel log for this channel. If one already exists, use the second form of this command.
 
 	+channel/claim <existing channel>=<dbref> - as above, but with an existing log object.
+
+	+channel/history <channel> - staff only, see the last 10 history entries
+	+channel/history <channel>=<#> - same, last # history of the channel
 
 Only the owner (or staff) can perform the following commands:
 
@@ -33,23 +37,16 @@ Only the owner (or staff) can perform the following commands:
 	+channel/destroy <title> - nukes a channel (must be the owner or staff)
 
 @@ Planned feature:
-	+channel/give <title>=<player> - give a channel to someone else
+	+channel/give <title>=<player> - give a channel to someone else so they can administer it (as in set headers, etc)
 
-@@ @ccreate <name>
-@@ @create <name> Channel
-@@ @cset/object <name>=<dbref of @create call>
-@@ @cset/log <name>=50
-@@ @cset/timestamp_logs <name>=1
-@@ -
-@@ &channel.#dbref CDB=<name>|creator|datetimestamp
-@@ &creator-dbref #dbref=<dbref>
-@@ -
-@@ @cset/public|private <name>
-@@ @cset/spoof|nospoof <name>
-@@ -
-@@ @cset/header <name>=<color thing>
-@@ -
-@@ @cdestroy <name>
+Changes:
+2020-04-30:
+ - Some tweaks to let the code handle channels with multiple words for their names. (Spaces, OMG!)
+ - Also, turns out channel headers have a max limit of 100 characters. (Who knew. :P) This includes the evaluated stuff like colors. So now it'll warn you if you go over that limit but will still set colors correctly.
+ - Changed log entries to log names with moniker.
+ - Added a list of users who are on each channel to the channel details.
+ - Fixed a bug with +channel/claim that caused a new history object to get created and the old one to be ignored.
+ - Added a history option, staff only.
 
 */
 
@@ -66,7 +63,7 @@ Only the owner (or staff) can perform the following commands:
 
 @force me=&vD CHF=[num(CDB)]
 
-@desc CHC=%RCommands:%R%R%T+channel - list all channels%R%T+channel/create <title>%R%T+channel/create <title>=<details>%R%R%T+channel/claim <existing channel> - (staff only) claim an existing channel and make it possible to administer the channel via this system. Will automatically create a channel log for this channel. If one already exists, use the second form of this command.%R%R%T+channel/claim <existing channel>=<dbref> - as above, but with an existing log object.%R%ROnly the owner (or staff) can perform the following commands:%R%R%T+channel/header <title>=<value> - set a channel's header (the "<format>" part)%R%T+channel/desc <title>=<value> - set a channel's description%R%R%T+channel/public <title> - set a channel public%R%T+channel/private <title> - set a channel private%R%R%T+channel/spoof <title> - set a channel spoofable (anonymous)%R%T+channel/nospoof <title> - set a channel non-spoofable (not anonymous)%R%R%T+channel/loud <title> - set a channel noisy (emits connects/disconnects)%R%T+channel/quiet <title> - set a channel quiet (no connects/disconnects)%R%R%T+channel/destroy <title> - nukes a channel (must be the owner or staff)%R
+@desc CHC=%RCommands:%R%R[space(3)]+channel - list all channels%R[space(3)]+channel/create <title>%R[space(3)]+channel/create <title>=<details>%R%R[space(3)]+channel/claim <existing channel> - (staff only) claim an existing channel and make it possible to administer the channel via this system. Will automatically create a channel log for this channel. If one already exists, use the second form of this command.%R%R[space(3)]+channel/claim <existing channel>=<dbref> - as above, but with an existing log object.%R%R[space(3)]+channel/history <channel> - staff only, see the last 10 history entries%R[space(3)]+channel/history <channel>=<#> - same, last # history of the channel%R%ROnly the owner (or staff) can perform the following commands:%R%R[space(3)]+channel/header <title>=<value> - set a channel's header (the "<format>" part)%R[space(3)]+channel/desc <title>=<value> - set a channel's description%R%R[space(3)]+channel/public <title> - set a channel public%R[space(3)]+channel/private <title> - set a channel private%R%R[space(3)]+channel/spoof <title> - set a channel spoofable (anonymous)%R[space(3)]+channel/nospoof <title> - set a channel non-spoofable (not anonymous)%R%R[space(3)]+channel/loud <title> - set a channel noisy (emits connects/disconnects)%R[space(3)]+channel/quiet <title> - set a channel quiet (no connects/disconnects)%R%R[space(3)]+channel/destroy <title> - nukes a channel (must be the owner or staff)%R
 
 @@ Add your channels here, separated by |'s.
 @@ This should be whatever shows up in @clist.
@@ -98,7 +95,11 @@ Only the owner (or staff) can perform the following commands:
 &layout.channels CHF=strcat(wheader(All channels), %R, iter(lattr(%vD/channel.*), ulocal(layout.channel-line, ulocal(f.can-create-channels, ulocal(f.get-channel-owner, rest(itext(0), .))), rest(itext(0), .)),, %R), %R, wfooter(+channel <name> for details))
 
 @@ %0 - dbref of channel object
-&layout.channel-details CHF=strcat(wheader(ulocal(f.get-channel-name, %0) channel details), %R%R%b, %chLogger dbref:%cn %0, %R%R%b, %chOwner:%cn%b, moniker(ulocal(f.get-channel-owner, %0)) %(, ulocal(f.get-channel-owner, %0), %), %R%R%b%chHistory:%cn, %b, ulocal(f.get-channel-details, %0), %R%R, wfooter())
+&layout.channel-details CHF=strcat(wheader(setr(N, ulocal(f.get-channel-name, %0)) channel details), %R%R%b, %chLogger dbref:%cn %0, %R%R%b, %chOwner:%cn%b, moniker(ulocal(f.get-channel-owner, %0)) %(, ulocal(f.get-channel-owner, %0), %), %R%R%b%chHistory:%cn, %b, ulocal(f.get-channel-details, %0), %R%R%b, %chOn channel: %cn, setr(A, itemize(iter(setr(0, cwho(%qN, on)), case(idle(itext(0)), -1, %ch%cx[name(itext(0))]%cn, moniker(itext(0))),, |), |)), if(not(t(%qA)), None), %R%R%b, %chOff channel: %cn, setr(A, itemize(iter(setr(1, cwho(%qN, off)), case(idle(itext(0)), -1, %ch%cx[name(itext(0))]%cn, moniker(itext(0))),, |), |)), if(not(t(%qA)), None), %R%R%b, %chDisconnected channel members: %cn, setr(A, itemize(iter(setdiff(setdiff(cwho(%qN, all), %q0), %q1), switch(name(itext(0)), *_*, %ch%cx[name(itext(0))]%cn, moniker(itext(0))),, |), |)), if(not(t(%qA)), None), %r%r, wfooter())
+
+@@ %0 - dbref of channel object
+@@ %1 - number of records to display
+&layout.channel-history CHF=strcat(setq(R, if(t(%1), %1, 10)), wheader(ulocal(f.get-channel-name, %0) channel history - last %qR), %r, iter(ulocal(f.last-x-history, %0, %qR), xget(%0, itext(0)),, %r), %r, wfooter())
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Local functions
@@ -112,10 +113,10 @@ Only the owner (or staff) can perform the following commands:
 
 @@ %0 - player
 @@ %1 - dbref of channel
-&f.can-modify-channel CHF=and(ulocal(f.can-create-channels, %0), or(isstaff(%0), match(ulocal(f.get-channel-owner, %1), %0)))
+&f.can-modify-channel CHF=and(ulocal(f.can-create-channels, %0), or(isstaff(%0), match(ulocal(f.get-channel-owner, %1), %0, |)))
 
 @@ %0 - title of channel
-&f.get-channel-dbref CHF=squish(trim(iter(lattr(%vD/channel.*), if(match(ulocal(f.get-channel-name, rest(itext(0), .)), %0), rest(itext(0), .)))))
+&f.get-channel-dbref CHF=squish(trim(iter(lattr(%vD/channel.*), if(match(ulocal(f.get-channel-name, rest(itext(0), .)), %0, |), rest(itext(0), .)))))
 
 @@ %0 - dbref of channel
 &f.get-channel-owner CHF=xget(%0, creator-dbref)
@@ -127,10 +128,20 @@ Only the owner (or staff) can perform the following commands:
 &f.get-channel-details CHF=xget(%vD, channel.%0)
 
 @@ %0 - title of the new channel
-&f.is-banned-name CHF=ladd(strcat(iter(lattr(%vD/channel.*), match(ulocal(f.get-channel-name, rest(itext(0), .)), %0)), %b, match(default(%vD, d.existing-channels, 0), %1, |)))
+&f.is-banned-name CHF=ladd(strcat(iter(lattr(%vD/channel.*), match(ulocal(f.get-channel-name, rest(itext(0), .)), %0, |)), %b, match(default(%vD, d.existing-channels, 0), %1, |)))
 
 @@ %0 - title of channel
-&f.clean-channel-name CHF=capstr(%0)
+&f.clean-channel-name CHF=titlestr(%0)
+
+@@ %0 - sort option A
+@@ %1 - sort option B
+&f.sort-history CHF=comp(convtime(%0), convtime(%1))
+
+&f.sort-munge CHF=sortby(f.sort-history, %0, |, |)
+
+@@ %0 - dbref of channel
+@@ %1 - number of history records to return
+&f.last-x-history CHF=revwords(extract(revwords(munge(f.sort-munge, iter(lattr(%0/history_*), first(rest(xget(%0, itext(0)), \[), \]),, |), edit(lattr(%0/history_*), %b, |), |), |, |), 1, if(t(%1), %1, 10), |), |, %b)
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Command manager
@@ -138,7 +149,7 @@ Only the owner (or staff) can perform the following commands:
 
 &cmd-+channel CHC=$+channel*:@switch setr(E, strcat(setq(C, ulocal(f.find-command-switch, %0)), if(not(t(%qC)), Could not find command: +channel%0)))=, { @trigger me/%qC=%#, %0; }, { @pemit %#=ulocal(layout.error, %qE); }
 
-@set CHC/cmd-+channel=!no_parse
+@set CHC/cmd-+channel=no_parse
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Command switches
@@ -168,6 +179,10 @@ Only the owner (or staff) can perform the following commands:
 
 &switch.6.claim CHC=@trigger me/tr.channel-claim=%0, first(%1, =), rest(%1, =);
 
+&switch.7.history CHC=@trigger me/tr.channel-history=%0, first(rest(%1), =), rest(%1, =);
+
+&switch.7.last CHC=@trigger me/tr.channel-history=%0, first(rest(%1), =), rest(%1, =);
+
 &switch.99.destroy CHC=@switch/first %1=*=*, { @trigger me/tr.destroy-channel=%0, first(rest(%1), =), rest(%1, =); }, { @trigger me/tr.confirm-destroy=%0, rest(%1); }
 
 
@@ -184,50 +199,57 @@ Only the owner (or staff) can perform the following commands:
 @@ %0 - %#
 @@ %1 - channel title
 @@ %2 - header
-&tr.channel-header CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.), %b, if(not(t(%2)), You need to include a header value for the channel.)))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Header changed to '%2' on, %b, time(), %b, by, %b, name(%0) %(%0%).)]; @cset/header %qT=%2; @pemit %0=ulocal(layout.msg, Changed the header of '%qT' to '%2'.); }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.channel-header CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.), %b, if(not(t(%2)), You need to include a header value for the channel.), %b, if(gt(strlen(%2), 100), Channel headers are limited to a max of 100 characters by hardcode.)))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Header changed to '%2' on, %b, time(), %b, by, %b, moniker(%0) %(%0%).)]; @force me=@cset/header %qT=%2; @pemit %0=ulocal(layout.msg, Changed the header of '%qT' to '%2'.); }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
 @@ %1 - channel title
 @@ %2 - description
-&tr.channel-desc CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.), setq(D, if(not(t(%2)), The '%qT' channel., %2))))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Desc changed to '%qD' on, %b, time(), %b, by, %b, name(%0) %(%0%).)]; @desc %qN=%qD; @pemit %0=ulocal(layout.msg, Changed the desc of '%qT' to '%qD'.); }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.channel-desc CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.), setq(D, if(not(t(%2)), The '%qT' channel., %2))))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Desc changed to '%qD' on, %b, time(), %b, by, %b, moniker(%0) %(%0%).)]; @desc %qN=%qD; @pemit %0=ulocal(layout.msg, Changed the desc of '%qT' to '%qD'.); }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
 @@ %1 - channel title
-&tr.channel-public CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.)))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Set public on, %b, time(), %b, by, %b, name(%0) %(%0%).)]; @cset/public %qT; @pemit %0=ulocal(layout.msg, Changed '%qT' to 'Public'.); }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.channel-public CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.)))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Set public on, %b, time(), %b, by, %b, moniker(%0) %(%0%).)]; @cset/public %qT; @pemit %0=ulocal(layout.msg, Changed '%qT' to 'Public'.); }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
 @@ %1 - channel title
-&tr.channel-private CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.)))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Set private on, %b, time(), %b, by, %b, name(%0) %(%0%).)]; @cset/public %qT; @pemit %0=ulocal(layout.msg, Changed '%qT' to 'Private'.); }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.channel-private CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.)))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Set private on, %b, time(), %b, by, %b, moniker(%0) %(%0%).)]; @cset/public %qT; @pemit %0=ulocal(layout.msg, Changed '%qT' to 'Private'.); }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
 @@ %1 - channel title
-&tr.channel-loud CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.)))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Set loud on, %b, time(), %b, by, %b, name(%0) %(%0%).)]; @cset/loud %qT; @pemit %0=ulocal(layout.msg, Changed '%qT' to 'Loud'.); }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.channel-loud CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.)))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Set loud on, %b, time(), %b, by, %b, moniker(%0) %(%0%).)]; @cset/loud %qT; @pemit %0=ulocal(layout.msg, Changed '%qT' to 'Loud'.); }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
 @@ %1 - channel title
-&tr.channel-quiet CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.)))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Set quiet on, %b, time(), %b, by, %b, name(%0) %(%0%).)]; @cset/quiet %qT; @pemit %0=ulocal(layout.msg, Changed '%qT' to 'Quiet'.); }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.channel-quiet CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.)))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Set quiet on, %b, time(), %b, by, %b, moniker(%0) %(%0%).)]; @cset/quiet %qT; @pemit %0=ulocal(layout.msg, Changed '%qT' to 'Quiet'.); }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
 @@ %1 - channel title
-&tr.channel-spoof CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.)))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Set spoofable on, %b, time(), %b, by, %b, name(%0) %(%0%).)]; @cset/spoof %qT; @pemit %0=ulocal(layout.msg, Changed '%qT' to 'Spoofable'.); }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.channel-spoof CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.)))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Set spoofable on, %b, time(), %b, by, %b, moniker(%0) %(%0%).)]; @cset/spoof %qT; @pemit %0=ulocal(layout.msg, Changed '%qT' to 'Spoofable'.); }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
 @@ %1 - channel title
-&tr.channel-nospoof CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.)))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Set non-spoofable on, %b, time(), %b, by, %b, name(%0) %(%0%).)]; @cset/nospoof %qT; @pemit %0=ulocal(layout.msg, Changed '%qT' to 'Non-spoofable'.); }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.channel-nospoof CHC=@switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.)))))=, { @set %vD=channel.%qN:[strcat(xget(%vD, channel.%qN), %b, Set non-spoofable on, %b, time(), %b, by, %b, moniker(%0) %(%0%).)]; @cset/nospoof %qT; @pemit %0=ulocal(layout.msg, Changed '%qT' to 'Non-spoofable'.); }, { @pemit %0=ulocal(layout.error, %qE); }
 
 
 @@ Input:
 @@ %0 - %#
 @@ %1 - channel title
 @@ %2 - existing log object (if exists)
-&tr.channel-claim CHC=@assert isstaff(%0)={ @pemit %0=ulocal(layout.error, Staff only.); }; @assert t(comalias(%0, %1))={ @pemit %0=ulocal(layout.error, Can't find a channel you joined named '%1'. Please enter the exact name of the channel - it is case sensitive - and make sure you have joined the channel.); }; @assert or(cand(isdbref(%2), match(type(%2), THING), t(setr(N, %2))), t(setr(N, create(%1 Channel Object, 10))))={ @pemit %0=ulocal(layout.error, if(t(%2), '%2' is not a valid channel log object., Could not create '%1 Channel Object'.)); }; @set %vD=channel.%qN:[strcat(%1 was claimed by, %b, moniker(%0) %(%0%) on, %b, time().)]; @set %qN=channel-name:%1; @set %qN=creator-dbref:%0; @cset/object %1=%qN; @desc %qN=[default(%qN/desc, The '%1' channel.)]; @cset/log %1=200; @cset/timestamp_logs %1=1; @set %0=_channels-created:[setunion(%qN, xget(%0, _channels-created))]; @set %vD=d.existing-channels:[setdiff(xget(%vD, d.existing-channels), %1, |)]; @pemit %0=ulocal(layout.msg, Channel '%1' claimed. It's yours now. Take good care of it!);
+&tr.channel-claim CHC=@assert isstaff(%0)={ @pemit %0=ulocal(layout.error, Staff only.); }; @assert t(comalias(%0, %1))={ @pemit %0=ulocal(layout.error, Can't find a channel you joined named '%1'. Please enter the exact name of the channel - it is case sensitive - and make sure you have joined the channel.); }; @assert cor(cand(isdbref(%2), match(type(%2), THING), t(setr(N, %2))), t(setr(N, create(%1 Channel Object, 10))))={ @pemit %0=ulocal(layout.error, if(t(%2), '%2' is not a valid channel log object., Could not create '%1 Channel Object'.)); }; @set %vD=channel.%qN:[strcat(%1 was claimed by, %b, moniker(%0) %(%0%) on, %b, time().)]; @set %qN=channel-name:%1; @set %qN=creator-dbref:%0; @cset/object %1=%qN; @desc %qN=[default(%qN/desc, The '%1' channel.)]; @cset/log %1=200; @cset/timestamp_logs %1=1; @set %0=_channels-created:[setunion(%qN, xget(%0, _channels-created))]; @set %vD=d.existing-channels:[setdiff(xget(%vD, d.existing-channels), %1, |)]; @pemit %0=ulocal(layout.msg, Channel '%1' claimed. It's yours now. Take good care of it!);
+
+
+@@ Input:
+@@ %0 - %#
+@@ %1 - channel title
+@@ %2 - number of history rows to check (if sent)
+&tr.channel-history CHC=@assert isstaff(%0)={ @pemit %0=ulocal(layout.error, Staff only.); }; @switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.)))))=, { @pemit %0=ulocal(layout.channel-history, %qN, %2); }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
