@@ -15,6 +15,10 @@ TO DO: No known development remaining. Report bugs to the github!
 
 * If someone really really wants it, I'll make +eq/give work for players who have a piece of equipment and want to give it away to someone else. Not useful for NOLA though.
 
+* Make equipment display a little more readable. Instead of listing them all out, hide the details until players go to +eq/details.
+
+* Allow players to +eq/prove their entire equipment list.
+
 ================================================================================
 
 Staff commands:
@@ -34,6 +38,7 @@ Staff commands:
 * +eq/note <player>/<title>=<note> - Anything special about this item? number, etc?
 
 * +eq/view <player> - see their stuff
+* +eq/date <player> - see their stuff by date of purchase
 * +eq/details <player>/<title> - view details on their stuff
 * +eq/players <name> - find all players with <name> equipment
 
@@ -41,7 +46,8 @@ Player commands:
 
 * +eq - list your equipment
 * +eq <player name or equipment title> - alias for /view and /details
-* +eq/view - view all of your equipment, untruncated.
+* +eq/view - same as +eq
+* +eq/date - view equipment by date of purchase
 * +eq/details <title> - view details on a piece of equipment
 * +eq/list - list equipment tags
 * +eq/list <tag> - list all equipment in a particular tag
@@ -64,6 +70,13 @@ Changelog:
 	* Did +eq/update just to wrap up new functionality.
 	* Added sorting of equipment lists because why the heck not.
 2020-01-07: Made +eq/view work without a name for players. Made it show the untruncated version of the equipment.
+2020-04-30:
+	* Make lists of equipment more readable and less spammy.
+2020-05-01:
+	* +eq/date <player> - list equipment by date, showing only name, tags and notes, useful for seeing when a player last got equipment.
+
+TODO:
+ * Maybe come up with a way to highlight equipment tags...
 
 ================================================================================
 
@@ -98,7 +111,6 @@ e #662/eq-4-*
 
 @desc [v(d.eqc)]=%RStaff commands:%R%R* +eq/create <title>=<details>%R* +eq/destroy <title> - does not remove it from the players who have it!%R* +eq/tag <title>=<tag> - tag equipment mental, physical, whatever%R* +eq/untag <title>=<tag to remove> - untag equipment%R* +eq/clone <title>=<new piece of equipment> - copy an old equipment piece%R* +eq/update <title>=<new details>%R%R* +eq/give <player>=<title> - give 'em stuff%R* +eq/take <player>=<title> - take their stuff%R* +eq/takeall <title> - take it away from everybody%R* +eq/wipe <player> - wipe a player's equipment%R%R* +eq/note <player>/<title>=<note> - Anything special about this item? number, etc?%R%R* +eq/view <player> - see their stuff%R* +eq/details <player>/<title> - view details on their stuff%R* +eq/players <name> - find all players with <name> equipment%R%RPlayer commands:%R%R* +eq - list your equipment%R* +eq <player name or equipment title> - alias for /view and /details%R* +eq/details <title> - view details on a piece of equipment%R* +eq/list - list equipment tags%R* +eq/list <tag> - list all equipment in a particular tag%R* +eq/list untagged - list untagged equipment%R* +eq/find <title> - list all equipment that starts with that text%R* +eq/prove <title> - prove you have a piece of equipment to the room%R* +eq/prove <title>=<player> - prove you have a piece of equipment to a player%R
 
-
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Layouts
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -108,29 +120,25 @@ e #662/eq-4-*
 
 @@ %0 - player
 @@ %1 - target
-@@ %2 - if 1, give full details
-&layout.equipment [v(d.eqf)]=strcat(wheader(if(match(%0, %1), Your, name(%1)'s) equipment, %0), %R, iter(ulocal(f.sort-equipment-attrs, lattr(%1/_eq-*-name), %b), strcat(ulocal(if(t(%2), layout.equipment-all-lines, layout.equipment-line), %1, trim(itext(0), l, _)), setq(0, ulocal(f.get-equipment-note, %1, itext(0))), if(t(%q0), strcat(%R, space(3), Note:, %b, %q0))),, %R), %R, wfooter(, %0))
+&layout.equipment [v(d.eqf)]=strcat(wheader(if(match(%0, %1), Your, name(%1)'s) equipment, %0), %R, ulocal(layout.short-equipment, %0, %1, ulocal(f.sort-equipment-attrs, lattr(%1/_eq-*-name), %b)), %R, wfooter(, %0))
 
 @@ %0 - player
-@@ %1 - equipment attribute
-&layout.equipment-line [v(d.eqf)]=strcat(setq(0, strcat(xget(%vD, %1), :, %b, xget(%vD, edit(%1, NAME, DETAILS)))), setq(1, ulocal(f.get-width, %0)), if(lte(strlen(%q0), sub(%q1, 2)), strcat(%b, %q0), strcat(%b, strtrunc(%q0, sub(%q1, 5)), ...)))
-
-@@ %0 - player
-@@ %1 - equipment attribute
-&layout.equipment-all-lines [v(d.eqf)]=strcat(setq(0, strcat(xget(%vD, %1), :, %b, xget(%vD, edit(%1, NAME, DETAILS)))), if(lte(strlen(%q0), sub(%q1, 2)), strcat(%b, %q0), strcat(%b, %q0)))
+@@ %1 - target (might not exist)
+@@ %2 - equipment list
+&layout.short-equipment [v(d.eqf)]=fitcolumns(iter(%2, strcat(xget(%vD, trim(itext(0), l, _)), setq(0, ulocal(f.get-equipment-note, %1, itext(0))), if(t(%q0), strcat(%b, %(, %q0, %)))), if(strmatch(%2, *|*), |), |), |)
 
 @@ %0 - player
 @@ %1 - tag if there is one
-&layout.list-equipment [v(d.eqf)]=strcat(wheader(if(t(%1), Equipment tagged '%1', Equipment tags), %0), %R, if(t(%1), iter(ulocal(f.sort-equipment-attrs, ulocal(f.list-equipment-by-tag, %1), %b), ulocal(layout.equipment-line, %vD, itext(0)),, %R), fitcolumns(ulocal(f.list-equipment-tags, %1), |, %0)), %R, wfooter(, %0))
+&layout.list-equipment [v(d.eqf)]=strcat(wheader(if(t(%1), Equipment tagged '%1', Equipment tags), %0), %R, if(t(%1), ulocal(layout.short-equipment, %0,, ulocal(f.sort-equipment-attrs, ulocal(f.list-equipment-by-tag, %1), %b)), fitcolumns(ulocal(f.list-equipment-tags, %1), |, %0)), %R, wfooter(, %0))
 
 @@ %0 - player
 @@ %1 - title if there is one
-&layout.find-equipment [v(d.eqf)]=strcat(wheader(Equipment matching '%1', %0), %R, setq(0, ulocal(f.sort-equipment-attrs, ulocal(f.find-equipment-by-title, %0, %1), |)), if(t(%q0), iter(%q0, ulocal(layout.equipment-line, %vD, trim(itext(0), l, _)), |, %R), No equipment by the title '%1' found.), %R, wfooter(, %0))
+&layout.find-equipment [v(d.eqf)]=strcat(wheader(Equipment matching '%1', %0), %R, setq(0, ulocal(f.sort-equipment-attrs, ulocal(f.find-equipment-by-title, %0, %1), |)), if(t(%q0), ulocal(layout.short-equipment, %0,, %q0), No equipment by the title '%1' found.), %R, wfooter(, %0))
 
 @@ %0 - player viewing
 @@ %1 - title of the presumed equipment
 @@ %2 - player the equipment is on
-&layout.equipment-details [v(d.eqf)]=if(t(setr(0, first(ulocal(f.find-all-equipment-by-title, %1), |))), strcat(wheader(ulocal(f.get-equipment-title, %q0), %0), %R, boxtext(ulocal(f.get-equipment-details, %q0),,, %0), %R%R, boxtext(strcat(Tags:, %b, setq(1, ulocal(f.get-equipment-tags, %q0)), if(t(%q1), itemize(%q1, |), None.)),,, %0), %R%R, if(t(%2), strcat(if(hasattr(%2, _%q0), boxtext(rest(xget(%2, _%q0), |),,, %0)), if(hasattr(%2, edit(_%q0, NAME, note)), strcat(%r%r%b, Note:, %b, xget(%2, edit(_%q0, NAME, note)))))), %r, wfooter(, %0)), ulocal(layout.error, Could not find equipment '%1'.))
+&layout.equipment-details [v(d.eqf)]=if(t(setr(0, first(ulocal(f.find-all-equipment-by-title, %1), |))), strcat(wheader(ulocal(f.get-equipment-title, %q0), %0), %R%R, boxtext(ulocal(f.get-equipment-details, %q0),,, %0), %R%R, boxtext(strcat(Tags:, %b, setq(1, ulocal(f.get-equipment-tags, %q0)), if(t(%q1), itemize(%q1, |), None.)),,, %0), %R%R, if(t(%2), strcat(if(hasattr(%2, _%q0), boxtext(rest(xget(%2, _%q0), |),,, %0)), if(hasattr(%2, edit(_%q0, NAME, note)), strcat(%r%r%b, Note:, %b, xget(%2, edit(_%q0, NAME, note)))))), %r, wfooter(, %0)), ulocal(layout.error, Could not find equipment '%1'.))
 
 @@ %0 - player
 @@ %1 - equipment found
@@ -144,16 +152,40 @@ e #662/eq-4-*
 @@ %0 - equipment attr
 &layout.list-players-with-equipment [v(d.eqf)]=strcat(setq(0, ulocal(f.find-equipment-on-players, %0)), alert(Equipment), %b, if(t(%q0), strcat(The following players have the equipment ', xget(%vD, %0), ':, %b, itemize(iter(%q0, moniker(itext(0)),, |), |)), strcat(No players have the equipment, %b, ', xget(%vD, %0), '.)))
 
+@@ %0 - player
+@@ %1 - equipment attribute
+&layout.equipment-all-lines [v(d.eqf)]=strcat(ulocal(f.format-date, edit(revwords(extract(revwords(xget(%0, _%1)), 1, 5)), .,)), setq(0, strcat(xget(%vD, %1), :, %b, itemize(xget(%vD, edit(%1, NAME, TAGS)), |))), if(lte(strlen(%q0), sub(%q1, 2)), strcat(%b, %q0), strcat(%b, %q0)))
+
+@@ %0 - player
+@@ %1 - target
+&layout.equipment-by-date [v(d.eqf)]=strcat(wheader(if(match(%0, %1), Your, name(%1)'s) equipment by date, %0), %R, iter(ulocal(f.sort-equipment-by-date, lattr(%1/_eq-*-name), %b), strcat(ulocal(layout.equipment-all-lines, %1, trim(itext(0), l, _)), setq(0, ulocal(f.get-equipment-note, %1, itext(0))), if(t(%q0), strcat(%R, space(3), Note:, %b, %q0))),, %R), %R, wfooter(, %0))
+
++eq/date tivadar
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Local functions
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+@@ %0 - date in standard format, eg. Sat May 02 15:41:01 2020
+&f.format-date [v(d.eqf)]=strcat(ulocal(f.get-month-from-string, extract(%0, 2, 1)), -, extract(%0, 3, 1), -, extract(%0, 5, 1))
+
+@@ %0 - May, Dec, etc
+&f.get-month-from-string [v(d.eqf)]=switch(%0, Jan, 01, Feb, 02, Mar, 03, Apr, 04, May, 05, Jun, 06, Jul, 07, Aug, 08, Sep, 09, Oct, 10, Nov, 11, Dec, 12, 00)
 
 @@ %0 - list of equipment attributes
 @@ %1 - delimiter
 &f.sort-equipment-attrs [v(d.eqf)]=strcat(setq(0, edit(%0, %1, |)), setq(1, iter(%q0, xget(%vD, edit(itext(0), _,)), |, |)), setq(2, munge(me/sort_alphabetic, %q1, %q0, |)), edit(%q2, |, %1))
 
 &sort_alphabetic [v(d.eqf)]=sort(%0, i, |, |)
+
+@@ %0 - list of equipment attributes
+@@ %1 - delimiter
+@@ %2 - player the attrs are on
+&f.sort-equipment-by-date [v(d.eqf)]=strcat(setq(0, edit(%0, %1, |)), setq(1, iter(%q0, edit(revwords(extract(revwords(xget(%2, itext(0))), 1, 5)), .,), |, |)), setq(2, munge(me/sort_by_date, %q1, %q0, |)), edit(%q2, |, %1))
+
+&sort_by_date [v(d.eqf)]=sortby(f.sort-date, %0, |, |)
+
+&f.sort-date [v(d.eqf)]=comp(convtime(%0), convtime(%1))
 
 @@ %0 - title
 &f.find-equipment-on-players [v(d.eqf)]=search(eval=hasattr(##, _%0))
@@ -202,6 +234,9 @@ e #662/eq-4-*
 @@ %0 - the command input
 &f.find-command-switch [v(d.eqf)]=strcat(setq(0,), setq(1,), setq(2, switch(%0, /*/*, first(rest(first(%0), /), /), /*, rest(first(%0), /), %b*, _, first(%0))), null(iter(sort(lattr(%!/switch.*.%q2*)), case(1, match(last(itext(0), .), %q2), setq(0, %q0 [itext(0)]), strmatch(last(itext(0), .), %q2*), setq(1, %q1 [itext(0)])))), trim(if(t(%q0), first(%q0), %q1), b))
 
+@@ %0 - list of
+&f.group-equipment-by-tags [v(d.eqf)]=
+
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Command manager
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -220,6 +255,8 @@ e #662/eq-4-*
 &switch.1.details [v(d.eqc)]=@pemit %0=ulocal(layout.equipment-details, %0, switch(rest(%1), */*, rest(rest(%1), /), rest(%1)), switch(rest(%1), */*, if(isstaff(%0), if(t(setr(P, ulocal(f.get-player, first(rest(%1), /)))), %qP, ulocal(layout.error, Could not find player '[first(rest(%1), /)]'.)), ulocal(layout.error, You are not staff and cannot view players' equipment.)), %0));
 
 &switch.2.list [v(d.eqc)]=@pemit %0=ulocal(layout.list-equipment, %0, rest(%1));
+
+&switch.2.date [v(d.eqc)]=@trigger me/tr.equipment-date=%0, if(t(rest(%1)), rest(%1), %0);
 
 &switch.3.find [v(d.eqc)]=@pemit %0=ulocal(layout.find-equipment, %0, rest(%1));
 
@@ -302,6 +339,11 @@ e #662/eq-4-*
 @@ %0 - %#
 @@ %1 - player
 &tr.equipment-view [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(or(not(t(%1)), not(t(setr(P, ulocal(f.get-player, %1))))), Could not find player '%1'.), %b, if(and(not(isstaff(%0)), not(match(%0, %qP))), You are not staff and cannot view players' equipment.)))))=, { @pemit %0=ulocal(layout.equipment, %0, %qP, 1); }, { @pemit %0=ulocal(layout.error, %qE); }
+
+@@ Input:
+@@ %0 - %#
+@@ %1 - player
+&tr.equipment-date [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(or(not(t(%1)), not(t(setr(P, ulocal(f.get-player, %1))))), Could not find player '%1'.), %b, if(and(not(isstaff(%0)), not(match(%0, %qP))), You are not staff and cannot view players' equipment by date.)))))=, { @pemit %0=ulocal(layout.equipment-by-date, %0, %qP, 1); }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
