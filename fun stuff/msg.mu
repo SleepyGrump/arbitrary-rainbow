@@ -42,7 +42,7 @@ You can use any of the following in place of msg:
 * +telepathy
 * +tel
 
-See also: [[Gamehelp:Message]]
+See also: [[Gamehelp:Message|Message]]
 
 ==Message==
 
