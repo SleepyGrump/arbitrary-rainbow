@@ -63,7 +63,7 @@ l Spirit
 
 &layout.list SSP=iter(lnum(add(div(words(%0), 3), t(mod(words(%0), 3)))), ulocal(layout.row-no-values, ulocal(f.lookup-from-list-of-attributes, %0, itext(0), 0), ulocal(f.lookup-from-list-of-attributes, %0, itext(0), 1), ulocal(f.lookup-from-list-of-attributes, %0, itext(0), 2)),, %r)
 
-&layout.name SSP=strcat(name(me), %b-%b, switch(default(rank, 0), 4, Ensah %(Rank 4%), 3, Ensih %(Rank 3%), 2, Hursih %(Rank 2%), 1, Hursih %(Rank %), 0, Muthra %(Rank 0%), Dihir %(Rank 5+%)))
+&layout.name SSP=strcat(name(me), %b-%b, switch(default(rank, 0), 4, Ensah %(Rank 4%), 3, Ensih %(Rank 3%), 2, Hursih %(Rank 2%), 1, Hursih %(Rank 1%), 0, Muthra %(Rank 0%), Dihir %(Rank 5+%)))
 
 &layout.dbref-list SSP=iter(lnum(add(div(words(%0), 3), t(mod(words(%0), 3)))), ulocal(layout.row-no-values, ulocal(f.lookup-from-list-of-names, %0, itext(0), 0, 3), ulocal(f.lookup-from-list-of-names, %0, itext(0), 1, 3), ulocal(f.lookup-from-list-of-names, %0, itext(0), 2, 3)),, %r)
 
