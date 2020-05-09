@@ -160,8 +160,6 @@ e #662/eq-4-*
 @@ %1 - target
 &layout.equipment-by-date [v(d.eqf)]=strcat(wheader(if(match(%0, %1), Your, name(%1)'s) equipment by date, %0), %R, iter(ulocal(f.sort-equipment-by-date, lattr(%1/_eq-*-name), %b), strcat(ulocal(layout.equipment-all-lines, %1, trim(itext(0), l, _)), setq(0, ulocal(f.get-equipment-note, %1, itext(0))), if(t(%q0), strcat(%R, space(3), Note:, %b, %q0))),, %R), %R, wfooter(, %0))
 
-+eq/date tivadar
-
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Local functions
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -233,9 +231,6 @@ e #662/eq-4-*
 
 @@ %0 - the command input
 &f.find-command-switch [v(d.eqf)]=strcat(setq(0,), setq(1,), setq(2, switch(%0, /*/*, first(rest(first(%0), /), /), /*, rest(first(%0), /), %b*, _, first(%0))), null(iter(sort(lattr(%!/switch.*.%q2*)), case(1, match(last(itext(0), .), %q2), setq(0, %q0 [itext(0)]), strmatch(last(itext(0), .), %q2*), setq(1, %q1 [itext(0)])))), trim(if(t(%q0), first(%q0), %q1), b))
-
-@@ %0 - list of
-&f.group-equipment-by-tags [v(d.eqf)]=
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Command manager
