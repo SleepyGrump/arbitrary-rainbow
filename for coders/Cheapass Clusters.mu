@@ -127,6 +127,7 @@
 @@ 2018-01-11 Pass insert values as registers so we can explicitly replace nulls
 @@            with nothing where necessary.
 @@ 2018-03-27 Noticed and fixed a bug with the SQL detection routine
+@@ 2020-05-13 Noticed a timing bug with the SQL query creations and fixed it.
 @@ -----------------------------------------------------------------------------
 
 
@@ -242,10 +243,10 @@
 			th %ch%crERROR! - You don't have Myrddin's MUSHcron! Stop this setup RIGHT NOW! - ERROR!;
 			th %ch%cr--------------------------------------------------------------------------------;
 		};
-		&cron_time_checksql [v(d.mushcron)]=||||00 02 04 06 08 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40 42 44 46 48 50 52 54 56 58|
+		&cron_time_checksql [v(d.mushcron)]=||||00 02 04 06 08 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40 42 44 46 48 50 52 54 56 58|;
 
-		&cron_job_checksql [v(d.mushcron)]=@if not(t(sql(SELECT 1)))={@cemit Staff=%ch%crSQL is down - [rserror()] - @restart now!;}
-	}
+		&cron_job_checksql [v(d.mushcron)]=@if not(t(sql(SELECT 1)))={@cemit Staff=%ch%crSQL is down - [rserror()] - @restart now!;};
+	};
 
 /*
 
@@ -262,67 +263,67 @@
 
 	@force me=&sql me=CREATE TABLE IF NOT EXISTS tblDataValues (DBref varchar(10) NOT NULL, Name varchar([xget(DSF, d.max-name-length)]) NOT NULL, Value varchar([xget(DSF, d.max-value-length)]), PRIMARY KEY (DBref, Name)) ENGINE=InnoDB;
 
-	th sql(v(sql));
+	@wait 1=th sql(v(sql));
 
-	@force me=&sql me=CREATE TABLE IF NOT EXISTS tblKeyValues (DBref varchar(10) NOT NULL, DataName varchar([xget(DSF, d.max-name-length)]) NOT NULL, Name varchar([xget(DSF, d.max-name-length)]) NOT NULL, Value varchar([xget(DSF, d.max-value-length)]), PRIMARY KEY (DBref, DataName, Name), CONSTRAINT ufk_DBref_DataName FOREIGN KEY (DBref, DataName) REFERENCES tblDataValues(DBref, Name) ON DELETE CASCADE) ENGINE=InnoDB;
+	@wait 2=@force me=&sql me=CREATE TABLE IF NOT EXISTS tblKeyValues (DBref varchar(10) NOT NULL, DataName varchar([xget(DSF, d.max-name-length)]) NOT NULL, Name varchar([xget(DSF, d.max-name-length)]) NOT NULL, Value varchar([xget(DSF, d.max-value-length)]), PRIMARY KEY (DBref, DataName, Name), CONSTRAINT ufk_DBref_DataName FOREIGN KEY (DBref, DataName) REFERENCES tblDataValues(DBref, Name) ON DELETE CASCADE) ENGINE=InnoDB;
 
-	th sql(v(sql));
+	@wait 3=th sql(v(sql));
 
-	@force me=&sql me=CREATE UNIQUE INDEX uix_dataNames ON tblDataValues (DBref, Name);
+	@wait 4=@force me=&sql me=CREATE UNIQUE INDEX uix_dataNames ON tblDataValues (DBref, Name);
 
-	th sql(v(sql));
+	@wait 5=th sql(v(sql));
 
-	@force me=&sql me=CREATE UNIQUE INDEX uix_keyNames ON tblKeyValues (DBref, DataName, Name);
+	@wait 6=@force me=&sql me=CREATE UNIQUE INDEX uix_keyNames ON tblKeyValues (DBref, DataName, Name);
 
-	th sql(v(sql));
+	@wait 7=th sql(v(sql));
 
-	@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_GetDataValue`(IN `up_DBref` VARCHAR(10), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)])) SELECT Value FROM tblDataValues WHERE DBref = up_DBref AND Name = up_Name%%;
+	@wait 8=@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_GetDataValue`(IN `up_DBref` VARCHAR(10), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)])) SELECT Value FROM tblDataValues WHERE DBref = up_DBref AND Name = up_Name%%;
 
-	th sql(v(sql));
+	@wait 9=th sql(v(sql));
 
-	@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_GetKeyValue`(IN `up_DBref` VARCHAR(10), IN `up_DataName` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)])) SELECT Value FROM tblKeyValues WHERE DBref = up_DBref AND DataName = up_DataName AND Name = up_Name%%;
+	@wait 10=@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_GetKeyValue`(IN `up_DBref` VARCHAR(10), IN `up_DataName` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)])) SELECT Value FROM tblKeyValues WHERE DBref = up_DBref AND DataName = up_DataName AND Name = up_Name%%;
 
-	th sql(v(sql));
+	@wait 11=th sql(v(sql));
 
-	@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_GetDataName`(IN `up_DBref` VARCHAR(10), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)])) SELECT Name FROM tblDataValues WHERE DBref = up_DBref AND Name = up_Name%%;
+	@wait 12=@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_GetDataName`(IN `up_DBref` VARCHAR(10), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)])) SELECT Name FROM tblDataValues WHERE DBref = up_DBref AND Name = up_Name%%;
 
-	th sql(v(sql));
+	@wait 13=th sql(v(sql));
 
-	@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_GetKeyName`(IN `up_DBref` VARCHAR(10), IN `up_DataName` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)])) SELECT Name FROM tblKeyValues WHERE DBref = up_DBref AND DataName = up_DataName AND Name = up_Name%%;
+	@wait 14=@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_GetKeyName`(IN `up_DBref` VARCHAR(10), IN `up_DataName` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)])) SELECT Name FROM tblKeyValues WHERE DBref = up_DBref AND DataName = up_DataName AND Name = up_Name%%;
 
-	th sql(v(sql));
+	@wait 15=th sql(v(sql));
 
-	@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_ListData`(IN `up_DBref` VARCHAR(10), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Key` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Value` VARCHAR([xget(DSF, d.max-value-length)]), IN `up_KeyValue` VARCHAR([xget(DSF, d.max-value-length)]), IN `up_Format` BIT(1)) SELECT DISTINCT CASE WHEN up_Format = 1 THEN CONCAT(D.Name, '/', K.Name) ELSE D.Name END AS Name FROM tblDataValues D LEFT OUTER JOIN tblKeyValues K ON D.DBref=K.DBref AND D.Name=K.DataName WHERE D.DBref = up_DBref AND (up_Name = '' OR D.Name LIKE CONCAT(up_Name, '\%\%\%\%')) AND (up_Key = '' OR K.Name LIKE CONCAT(up_Key, '\%\%\%\%')) AND (up_Value = '' OR D.Value LIKE CONCAT('\%\%\%\%', up_Value, '\%\%\%\%')) AND (up_KeyValue = '' OR K.Value LIKE CONCAT('\%\%\%\%', up_KeyValue, '\%\%\%\%')) %%;
+	@wait 16=@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_ListData`(IN `up_DBref` VARCHAR(10), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Key` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Value` VARCHAR([xget(DSF, d.max-value-length)]), IN `up_KeyValue` VARCHAR([xget(DSF, d.max-value-length)]), IN `up_Format` BIT(1)) SELECT DISTINCT CASE WHEN up_Format = 1 THEN CONCAT(D.Name, '/', K.Name) ELSE D.Name END AS Name FROM tblDataValues D LEFT OUTER JOIN tblKeyValues K ON D.DBref=K.DBref AND D.Name=K.DataName WHERE D.DBref = up_DBref AND (up_Name = '' OR D.Name LIKE CONCAT(up_Name, '\%\%\%\%')) AND (up_Key = '' OR K.Name LIKE CONCAT(up_Key, '\%\%\%\%')) AND (up_Value = '' OR D.Value LIKE CONCAT('\%\%\%\%', up_Value, '\%\%\%\%')) AND (up_KeyValue = '' OR K.Value LIKE CONCAT('\%\%\%\%', up_KeyValue, '\%\%\%\%')) %%;
 
-	th sql(v(sql));
+	@wait 17=th sql(v(sql));
 
-	@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_SetDataValue`(IN `up_DBref` VARCHAR(10), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Value` VARCHAR([xget(DSF, d.max-value-length)])) INSERT INTO tblDataValues (`DBref`, `Name`, `Value`) VALUES(up_DBref, up_Name, up_Value) ON DUPLICATE KEY UPDATE `Value` = up_Value%%;
+	@wait 18=@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_SetDataValue`(IN `up_DBref` VARCHAR(10), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Value` VARCHAR([xget(DSF, d.max-value-length)])) INSERT INTO tblDataValues (`DBref`, `Name`, `Value`) VALUES(up_DBref, up_Name, up_Value) ON DUPLICATE KEY UPDATE `Value` = up_Value%%;
 
-	th sql(v(sql));
+	@wait 19=th sql(v(sql));
 
-	@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_SetKeyValue`(IN `up_DBref` VARCHAR(10), IN `up_DataName` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Value` VARCHAR([xget(DSF, d.max-value-length)])) INSERT INTO tblKeyValues (`DBref`, `DataName`, `Name`, `Value`) VALUES(up_DBref, up_DataName, up_Name, up_Value) ON DUPLICATE KEY UPDATE `Value` = up_Value%%;
+	@wait 20=@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_SetKeyValue`(IN `up_DBref` VARCHAR(10), IN `up_DataName` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Value` VARCHAR([xget(DSF, d.max-value-length)])) INSERT INTO tblKeyValues (`DBref`, `DataName`, `Name`, `Value`) VALUES(up_DBref, up_DataName, up_Name, up_Value) ON DUPLICATE KEY UPDATE `Value` = up_Value%%;
 
-	th sql(v(sql));
+	@wait 21=th sql(v(sql));
 
-	@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_SetDataName`(IN `up_DBref` VARCHAR(10), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_NewName` VARCHAR([xget(DSF, d.max-value-length)])) UPDATE tblDataValues SET `Name`=`up_NewName` WHERE `Name` = up_Name AND `DBref`= up_DBref%%;
+	@wait 22=@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_SetDataName`(IN `up_DBref` VARCHAR(10), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_NewName` VARCHAR([xget(DSF, d.max-value-length)])) UPDATE tblDataValues SET `Name`=`up_NewName` WHERE `Name` = up_Name AND `DBref`= up_DBref%%;
 
-	th sql(v(sql));
+	@wait 23=th sql(v(sql));
 
-	@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_SetKeyName`(IN `up_DBref` VARCHAR(10), IN `up_DataName` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_NewName` VARCHAR([xget(DSF, d.max-value-length)])) UPDATE tblKeyValues SET `Name`=`up_NewName` WHERE `Name` = up_Name AND `DataName` = up_DataName AND `DBref`= up_DBref%%;
+	@wait 24=@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_SetKeyName`(IN `up_DBref` VARCHAR(10), IN `up_DataName` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_NewName` VARCHAR([xget(DSF, d.max-value-length)])) UPDATE tblKeyValues SET `Name`=`up_NewName` WHERE `Name` = up_Name AND `DataName` = up_DataName AND `DBref`= up_DBref%%;
 
-	th sql(v(sql));
+	@wait 25=th sql(v(sql));
 
-	@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_WipeData`(IN `up_DBref` VARCHAR(10), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)])) DELETE FROM tblDataValues WHERE `Name` = up_Name AND `DBref`= up_DBref%%;
+	@wait 26=@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_WipeData`(IN `up_DBref` VARCHAR(10), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)])) DELETE FROM tblDataValues WHERE `Name` = up_Name AND `DBref`= up_DBref%%;
 
-	th sql(v(sql));
+	@wait 27=th sql(v(sql));
 
-	@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_WipeKey`(IN `up_DBref` VARCHAR(10), IN `up_DataName` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)])) DELETE FROM tblKeyValues WHERE `Name` = up_Name AND `DBref`= up_DBref AND `DataName` = up_DataName%%;
+	@wait 28=@force me=&sql me=CREATE DEFINER=`%vL`@`localhost` PROCEDURE `usp_WipeKey`(IN `up_DBref` VARCHAR(10), IN `up_DataName` VARCHAR([xget(DSF, d.max-name-length)]), IN `up_Name` VARCHAR([xget(DSF, d.max-name-length)])) DELETE FROM tblKeyValues WHERE `Name` = up_Name AND `DBref`= up_DBref AND `DataName` = up_DataName%%;
 
-	th sql(v(sql));
+	@wait 29=th sql(v(sql));
 
-	th NOTE: Your game supports SQL. Data will be stored using the SQL method!;
+	@wait 30=th NOTE: Your game supports SQL. Data will be stored using the SQL method!;
 
-},{th NOTE: Your game does not support SQL. Using the parent method!}
+},{th NOTE: Your game does not support SQL. Using the parent method!};
 
 @@ -----------------------------------------------------------------------------
 @@ SQL commands go here.
