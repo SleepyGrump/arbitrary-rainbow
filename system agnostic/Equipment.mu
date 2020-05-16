@@ -74,9 +74,8 @@ Changelog:
 	* Make lists of equipment more readable and less spammy.
 2020-05-01:
 	* +eq/date <player> - list equipment by date, showing only name, tags and notes, useful for seeing when a player last got equipment.
-
-TODO:
- * Maybe come up with a way to highlight equipment tags...
+2020-05-09:
+	* +eq/month <player> - list equipment bought in the current month, by Availability. I tried to avoid sticking any system knowledge in this code - Availability is how CofD tracks equipment cost (Av1 is cheap, Av5 is expensive) - but I couldn't think of a good way to display what I needed and still make it easy for staff to remember what to type. I could've made it +eq/month <player>=<tag to search for> but then staff would just have more to remember, and I don't honestly see what use there is for that. Since AFAIK no one else is using this, I figured it's OK to cheat a little on the system agnostic criteria.
 
 ================================================================================
 
@@ -160,9 +159,33 @@ e #662/eq-4-*
 @@ %1 - target
 &layout.equipment-by-date [v(d.eqf)]=strcat(wheader(if(match(%0, %1), Your, name(%1)'s) equipment by date, %0), %R, iter(ulocal(f.sort-equipment-by-date, lattr(%1/_eq-*-name), %b), strcat(ulocal(layout.equipment-all-lines, %1, trim(itext(0), l, _)), setq(0, ulocal(f.get-equipment-note, %1, itext(0))), if(t(%q0), strcat(%R, space(3), Note:, %b, %q0))),, %R), %R, wfooter(, %0))
 
+@@ %0 - viewer
+@@ %1 - target character
+@@ %2 - equipment attribute
+@@ %3 - partial tag
+&layout.equipment-line-date-and-tag [v(d.eqf)]=strcat(%b, name(%1), %b, bought, %b, first(setr(0, xget(%1, %2)), |), %b, on, %b, ulocal(f.format-date, edit(revwords(extract(revwords(%q0), 1, 5)), .,)), %b, with, %b, if(t(setr(0, ulocal(f.has-tag, %2, %3))), %q0, No %3), .)
+
+@@ %0 - viewer
+@@ %1 - target character
+@@ %2 - month
+@@ %3 - year
+@@ %4 - tag
+&layout.equipment-by-month-year [v(d.eqf)]=strcat(setq(0, trim(squish(edit(strcat(setq(1, filter(f.filter-by-month-year, ulocal(f.sort-equipment-by-date, lattr(%1/_eq-*-name), %b),,, %1, %2, %3)), if(t(%q1), iter(%q1, itext(1)/[itext(0)]))), |, %b)))), if(t(%q0), iter(%q0, ulocal(layout.equipment-line-date-and-tag, %0, %1, rest(itext(0), /), %4),, %r)))
+
+@@ %0 - viewer
+@@ %1 - target character
+@@ %2 - month
+@@ %3 - year
+@@ %4 - tag
+&layout.pretty-equipment-month-year [v(d.eqf)]=strcat(wheader(Equipment purchased in %2 %3, %0), %r%r, ulocal(layout.equipment-by-month-year, %0, %1, %2, %3, %4), %r%r, wfooter(, %0))
+
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Local functions
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+@@ %0 - equipment attribute
+@@ %1 - tag to partial-match
+&f.has-tag [v(d.eqf)]=trim(squish(iter(ulocal(f.get-equipment-tags, edit(%0, _,)), if(strmatch(itext(0), %1*), itext(0)), |, |), |), b, |)
 
 @@ %0 - date in standard format, eg. Sat May 02 15:41:01 2020
 &f.format-date [v(d.eqf)]=strcat(ulocal(f.get-month-from-string, extract(%0, 2, 1)), -, extract(%0, 3, 1), -, extract(%0, 5, 1))
@@ -184,6 +207,12 @@ e #662/eq-4-*
 &sort_by_date [v(d.eqf)]=sortby(f.sort-date, %0, |, |)
 
 &f.sort-date [v(d.eqf)]=comp(convtime(%0), convtime(%1))
+
+@@ %0 - equipment attribute
+@@ %1 - player
+@@ %2 - month
+@@ %3 - year
+&f.filter-by-month-year [v(d.eqf)]=and(match(extract(revwords(edit(extract(revwords(xget(%1, %0)), 1, 5), .,)), 2, 1), %2), match(extract(revwords(edit(extract(revwords(xget(%1, %0)), 1, 5), .,)), 5, 1), %3))
 
 @@ %0 - title
 &f.find-equipment-on-players [v(d.eqf)]=search(eval=hasattr(##, _%0))
@@ -252,6 +281,8 @@ e #662/eq-4-*
 &switch.2.list [v(d.eqc)]=@pemit %0=ulocal(layout.list-equipment, %0, rest(%1));
 
 &switch.2.date [v(d.eqc)]=@trigger me/tr.equipment-date=%0, if(t(rest(%1)), rest(%1), %0);
+
+&switch.2.month [v(d.eqc)]=@trigger me/tr.equipment-month=%0, if(t(rest(%1)), rest(%1), %0), Availability;
 
 &switch.3.find [v(d.eqc)]=@pemit %0=ulocal(layout.find-equipment, %0, rest(%1));
 
@@ -339,6 +370,12 @@ e #662/eq-4-*
 @@ %0 - %#
 @@ %1 - player
 &tr.equipment-date [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(or(not(t(%1)), not(t(setr(P, ulocal(f.get-player, %1))))), Could not find player '%1'.), %b, if(and(not(isstaff(%0)), not(match(%0, %qP))), You are not staff and cannot view players' equipment by date.)))))=, { @pemit %0=ulocal(layout.equipment-by-date, %0, %qP, 1); }, { @pemit %0=ulocal(layout.error, %qE); }
+
+@@ Input:
+@@ %0 - %#
+@@ %1 - player
+@@ %2 - tag
+&tr.equipment-month [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(or(not(t(%1)), not(t(setr(P, ulocal(f.get-player, %1))))), Could not find player '%1'.), %b, if(and(not(isstaff(%0)), not(match(%0, %qP))), You are not staff and cannot view players' equipment for the current month.)))))=, { @pemit %0=ulocal(layout.pretty-equipment-month-year, %0, %qP, extract(time(), 2, 1), extract(time(), 5, 1), %2); }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
