@@ -326,7 +326,7 @@ think Merit time!
 
 &merit.elemental_warrior_() [v(d.dd)]=1.2.3.4.5|*
 
-&prerequisite.merit.elemental_warrior_() [v(d.dd)]=cand(u(.at_least_one, %0, attribute.dexterity:3 attribute.wits:3), u(.at_least_one, %0, skill.brawl:2 skill.firearms:2 skill.weaponry:2), cor(u(.is, %0, bio.seeming, Elemental), u(.has_one, %0, contract.elemental_weapon contract.primal_glory)))
+&prerequisite.merit.elemental_warrior_() [v(d.dd)]=cand(u(.at_least_one, %0, attribute.dexterity:3 attribute.wits:3), u(.at_least_one, %0, skill.brawl:2 skill.firearms:2 skill.weaponry:2), cor(u(.is, %0, bio.seeming, Elemental), u(.has_one_of, %0, contract.elemental_weapon contract.primal_glory)))
 
 &prereq-text.merit.elemental_warrior_() [v(d.dd)]=Dexterity or Wits 3+; Brawl, Firearms, or Weaponry 2+; Elemental Weapon or Primal Glory (Contracts) or Elemental seeming
 
