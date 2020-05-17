@@ -601,7 +601,7 @@ look Critter
 &damage Fox=0L
 
 &attack-1 Fox=Bite
-&attack-2 Fox=Trample
+&attack-2 Fox=Claw
 
 &appearance Fox=Dog hardware running cat software.
 
