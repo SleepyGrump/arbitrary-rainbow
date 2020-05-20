@@ -7,7 +7,7 @@
 @fo me=&d.nsc RCS=search(name=Newest Sheet Code <nsc>)
 @fo me=&d.rcg RCS=search(name=Random CG suggestions <RCS>)
 
-@desc [v(d.rcg)]=%R%BCommands:%R%R%Tcg/rand - trust the random. The random is your friend.%R%Tcg/concept - trust the random generator with your concept!%R
+@desc [v(d.rcg)]=%R%BCommands:%R%R%Tcg/rand - trust the random. The random is your friend.%R%Tcg/concept - trust the random generator with your concept!%R%Tcg/dualkith - don't cross the kiths! Or do. Because it's awesome!%R
 
 
 &d.month [v(d.rcg)]=January February March April May June July August September October November December
@@ -75,3 +75,6 @@
 &cmd-cg/rand [v(d.rcg)]=$cg/rand:@pemit %#=strcat(setq(T, u(f.pickrand, bio.template)), wheader(Random CG idea!), %r%r, %bYou should play, %b, art(%qT), %b, %qT, %b, with, %b, u(f.rand.list, eyes), %b, eyes and, %b, u(f.rand.list, hair), %b, hair. Here are some suggestions for your bio:, %r%r%t, ljust(Template:, 20), %b, %qT%r, iter(u(f.bio, %qT), strcat(%t, ljust(statname(itext(0)):, 20), %b, u(f.bio-stat, itext(0), %qT)),, %R), %r%r%b, Your best skill should be, %b, u(f.rand.list, skills), %b, and you should have high, %b, u(f.rand.list, attributes)., %r%r, wfooter())
 
 &cmd-cg/concept [v(d.rcg)]=$cg/concept:@pemit %#=strcat(alert(You should play a...), %b, u(f.concept))
+
+&cmd-cg/dualkith [v(d.rcg)]=$cg/dualkith:@pemit %#=strcat(alert(You should play a...), %b, u(f.pickrand, bio.kith), /, u(f.pickrand, bio.kith))
+
