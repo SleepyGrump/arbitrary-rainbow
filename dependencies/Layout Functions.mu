@@ -222,8 +222,10 @@ th alert() Test!
 @@ %0 - list of text
 @@ %1 - delimiter (optional)
 @@ %2 - user (optional)
+@@ %3 - margins (optional, default 1)
 @@ Output: the list separated into the number of columns that can fit on the screen, max 6.
-&f.globalpp.fitcolumns LF=strcat(setq(0, if(t(%1), %1, %b)), setq(1, ulocal(f.get-max-columns, %2, getlongest(%0, %q0))), boxtext(case(1, gt(%q1, 1), %0, and(lte(%q1, 1), strmatch(%q0, %b)), %0, edit(%0, %q0, %R)), if(gt(%q1, 1), %q0), if(gt(%q1, 1), %q1), %2))
+&f.globalpp.fitcolumns LF=strcat(setq(0, if(t(%1), %1, %b)), setq(1, ulocal(f.get-max-columns, %2, getlongest(%0, %q0))), boxtext(case(1, gt(%q1, 1), %0, and(lte(%q1, 1), strmatch(%q0, %b)), %0, edit(%0, %q0, %R)), if(gt(%q1, 1), %q0), if(gt(%q1, 1), %q1), %2, %3))
+
 
 @@ Function: wrap text for display, optionally columnizing it.
 @@ Arguments:
@@ -231,8 +233,9 @@ th alert() Test!
 @@  %1 - the delimiter to split it by if a table is desired
 @@  %2 - the number of columns to display in a table (default 3)
 @@  %3 - the user this is getting shown to (optional)
+@@  %4 - the margins (optional, default 1)
 
-&f.globalpp.boxtext LF=strcat(setq(0, ulocal(f.get-width, if(t(%3), %3, %#))), setq(1, sub(%q0, 2)), if(or(t(%1), t(%2)), strcat(setq(2, %q1), setq(3, if(t(%2), %2, 3)), setq(4, sub(%q3, 1)), wrap(table(%0, div(sub(%q2, %q4), %q3), %q2, %1), %q1, left, %b)), wrap(%0, %q1, left, %b)))
+&f.globalpp.boxtext LF=strcat(setq(0, ulocal(f.get-width, if(t(%3), %3, %#))), setq(4, if(t(%4), %4, 1)), setq(1, sub(%q0, mul(%q4, 2))), if(or(t(%1), t(%2)), strcat(setq(2, if(t(%2), %2, 3)), setq(3, sub(%q2, 1)), setq(5, mod(%q1, %q2)), setq(3, add(%q3, %q5)), edit(table(%0, div(sub(%q1, %q3), %q2), %q1, %1), ^, space(%q4), %r, strcat(%r, space(%q4)))), wrap(%0, sub(%q1, if(not(mod(%q1, 2)), 1, 0)), left, space(%q4))))
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~@@
 @@ Aliases
