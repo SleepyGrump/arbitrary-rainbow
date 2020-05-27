@@ -12,11 +12,11 @@ The entire point of this object is to collect all the layout functions I usually
 
 Some of these are probably new to you:
 
-	boxtext(text, delimiter, columns, viewer dbref) - take text, wrap it so it doesn't touch the edges of the viewer's screen. Optionally turn it into columns. No, not everyone wants to figure out vcolumns.
+	boxtext(text, delimiter, columns, viewer dbref, margin) - take text, wrap it so it doesn't touch the edges of the viewer's screen. Optionally turn it into columns. No, not everyone wants to figure out vcolumns.
 
-	fitcolumns(list, delimiter, viewer dbref) - display a list in as many columns as will fit on the screen, max 6.
+	fitcolumns(list, delimiter, viewer dbref, margin) - display a list in as many columns as will fit on the screen, max 6.
 
-	getlongest (probably belongs in a string-editing library)
+	getlongest(list, delimiter) (probably belongs in a string-editing library)
 
 This is not intended for player use though players can obviously call them. These are for things like "making the game pretty".
 
@@ -25,6 +25,8 @@ Future expansion potential:
 	- Separate the colors from the characters in use so they're easier to set.
 
 	- Add default functions like "vcolumns" and a few other things that every game uses and no one really has a spot for.
+
+	- Maybe add some of my string formatting functions like that one that turned a duration into human-readable units of time?
 
 */
 
@@ -267,6 +269,6 @@ th alert() Test!
 &f.calc-width LF=sub(ceil(fdiv(%0, %1)), sub(%1, 1))
 
 @@ %0 - the player to get the width of the screen of
-@@ Output: the width of the player's screen, max 80 and min 50.
-&f.get-width LF=max(min(width(if(t(%0), %0, %#)), 80), 50)
+@@ Output: the width of the player's screen, max 200 and min 50.
+&f.get-width LF=max(min(width(if(t(%0), %0, %#)), 200), 50)
 
