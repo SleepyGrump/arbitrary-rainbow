@@ -14,7 +14,7 @@ These are commands anyone can use anywhere on the grid, but some of them only wo
 
 Purpose: To give players a sense of ownership and security on the grid.
 
-We provide a simple form of locking: +lock o will lock both your Out exit and its corresponding entrance, assuming it's set up correctly. When the door is locked, no one can pass.
+We provide a simple form of locking: +lock o will lock both your Out exit and its corresponding entrance, assuming it's set up correctly. When the door is locked, only people with keys can pass.
 
 Please note that teleportation commands still work as normal - 'home', +meetme, +travel, +ic, etc, will all still bring players into locked buildings, and they can still leave with those commands as well.
 
@@ -23,6 +23,14 @@ In addition, staff can pass these locks, as they need to get to various places o
  * +lock <exit> - lock an exit you control.
 
  * +unlock <exit> - unlock an exit you control.
+
+Locks are controlled by keys. The owner(s) of a location can hand them out with:
+
+ * +key/give [<#room or here>=]<player> - give someone a key
+
+ * +key/take [<#room or here>=]<player> - take away their key
+
+ * +keys [<#room or here>] - list everyone who has keys to that particular location
 
 This code also allows you some control over views and description in your room. You will not be able to make or remove the "Owner" view, since that is code-based, but you can add and remove other views, and can completely change the description.
 
@@ -50,13 +58,6 @@ Staff commands:
 @create Exit Parent <EP>=10
 @set EP=INHERIT
 
-@@ Change this to "0" if you don't want staff to pass the lock.
-&d.default-lock EP=[isstaff(%#)]
-
-@desc EP=if(hasflag(me, transparent), A path leading to..., A path leading to [name(loc(me))].)
-
-@descformat EP=strcat(alert(), %b, name(me) -, %b, ulocal(desc))
-
 @create Grid Functions <GF>=10
 @set GF=INHERIT
 
@@ -64,9 +65,7 @@ Staff commands:
 @set GC=INHERIT
 @parent GC=GF
 
-@force me=&d.exit-parent GF=num(EP)
-
-@force me=&d.grid-owner GF=search(player=GridOwner)
+@force me=&d.ep me=num(EP)
 
 @force me=&d.gf me=num(GF)
 
@@ -74,7 +73,7 @@ Staff commands:
 
 @@ This step parents all the exits on the grid to your new exit parent.
 
-@dolist search(TYPE=exit)=@parent ##=[num(EP)];
+@dolist search(TYPE=exit)=@parent ##=[v(d.ep)];
 
 @@ SIDE NOTE:
 @@ 
@@ -83,8 +82,24 @@ Staff commands:
 @@ If you don't do that, future exits will not look the same as existing exits.
 @@ 
 
+@force me=&d.grid-owner GF=search(player=GridOwner)
+
+@force me=&d.exit-parent GF=v(d.ep)
+
+@force me=&VK [v(d.ep)]=[v(d.gf)]
+
 @tel EP=[v(d.gf)]
 @tel [v(d.gf)]=[v(d.gc)]
+
+@desc [v(d.ep)]=if(hasflag(me, transparent), A path leading to..., A path leading to [name(loc(me))].)
+
+@descformat [v(d.ep)]=strcat(alert(), %b, name(me) -, %b, ulocal(desc))
+
+@ofail [v(d.ep)]=strcat(tries to go into, %b, trim(first(name(me), <)), %, but the door is locked.)
+
+@fail [v(d.ep)]=strcat(alert(), %b, trim(first(name(me), <)) is locked.)
+
+&d.default-lock [v(d.ep)]=[u(%vK/f.haskey, %#, %!)]
 
 &.msg [v(d.gf)]=alert(Grid Msg) %0
 
@@ -94,19 +109,35 @@ Staff commands:
 
 @@ %0 - viewer
 @@ %1 - room they're looking at
-@@ %2 - owner
-&layout.owner-line [v(d.gf)]=strcat(setq(W, width(%0)), setq(N, name(%2)), setq(P, default(%2/position-%1, &position-%1 not set.)), space(3), %qN, %b, repeat(., sub(%qW, add(2, 6, strlen(name(%2)), strlen(%qP)))), %b, %qP)
+@@ %2 - key-holder
+&layout.key-line [v(d.gf)]=strcat(space(3), xget(%1, _key-%2))
 
 @@ %0 - viewer
 @@ %1 - room they're looking at
-&layout.owners [v(d.gf)]=strcat(wheader(name(%1), %0), %r, wdivider(Room owners), setq(O, ulocal(f.get-owners, %1)), %r, if(gt(words(%qO), 0), strcat(%r, boxtext(strcat(The following, %b, if(gt(words(%qO), 1), people, person), %b, may be reached for OOC questions/comments regarding this build:),,, %0, 3), %r%r, iter(%qO, ulocal(layout.owner-line, %0, %1, itext(0)),, %r)), strcat(%r, boxtext(strcat(This place has no registered owners at the moment. Please contact staff via %chreq/build%cn if you have questions or comments., if(hasattr(%1, view-owner), strcat(%r%r, The old owner view:, %b, ulocal(%1/view-owner))), if(and(hasattr(%1, view-owners), not(match(xget(%1, view-owners), This location has owners. Use +owners to view them.))), strcat(%r%r, The old owners view:, %b, ulocal(%1/view-owners)))),,, %0, 3), %r)), %r, wfooter(, %0))
+&layout.keys [v(d.gf)]=strcat(wheader(name(%1), %0), %r, wdivider(Room keys), setq(O, ulocal(f.get-keys, %1)), %r%r, if(gt(words(%qO), 0), strcat(boxtext(strcat(The following, %b, if(gt(words(%qO), 1), people have, person has), %b, keys to this build:),,, %0, 3), %r%r, iter(%qO, ulocal(layout.key-line, %0, %1, itext(0)),, %r)), boxtext(No one has a key to this place at the moment. Please contact staff via %chreq/build%cn if you have questions or comments.,,, %0, 3)), %r%r, wfooter(, %0))
+
+@@ %0 - viewer
+@@ %1 - room they're looking at
+@@ %2 - owner
+&layout.owner-line [v(d.gf)]=strcat(setq(W, width(%0)), setq(N, name(%2)), setq(P, default(%2/position-%1, &position-%1 not set.)), space(3), %qN, %b, repeat(., sub(%qW, add(2, 6, strlen(%qN), strlen(%qP)))), %b, %qP)
+
+@@ %0 - viewer
+@@ %1 - room they're looking at
+&layout.owners [v(d.gf)]=strcat(wheader(name(%1), %0), %r, wdivider(Room owners), setq(O, ulocal(f.get-owners, %1)), %r%r, if(gt(words(%qO), 0), strcat(boxtext(strcat(The following, %b, if(gt(words(%qO), 1), people, person), %b, may be reached for OOC questions/comments regarding this build:),,, %0, 3), %r%r, iter(%qO, ulocal(layout.owner-line, %0, %1, itext(0)),, %r)), boxtext(strcat(This place has no registered owners at the moment. Please contact staff via %chreq/build%cn if you have questions or comments., if(hasattr(%1, view-owner), strcat(%r%r, The old owner view:, %b, ulocal(%1/view-owner))), if(and(hasattr(%1, view-owners), not(match(xget(%1, view-owners), This location has owners. Use +owners to view them.))), strcat(%r%r, The old owners view:, %b, ulocal(%1/view-owners)))),,, %0, 3)), %r%r, wfooter(, %0))
 
 @@ %0 - person to test
 @@ %1 - object to test whether they own
 &f.isowner [v(d.gf)]=cor(isstaff(%0), cand(isapproved(%0), if(hastype(%1, EXIT), cor(hasattr(loc(%1), _owner-%0), hasattr(loc(xget(%1, _exit-pair)), _owner-%0)), hasattr(%1, _owner-%0))))
 
+@@ %0 - person to test
+@@ %1 - object to test whether they own
+&f.haskey [v(d.gf)]=cor(ulocal(f.isowner, %0, %1), cand(isapproved(%0), if(hastype(%1, EXIT), cor(hasattr(loc(%1), _key-%0), hasattr(loc(xget(%1, _exit-pair)), _key-%0)), hasattr(%1, _key-%0))))
+
 @@ %0 - location to get the owners of
 &f.get-owners [v(d.gf)]=trim(squish(iter(lattr(%0/_owner-*), if(isapproved(rest(itext(0), -)), rest(itext(0), -)))))
+
+@@ %0 - location to get the key-holders of
+&f.get-keys [v(d.gf)]=trim(squish(iter(lattr(%0/_key-*), if(isapproved(rest(itext(0), -)), rest(itext(0), -)))))
 
 @@ %0 - the exit dbref
 &f.exit-name [v(d.gf)]=trim(first(name(%0), <))
@@ -125,13 +156,19 @@ Staff commands:
 
 &cmd-+view/owners [v(d.gc)]=$+view own*:@force %#=+owners;
 
-&cmd-+owwner/add [v(d.gc)]=$+owner/add *:@assert t(switch(%0, here=*, setr(R, loc(%#)), *=*, setr(R, first(%0, =)), setr(R, loc(%#))))={ @trigger me/tr.error=%#, Could not figure out what room you're referring to. '%qR' doesn't make sense.; }; @assert cand(t(switch(%0, *=me, setr(T, %#), me, setr(T, %#), *=*, setr(T, rest(%0, =)), setr(T, %0))), t(setr(P, pmatch(%qT))))={ @trigger me/tr.error=%#, Could not find a player named '%qT'.; }; @assert cor(isdbref(%qR), t(setr(R, search(ROOMS=%qR))))={ @trigger me/tr.error=%#, Could not find a room named '%qR'.; }; @assert words(%qR)={ @trigger me/tr.error=%#, More than one room matches '[first(%0, =)]'.; }; @assert u(f.isowner, %#, %qR)={ @trigger me/tr.error=%#, You must be an owner of [name(%qR)] to add another owner to the owners list.; }; @assert not(u(f.isowner, %qP, %qR))={ @trigger me/tr.error=%#, moniker(%qP) is already an owner of [name(%qR)].; }; @assert isapproved(%qP)={ @trigger me/tr.error=%#, name(%qP) is not approved and cannot be made an owner.; }; @chown %qR=[v(d.grid-owner)]; @set %qR=_owner-%qP:[moniker(%qP)] was added by [moniker(%#)] on [time()]; &view-owners %qR=This location has owners. Use +owners to view them.; @trigger me/tr.success=%#, strcat(moniker(%qP) (%qP) has been added as an owner of, %b, name(%qR) (%qR).);
+&cmd-+owner/add [v(d.gc)]=$+owner/add *:@assert t(switch(%0, here=*, setr(R, loc(%#)), *=*, setr(R, first(%0, =)), setr(R, loc(%#))))={ @trigger me/tr.error=%#, Could not figure out what room you're referring to. '%qR' doesn't make sense.; }; @assert cand(t(switch(%0, *=me, setr(T, %#), me, setr(T, %#), *=*, setr(T, rest(%0, =)), setr(T, %0))), t(setr(P, pmatch(%qT))))={ @trigger me/tr.error=%#, Could not find a player named '%qT'.; }; @assert cor(isdbref(%qR), t(setr(R, search(ROOMS=%qR))))={ @trigger me/tr.error=%#, Could not find a room named '%qR'.; }; @assert words(%qR)={ @trigger me/tr.error=%#, More than one room matches '[first(%0, =)]'.; }; @assert u(f.isowner, %#, %qR)={ @trigger me/tr.error=%#, You must be an owner of [name(%qR)] to add another owner to the owners list.; }; @assert not(u(f.isowner, %qP, %qR))={ @trigger me/tr.error=%#, moniker(%qP) is already an owner of [name(%qR)].; }; @assert isapproved(%qP)={ @trigger me/tr.error=%#, name(%qP) is not approved and cannot be made an owner.; }; @chown %qR=[v(d.grid-owner)]; @set %qR=_owner-%qP:[moniker(%qP)] was added by [moniker(%#)] on [time()]; @wipe %qR/view-owner; &view-owners %qR=This location has owners. Use +owners to view them.; @trigger me/tr.success=%#, strcat(moniker(%qP) (%qP) has been added as an owner of, %b, name(%qR) (%qR).);
 
-&cmd-+owwner/remove [v(d.gc)]=$+owner/remove *:@assert t(switch(%0, here=*, setr(R, loc(%#)), *=*, setr(R, first(%0, =)), setr(R, loc(%#))))={ @trigger me/tr.error=%#, Could not figure out what room you're referring to. '%qR' doesn't make sense.; }; @assert cand(t(switch(%0, *=me, setr(T, %#), me, setr(T, %#), *=*, setr(T, rest(%0, =)), setr(T, %0))), t(setr(P, pmatch(%qT))))={ @trigger me/tr.error=%#, Could not find a player named '%qT'.; }; @assert cor(isdbref(%qR), t(setr(R, search(ROOMS=%qR))))={ @trigger me/tr.error=%#, Could not find a room named '%qR'.; }; @assert words(%qR)={ @trigger me/tr.error=%#, More than one room matches '[first(%0, =)]'.; }; @assert u(f.isowner, %#, %qR)={ @trigger me/tr.error=%#, You must be an owner of [name(%qR)] to add another owner to the owners list.; }; @assert u(f.isowner, %qP, %qR)={ @trigger me/tr.error=%#, moniker(%qP) is not currently an owner of [name(%qR)].; }; @wipe %qR/_owner-%qP; @switch/first words(ulocal(f.get-owners, %qR))=0, { @wipe %qR/view-owner*; }; @trigger me/tr.success=%#, strcat(moniker(%qP) (%qP) has been removed from the owners list of, %b, name(%qR) (%qR).);
+&cmd-+owner/remove [v(d.gc)]=$+owner/remove *:@assert t(switch(%0, here=*, setr(R, loc(%#)), *=*, setr(R, first(%0, =)), setr(R, loc(%#))))={ @trigger me/tr.error=%#, Could not figure out what room you're referring to. '%qR' doesn't make sense.; }; @assert cand(t(switch(%0, *=me, setr(T, %#), me, setr(T, %#), *=*, setr(T, rest(%0, =)), setr(T, %0))), t(setr(P, pmatch(%qT))))={ @trigger me/tr.error=%#, Could not find a player named '%qT'.; }; @assert cor(isdbref(%qR), t(setr(R, search(ROOMS=%qR))))={ @trigger me/tr.error=%#, Could not find a room named '%qR'.; }; @assert words(%qR)={ @trigger me/tr.error=%#, More than one room matches '[first(%0, =)]'.; }; @assert u(f.isowner, %#, %qR)={ @trigger me/tr.error=%#, You must be an owner of [name(%qR)] to add another owner to the owners list.; }; @assert u(f.isowner, %qP, %qR)={ @trigger me/tr.error=%#, moniker(%qP) is not currently an owner of [name(%qR)].; }; @wipe %qR/_owner-%qP; @switch/first words(ulocal(f.get-owners, %qR))=0, { @wipe %qR/view-owner*; }; @trigger me/tr.success=%#, strcat(moniker(%qP) (%qP) has been removed from the owners list of, %b, name(%qR) (%qR).);
 
-&cmd-+lock [v(d.gc)]=$+lock *:@assert cor(isdbref(setr(E, %0)), t(setr(E, trim(squish(iter(lexits(%L), if(strmatch(fullname(itext(0)), *;%0;*), itext(0))))))))={ @trigger me/tr.error=%#, Could not find the exit '%0'.; }; @assert words(%qE)={ @trigger me/tr.error=%#, More than one exit matches '%0'.; }; @assert type(%qE)=EXIT, { @trigger me/tr.error=%#, name(%qE) is not an exit.; }; @assert t(setr(P, xget(%qE, _exit-pair)))={ @trigger me/tr.error=%#, name(%qE) is not set up to be locked.; }; @switch t(lock(%qE/DefaultLock))=1, { @trigger me/tr.error=%#, name(%qE) is already locked.; }, { &_lock-exit %qE=[xget(v(d.exit-parent), d.default-lock)]; @lock/DefaultLock %qE=_lock-exit/1; &_lock-exit %qP=[xget(v(d.exit-parent), d.default-lock)]; @lock/DefaultLock %qP=_lock-exit/1; @trigger me/tr.remit=%#, strcat(moniker(%#), %b, just locked, %b, u(f.exit-name, %qE).); @trigger me/tr.remit=%qP, u(f.exit-name, %qP) is now locked.; };
+&cmd-+keys [v(d.gc)]=$+key*:@break strmatch(%0, */*)={ @assert switch(%0, /give *, 1, /take *, 1, 0)={ @trigger me/tr.error=%#, Did you mean one of the following commands: +key/give or +key/take?; }; }; @assert t(setr(T, switch(%0, s *, rest(%0),, loc(%#), %bhere, loc(%#), s, loc(%#), trim(%0))))={ @trigger me/tr.error=%#, Couldn't figure out what you meant by '%0'.; }; @assert t(case(1, isdbref(%qT), setr(R, %qT), match(%qT, here), setr(R, loc(%#)), setr(R, search(ROOMS=%qT))))={ @trigger me/tr.error=%#, Could not figure out what room you're referring to. '%qT' doesn't make sense.; }; @assert eq(words(%qR), 1)={ @trigger me/tr.error=%#, More than one room matched '%qT'.; }; @pemit %#=ulocal(layout.keys, %#, %qR);
 
-&cmd-+unlock [v(d.gc)]=$+unlock *:@assert cor(isdbref(setr(E, %0)), t(setr(E, trim(squish(iter(lexits(%L), if(strmatch(fullname(itext(0)), *;%0;*), itext(0))))))))={ @trigger me/tr.error=%#, Could not find the exit '%0'.; }; @assert words(%qE)={ @trigger me/tr.error=%#, More than one exit matches '%0'.; }; @assert type(%qE)=EXIT, { @trigger me/tr.error=%#, name(%qE) is not an exit.; }; @assert t(setr(P, xget(%qE, _exit-pair)))={ @trigger me/tr.error=%#, name(%qE) is not set up to be locked.; }; @switch t(lock(%qE/DefaultLock))=0, { @trigger me/tr.error=%#, name(%qE) is already unlocked.; }, { @wipe %qE/_lock-exit; @unlock/DefaultLock %qE; @wipe %qP/_lock-exit; @unlock/DefaultLock %qP; @trigger me/tr.remit=%#, strcat(moniker(%#), %b, just unlocked, %b, u(f.exit-name, %qE).); @trigger me/tr.remit=%qP, u(f.exit-name, %qP) is now unlocked.; };
+&cmd-+key/give [v(d.gc)]=$+key/give *:@assert t(switch(%0, here=*, setr(R, loc(%#)), *=*, setr(R, first(%0, =)), setr(R, loc(%#))))={ @trigger me/tr.error=%#, Could not figure out what room you're referring to. '%qR' doesn't make sense.; }; @assert cand(t(switch(%0, *=me, setr(T, %#), me, setr(T, %#), *=*, setr(T, rest(%0, =)), setr(T, %0))), t(setr(P, pmatch(%qT))))={ @trigger me/tr.error=%#, Could not find a player named '%qT'.; }; @assert cor(isdbref(%qR), t(setr(R, search(ROOMS=%qR))))={ @trigger me/tr.error=%#, Could not find a room named '%qR'.; }; @assert words(%qR)={ @trigger me/tr.error=%#, More than one room matches '[first(%0, =)]'.; }; @assert u(f.isowner, %#, %qR)={ @trigger me/tr.error=%#, You must be an owner of [name(%qR)] to give someone a key.; }; @assert not(u(f.haskey, %qP, %qR))={ @trigger me/tr.error=%#, moniker(%qP) already has a key to [name(%qR)].; }; @assert isapproved(%qP)={ @trigger me/tr.error=%#, name(%qP) is not approved and cannot be given a key.; }; @chown %qR=[v(d.grid-owner)]; @set %qR=_key-%qP:[moniker(%qP)] (%qP) was given a key by [moniker(%#)] on [time()]; @trigger me/tr.success=%#, strcat(moniker(%qP) (%qP) has been given a key to, %b, name(%qR) (%qR).);
+
+&cmd-+key/take [v(d.gc)]=$+key/take *:@assert t(switch(%0, here=*, setr(R, loc(%#)), *=*, setr(R, first(%0, =)), setr(R, loc(%#))))={ @trigger me/tr.error=%#, Could not figure out what room you're referring to. '%qR' doesn't make sense.; }; @assert cand(t(switch(%0, *=me, setr(T, %#), me, setr(T, %#), *=*, setr(T, rest(%0, =)), setr(T, %0))), t(setr(P, pmatch(%qT))))={ @trigger me/tr.error=%#, Could not find a player named '%qT'.; }; @assert cor(isdbref(%qR), t(setr(R, search(ROOMS=%qR))))={ @trigger me/tr.error=%#, Could not find a room named '%qR'.; }; @assert words(%qR)={ @trigger me/tr.error=%#, More than one room matches '[first(%0, =)]'.; }; @assert u(f.isowner, %#, %qR)={ @trigger me/tr.error=%#, You must be an owner of [name(%qR)] to take away someone's key.; }; @assert u(f.haskey, %qP, %qR)={ @trigger me/tr.error=%#, moniker(%qP) does not currently have a key to [name(%qR)].; }; @wipe %qR/_key-%qP; @trigger me/tr.success=%#, strcat(moniker(%qP) (%qP) has lost their key to, %b, name(%qR) (%qR).);
+
+&cmd-+lock [v(d.gc)]=$+lock *:@assert cor(isdbref(setr(E, %0)), t(setr(E, trim(squish(iter(lexits(%L), if(strmatch(fullname(itext(0)), *;%0;*), itext(0))))))))={ @trigger me/tr.error=%#, Could not find the exit '%0'.; }; @assert words(%qE)={ @trigger me/tr.error=%#, More than one exit matches '%0'.; }; @assert type(%qE)=EXIT, { @trigger me/tr.error=%#, name(%qE) is not an exit.; }; @assert t(setr(P, xget(%qE, _exit-pair)))={ @trigger me/tr.error=%#, name(%qE) is not set up to be locked.; }; @assert cor(u(f.haskey, %#, %qE), u(f.haskey, %#, %qP))={ @trigger me/tr.error=%#, You must have a key to lock the doors.; }; @assert not(t(lock(%qE/DefaultLock)))={ @trigger me/tr.error=%#, name(%qE) is already locked.; }; &_lock-exit %qE=[xget(v(d.exit-parent), d.default-lock)]; @lock/DefaultLock %qE=_lock-exit/1; &_lock-exit %qP=[xget(v(d.exit-parent), d.default-lock)]; @lock/DefaultLock %qP=_lock-exit/1; @trigger me/tr.success=%#, strcat(You just locked, %b, u(f.exit-name, %qE).);
+
+&cmd-+unlock [v(d.gc)]=$+unlock *:@assert cor(isdbref(setr(E, %0)), t(setr(E, trim(squish(iter(lexits(%L), if(strmatch(fullname(itext(0)), *;%0;*), itext(0))))))))={ @trigger me/tr.error=%#, Could not find the exit '%0'.; }; @assert words(%qE)={ @trigger me/tr.error=%#, More than one exit matches '%0'.; }; @assert type(%qE)=EXIT, { @trigger me/tr.error=%#, name(%qE) is not an exit.; }; @assert t(setr(P, xget(%qE, _exit-pair)))={ @trigger me/tr.error=%#, name(%qE) is not set up to be locked.; }; @assert cor(u(f.haskey, %#, %qE), u(f.haskey, %#, %qP))={ @trigger me/tr.error=%#, You must have a key to unlock the doors.; }; @assert t(lock(%qE/DefaultLock))={ @trigger me/tr.error=%#, name(%qE) is already unlocked.; }; @wipe %qE/_lock-exit; @unlock/DefaultLock %qE; @wipe %qP/_lock-exit; @unlock/DefaultLock %qP; @trigger me/tr.success=%#, strcat(You just unlocked, %b, u(f.exit-name, %qE).);
 
 &cmd-+view/set [v(d.gc)]=$+view/set *=*:@assert t(switch(%0, here/*, setr(R, loc(%#)), */*, setr(R, first(%0, /)), setr(R, loc(%#))))={ @trigger me/tr.error=%#, Could not figure out what room you're referring to. '%qR' doesn't make sense.; }; @assert cand(t(switch(%0, */*, setr(T, rest(%0, /)), setr(T, %0))), valid(attrname, setr(T, strcat(view-, edit(%qT, %b, _)))))={ @trigger me/tr.error=%#, '%qT' is not a valid view title.; }; @assert cor(isdbref(%qR), t(setr(R, search(ROOMS=%qR))))={ @trigger me/tr.error=%#, Could not find a room named '%qR'.; }; @assert words(%qR)={ @trigger me/tr.error=%#, More than one room matches '[first(%0, /)]'.; }; @assert u(f.isowner, %#, %qR)={ @trigger me/tr.error=%#, You must be an owner of [name(%qR)] to add +views.; }; @assert not(strmatch(%qT, own*))={ @trigger me/tr.error=%#, '%qT' is too similar to 'owner'. You can't use it as a view title because it might confuse people.; }; @set %qR=%qT:[setq(O, xget(%qR, %qT))]%1; @trigger me/tr.success=%#, strcat(You have, %b, case(%1,, removed, if(t(%qO), updated, created)), %b, a +view on, %b, name(%qR) (%qR), %b, called, %b, ', titlestr(edit(%qT, view-,, _, %b, ~, %b)), '., if(t(%qO), strcat(%b, The old text was:, %b, %qO)));
 
