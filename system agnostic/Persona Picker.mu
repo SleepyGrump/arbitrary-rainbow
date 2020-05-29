@@ -132,7 +132,7 @@ Scope:
 
 @Startup PS=@dolist v(d.function_objects)=@trigger me/tr.makefunctions=##;
 
-&TR.MAKEFUNCTIONS PS=@dolist lattr(%0/f.global.*)=@function rest(rest(##, .), .)=%0/##; @dolist lattr(%0/f.globalp.*)=@function/preserve rest(rest(##, .), .)=%0/##; @dolist lattr(%0/f.globalpp.*)=@function/preserve/privilege rest(rest(##, .), .)=%0/##;
+&tr.makefunctions PS=@dolist lattr(%0/f.global.*)=@function rest(rest(##, .), .)=%0/##; @dolist lattr(%0/f.globalp.*)=@function/preserve rest(rest(##, .), .)=%0/##; @dolist lattr(%0/f.globalpp.*)=@function/preserve/privilege rest(rest(##, .), .)=%0/##;
 
 @force me=&D.FUNCTION_OBJECTS PS=[num(PF)]
 
@@ -168,7 +168,6 @@ Scope:
 
 @@ %# - %#
 &layout.profile-list PLaD=strcat(setq(0, ulocal(f.get-current-profile, %0)), setq(2, default(%0/profile-default, 1)), wheader(name(%0) - Profiles, %0), %R, fitcolumns(trim(strcat(iter(sort(lattr(%0/p-*-name)), setr(1, edit(ulocal(layout.profile-name, %0, itext(0), %q0, %q2), |, _)),, |), if(not(t(%q1)), strcat(|, icname(%0), if(match(%q2, %q0), %b%(current%, default%))))), b, |), |, %0), %R, wfooter(strcat(Current profile:, %b, icname(%0)), %0))
-+profiles
 
 @@ %0 - %#
 @@ %1 - P-###-NAME
@@ -375,7 +374,6 @@ Scope:
 
 @@ Momma command manager
 &cmd-+profile PS=$+profile*:@switch setr(E, strcat(setq(C, ulocal(f.find-command-switch, %0)), if(not(t(%qC)), Could not find command: +profile%0)))=, { @trigger me/%qC=%#, %0; @pemit %#=alert(Debug) %qC |%0|; }, { @pemit %#=alert(Profiles error) %qE; }
-+profiles
 
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
