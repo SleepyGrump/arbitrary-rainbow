@@ -172,8 +172,12 @@ Staff commands:
 
 &cmd-+view/set [v(d.gc)]=$+view/set *=*:@assert t(switch(%0, here/*, setr(R, loc(%#)), */*, setr(R, first(%0, /)), setr(R, loc(%#))))={ @trigger me/tr.error=%#, Could not figure out what room you're referring to. '%qR' doesn't make sense.; }; @assert cand(t(switch(%0, */*, setr(T, rest(%0, /)), setr(T, %0))), valid(attrname, setr(T, strcat(view-, edit(%qT, %b, _)))))={ @trigger me/tr.error=%#, '%qT' is not a valid view title.; }; @assert cor(isdbref(%qR), t(setr(R, search(ROOMS=%qR))))={ @trigger me/tr.error=%#, Could not find a room named '%qR'.; }; @assert words(%qR)={ @trigger me/tr.error=%#, More than one room matches '[first(%0, /)]'.; }; @assert u(f.isowner, %#, %qR)={ @trigger me/tr.error=%#, You must be an owner of [name(%qR)] to add +views.; }; @assert not(strmatch(%qT, own*))={ @trigger me/tr.error=%#, '%qT' is too similar to 'owner'. You can't use it as a view title because it might confuse people.; }; @set %qR=%qT:[setq(O, xget(%qR, %qT))]%1; @trigger me/tr.success=%#, strcat(You have, %b, case(%1,, removed, if(t(%qO), updated, created)), %b, a +view on, %b, name(%qR) (%qR), %b, called, %b, ', titlestr(edit(%qT, view-,, _, %b, ~, %b)), '., if(t(%qO), strcat(%b, The old text was:, %b, %qO)));
 
+@set [v(d.gc)]/cmd-+view/set=no_parse
+
 &cmd-+view/add [v(d.gc)]=$+view/add *=*:@force %#=+view/set %0=%1;
 
 &cmd-+view/remove [v(d.gc)]=$+view/remove *:@force %#=+view/set %0=;
 
 &cmd-+desc [v(d.gc)]=$+desc *=*:@assert t(switch(%0, here, setr(R, loc(%#)), setr(R, %0)))={ @trigger me/tr.error=%#, Could not figure out what room you're referring to. '%qR' doesn't make sense.; }; @assert cor(isdbref(%qR), t(setr(R, search(ROOMS=%qR))))={ @trigger me/tr.error=%#, Could not find a room named '%qR'.; }; @assert words(%qR)={ @trigger me/tr.error=%#, More than one room matches '%0'.; }; @assert t(%1)={ @trigger me/tr.error=%#, You must include a description.; }; @assert u(f.isowner, %#, %qR)={ @trigger me/tr.error=%#, You must be an owner of [name(%qR)] to edit the description.; }; @set %qR=desc:[setq(O, xget(%qR, desc))]%1; @trigger me/tr.success=%#, strcat(You have updated the description on, %b, name(%qR) (%qR). The old text was:, %b, %qO); @trigger me/tr.remit=%qR, moniker(%#) has updated the description of this room.;
+
+@set [v(d.gc)]/cmd-+desc=no_parse
