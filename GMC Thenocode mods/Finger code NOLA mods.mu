@@ -54,9 +54,11 @@ Changelog:
 
 2020-01-14: added coloration to staff view of people's alts cuz we have players with over a dozen and sorting the dead from the living was getting hard! This added the dependency of the "isapproved(##, status)" function.
 
+2020-05-29: found a bunch of cool functions that give info about what kind of terminal a player has. Only works when they're connected, though - so I added an aconnect and started logging them.
+
 */
 
-think Entering 48 lines.
+think Entering data.
 
 @create Finger Thing Object <FTO>=10
 
@@ -78,7 +80,7 @@ think Entering 48 lines.
 
 &d.finger.section.ooc FTO=played_by location last_connected ooc_pronouns timezone note rp_preferences position song public_alts badges
 
-&d.finger.section.staff FTO=template last_ip alts email mail connection_time
+&d.finger.section.staff FTO=template last_ip terminfo alts email mail connection_time
 
 &format.finger.one-section FTO=edit(trim(squish(iter(%1, strcat(setq(0, udefault(finger.%i0, get(%0/finger-%i0), %0)), if(t(%q0), strcat(u(format.finger.title, %i0), %b, wrap(%q0, 51, left,,, 20)))),, |), |), b, |), |, %r)
 
@@ -144,14 +146,22 @@ think Entering 48 lines.
 
 &finger.template FTO=getstat(%0/template)
 
+&finger.terminfo FTO=if(t(setr(0, first(xget(%0, _player-info), |))), strcat(first(%q0, -)%,, %b, extract(%q0, 3, 1, -), x, extract(%q0, 2, 1, -) screen%,%b, extract(%q0, 4, 1, -) colors), No terminal info found.)
+
 &finger.last_connected FTO=if(hasflag(%0, connected), strcat(Connected, %b%(, secs2hrs(idle(%0)), %b, idle%)), strcat(setr(c, get(%0/last)), %b, %(, first(exptime(sub(secs(), convtime(%qc)))), %)))
 
-&finger.last_ip FTO=get(%0/lastip)
+&finger.last_ip FTO=strcat(setr(0, get(%0/lastip)), if(and(not(strmatch(%q0, setr(1, extract(first(xget(%0, _player-info), |), 5, 100, -)))), t(%q1)), strcat(%,%b, %q1)))
 
 &finger.alts FTO=iter(search(eplayer=strmatch(get(##/lastip), extract(get(%0/lastip), 1, 2, .).*), 2), switch(isapproved(%i0, status), chargen, ansi(g, name(%i0)), guest, ansi(gh, name(%i0)), unapproved, ansi(xh, name(%i0)), frozen, ansi(xh, name(%i0)), moniker(%i0)),, %,%b)
 
 &finger.badges FTO=itemize(iter(lattr(%0/_badge-*), titlestr(edit(delete(itext(%i0), 0, 7), _, %b)),, %,), %,)
 
 &finger.full_name FTO=default(%0/finger-fullname, if(setr(t, getstat(%0/full_name)), %qt, ansi(xh, <not set on sheet>)))
+
+&layout.player-info FTO=strcat(terminfo(%0), -, height(%0), -, width(%0), -, colordepth(%0), -, host(%0))
+
+&tr.player-info FTO=@set %0=_player-info:[setr(0, ulocal(layout.player-info, %0))]|[remove(xget(%0, _player-info), %q0, |, |)];
+
+@aconnect FTO=@trigger me/tr.player-info=%#;
 
 think Entry complete.
