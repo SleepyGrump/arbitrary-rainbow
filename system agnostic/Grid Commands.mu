@@ -54,6 +54,8 @@ Staff commands:
 
  * +ep <name of a local exit or #exit>=<#exit> - pair two exits together. Hereafter, all locks will work on the paired exits as if they were a single door. You can use a name for the local exit, but you'll need to know the dbref of the remote exit.
 
+ * +ep <exit name> - will save that exit and send you through it. On the other side, you'll need to +ep <its twin> and it'll assign the two exits as paired.
+
 */
 @create Exit Parent <EP>=10
 @set EP=INHERIT
@@ -149,6 +151,8 @@ Staff commands:
 &tr.remit [v(d.gc)]=@remit case(type(%0), ROOM, %0, where(%0))=ulocal(.remit, %1);
 
 &cmd-+ep [v(d.gc)]=$+ep *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to use this command.; }; @assert cor(isdbref(setr(E, %0)), t(setr(E, trim(squish(iter(lexits(%L), if(strmatch(fullname(itext(0)), *;%0;*), itext(0))))))))={ @trigger me/tr.error=%#, Could not find the exit '%0'.; }; @assert cor(isdbref(setr(P, %1)), t(setr(P, trim(squish(iter(lexits(%L), if(strmatch(fullname(itext(0)), *;%1;*), itext(0))))))))={ @trigger me/tr.error=%#, Could not find the exit '%1'.; }; @assert words(%qE)={ @trigger me/tr.error=%#, More than one exit matches '%0'.; }; @assert words(%qP)={ @trigger me/tr.error=%#, More than one exit matches '%1'.; }; @assert type(%qE)=EXIT, { @trigger me/tr.error=%#, name(%qE) is not an exit.; }; @assert type(%qP)=EXIT, { @trigger me/tr.error=%#, name(%qP) is not an exit.; }; @set %qE=_exit-pair:%qP; @set %qP=_exit-pair:%qE; @parent %qE=[v(d.exit-parent)]; @parent %qP=[v(d.exit-parent)]; @chown %qE=[v(d.grid-owner)]; @chown %qP=[v(d.grid-owner)]; @set %qE=INHERIT; @set %qP=INHERIT; @trigger me/tr.success=%#, strcat(name(%qE) (%qE) has been linked to, %b, name(%qP) (%qP).);
+
+&cmd-+ep_single [v(d.gc)]=$+ep *:@break strmatch(%0, *=*)={}; @assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to use this command.; }; @assert cor(isdbref(setr(E, %0)), t(setr(E, trim(squish(iter(lexits(%L), if(strmatch(fullname(itext(0)), *;%0;*), itext(0))))))))={ @trigger me/tr.error=%#, Could not find the exit '%0'.; }; @assert words(%qE)={ @trigger me/tr.error=%#, More than one exit matches '%0'.; }; @assert type(%qE)=EXIT, { @trigger me/tr.error=%#, name(%qE) is not an exit.; }; @assert t(setr(P, xget(%#, _exit-pairing)))={ @set %#=_exit-pairing:%qE; @parent %qE=[v(d.exit-parent)]; @chown %qE=[v(d.grid-owner)]; @set %qE=INHERIT; @trigger me/tr.success=%#, strcat(name(%qE) (%qE) waiting to be paired.); @tel %#=loc(%qE); }; @force %#=+ep %qE=%qP; @wipe %#/_exit-pairing;
 
 &cmd-+owners [v(d.gc)]=$+owner*:@break strmatch(%0, */*)={ @assert switch(%0, /add *, 1, /remove *, 1, 0)={ @trigger me/tr.error=%#, Did you mean one of the following commands: +owner/add or +owner/remove?; }; }; @assert t(setr(T, switch(%0, s *, rest(%0),, loc(%#), %bhere, loc(%#), s, loc(%#), trim(%0))))={ @trigger me/tr.error=%#, Couldn't figure out what you meant by '%0'.; }; @assert t(case(1, isdbref(%qT), setr(R, %qT), match(%qT, here), setr(R, loc(%#)), setr(R, search(ROOMS=%qT))))={ @trigger me/tr.error=%#, Could not figure out what room you're referring to. '%qT' doesn't make sense.; }; @assert eq(words(%qR), 1)={ @trigger me/tr.error=%#, More than one room matched '%qT'.; }; @pemit %#=ulocal(layout.owners, %#, %qR);
 
