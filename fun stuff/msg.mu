@@ -122,21 +122,38 @@ Old code:
 
 &cmd-+txt MSG=$+txt*:@force %#=msg/text%0;
 
+@set MSG/cmd-+txt=no_parse
+
 &cmd-+text MSG=$+text*:@force %#=msg/text%0;
+
+@set MSG/cmd-+text=no_parse
 
 &cmd-+phone MSG=$+phone*:@force %#=msg/phone%0;
 
+@set MSG/cmd-+phone=no_parse
+
 &cmd-+tel MSG=$+tel*:@force %#=msg/telepathy[switch(%0, epathy *, %b[rest(%0)], %0)];
+
+@set MSG/cmd-+tel=no_parse
 
 &cmd-txt MSG=$txt*:@force %#=msg/text%0;
 
+@set MSG/cmd-txt=no_parse
+
 &cmd-text MSG=$text*:@force %#=msg/text%0;
+
+@set MSG/cmd-text=no_parse
 
 &cmd-phone MSG=$phone*:@force %#=msg/phone%0;
 
+@set MSG/cmd-phone=no_parse
+
 &cmd-tel MSG=$tel*:$+tel*:@force %#=msg/telepathy[switch(%0, epathy *, %b[rest(%0)], %0)];
 
+@set MSG/cmd-tel=no_parse
+
 &cmd-msg MSG=$msg*:@switch/first 1=and(strmatch(%0, /*), t(setr(S, first(lattr(me/switch.msg.[first(rest(%0, /), if(strmatch(first(%0), /*/*), /))]*))))), { @trigger me/%qS=first(%0), rest(%0), %#; }, { @trigger me/switch.msg=%0, %#; }
+
 @set MSG/cmd-msg=no_parse
 
 &switch.msg.summary MSG=@pemit setr(P, if(isdbref(%0), %0, %2))=strcat(if(t(%1), %r), alert(MSG) Message delivery, %b, if(t(xget(%qP, msg-receive-off)), disabled, enabled), .%b, if(t(setr(L, xget(%qP, last-msg-target))), strcat(You last messaged, %b, ansi(h, name(%qL)), %b, via, %b, ansi(h, xget(%qP, last-msg-type)), .%b)), if(t(setr(0, lattr(%qP/msg-block-*))), strcat(You have blocked the following people:, %b, itemize(iter(%q0, name(last(itext(0), -)),, |), |), .%b)), if(t(setr(0, lattr(%qP/msg-hide-*))), strcat(You have hidden all messages from the following people:, %b, itemize(iter(%q0, name(last(itext(0), -)),, |), |), .%b)), if(t(setr(0, lattr(%qP/msg-send-*))), strcat(You have the following message shortcuts:, %b, itemize(iter(%q0, strcat(last(itext(0), -), :%b, ulocal(%qP/[itext(0)])),, |), |), .%b)), You have, %b, setr(0, words(lattr(%qP/_msg-*))), %b, unseen messages., if(gt(%q0, 0), %bType 'msg/view' to view them.), if(t(%1), %r));
@@ -166,5 +183,7 @@ Old code:
 &layout.msg MSG=strcat(ulocal(layout.title, %0, %2), %b, To, %b, itemize(iter(%1, name(itext(0)), |, |), |), :, %b, switch(%3, :*, name(%0) [rest(%3, :)], ;*, name(%0)[rest(%3, ;)], |*, %([name(%0)]%) [rest(%3, |)], name(%0) sends%, "%3"))
 
 &switch.msg MSG=@break t(xget(%1, msg-receive-off))={@pemit %1=alert(MSG) You cannot send messages while your ability to receive messages is turned off. Type msg/on to enable the message system.;};@break not(t(%0))={@trigger me/switch.msg.summary=%1;};@eval setq(T, if(not(strmatch(%0, %b*)), strip(first(%0), /), xget(%1, last-msg-type)));@eval setq(L, switch(trim(%0), /* *=*, first(rest(%0), =), *=*, first(%0, =), edit(xget(%1, last-msg-target), |, %b)));@eval setq(V, trim(switch(%0, *=*, rest(%0, =), /* *, rest(%0), /*,, %0)));@break not(t(%qV))={@trigger me/switch.msg.summary=%1;};@eval strcat(setq(P, iter(%qL, case(itext(0), me, %1, pmatch(itext(0))),, |)), setq(P, setunion(%qP, %qP, |)));@eval iter(%qP, if(not(t(itext(0))), setq(E, %qE Could not find player '[if(t(%qL), extract(%qL, inum(0), 1), itext(0))]' ([itext(0)]).)), |); @break not(t(%qP))={@pemit %1=alert(MSG) You need to choose someone to send the message to. }; @break t(squish(trim(%qE)))={@pemit %1=alert(MSG) %qE;};@set %1=last-msg-target:%qP;@if t(%qT)={@set %1=last-msg-type:%qT;};@pemit %1=ulocal(layout.msg, %1, %qP, %qT, %qV);@dolist/delimit | [setdiff(setunion(%qP, %qP, |), %1, |)]={@switch/first 1=hasattr(##, msg-hide-%1), {}, hasattr(##, msg-block-%1), {@pemit %1=alert(MSG BLOCKED) [name(##)] has blocked you[if(match(setr(B, u(##/msg-block-%1)), 1), ., %bbecause: %qB)];}, and(or(t(xget(##, msg-receive-off)), not(hasflag(##, connect))), gte(words(lattr(##/_msg-*)), 50)), {@pemit %1=alert(MSG NOT DELIVERED) [name(##)] is not available and [poss(##)] message queue is full. Resend your message later.;}, or(t(xget(##, msg-receive-off)), not(hasflag(##, connect))), {&_msg-[secs()] ##=ulocal(layout.msg, %1, %qP, %qT, %qV);@pemit %1=alert(MSG DELAYED) Added message to [name(##)]'s message queue.;}, {@pemit ##=ulocal(layout.msg, %1, %qP, %qT, %qV);}}
+
+@set MSG/switch.msg=no_parse
 
 
