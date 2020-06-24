@@ -76,6 +76,15 @@ Changelog:
 	* +eq/date <player> - list equipment by date, showing only name, tags and notes, useful for seeing when a player last got equipment.
 2020-05-09:
 	* +eq/month <player> - list equipment bought in the current month, by Availability. I tried to avoid sticking any system knowledge in this code - Availability is how CofD tracks equipment cost (Av1 is cheap, Av5 is expensive) - but I couldn't think of a good way to display what I needed and still make it easy for staff to remember what to type. I could've made it +eq/month <player>=<tag to search for> but then staff would just have more to remember, and I don't honestly see what use there is for that. Since AFAIK no one else is using this, I figured it's OK to cheat a little on the system agnostic criteria.
+2020-05-16: Discovered a bug where you can't have "Chain" and "Chainmail" in the same system and that just can't be allowed. Exact match should beat a partial match. Not fixed yet...
+2020-06-23: Fixed a bug with +eq/update to show the right text in the success output.
+
+TODO:
+	* Fix the Chainmail bug.
+	* Create an item dispenser for CGEN players.
+	* Add a "Count" field on the player.
+	* Add a "Detail" field (or fix Notes to be less detailed).
+	* Make the item honor the parenthetical sytnax - +eq/give Name=Item (Note) - see how that plays with items that already have parentheticals in their names first. (Honestly those are supposed to be replaced by a thing...)
 
 ================================================================================
 
@@ -224,7 +233,9 @@ e #662/eq-4-*
 
 @@ %0 - title
 @@ %1 - 1 if exact search
-&f.find-all-equipment-by-title [v(d.eqf)]=trim(squish(iter(lattr(%vD/eq-*-name), if(strmatch(xget(%vD, itext(0)), %0[case(t(%2), 0, *)]), itext(0)),, |), |), b, |)
+&f.find-all-equipment-by-title [v(d.eqf)]=trim(squish(iter(lattr(%vD/eq-*-name), if(strmatch(xget(%vD, itext(0)), %0[case(t(%1), 0, *)]), itext(0)),, |), |), b, |)
+
+@@ and(or(not(t(%1)), eq(strlen(%0),)),
 
 @@ %0 - player
 @@ %1 - title
@@ -347,7 +358,7 @@ e #662/eq-4-*
 @@ %0 - %#
 @@ %1 - equipment title
 @@ %2 - new details
-&tr.equipment-update [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot change equipment details.), %b, if(not(t(setr(A, ulocal(f.find-all-equipment-by-title, %1)))), Could not find equipment named '%1'.), %b, if(gt(words(%qA, |), 1), More than one piece of equipment was returned: [u(layout.list-equipment-names, %qA)]), setq(D, xget(%vD, edit(%qA, NAME, DETAILS)))))))=, { @set %vD=setr(A, edit(%qA, NAME, DETAILS)):%2; @pemit %0=alert(Equipment) You changed the details for '[xget(%vD, %qA)]' from:%R[alert(Equipment Details)] %qD%R[alert(Equipment)] To:%R[alert(Equipment Details)] %2; }, { @pemit %0=ulocal(layout.error, %qE); }
+&tr.equipment-update [v(d.eqc)]=@switch setr(E, trim(squish(strcat(if(not(isstaff(%0)), You are not staff and cannot change equipment details.), %b, if(not(t(setr(A, ulocal(f.find-all-equipment-by-title, %1)))), Could not find equipment named '%1'.), %b, if(gt(words(%qA, |), 1), More than one piece of equipment was returned: [u(layout.list-equipment-names, %qA)]), setq(D, xget(%vD, edit(%qA, NAME, DETAILS)))))))=, { @set %vD=edit(%qA, NAME, DETAILS):%2; @pemit %0=alert(Equipment) You changed the details for '[xget(%vD, %qA)]' from:%R[alert(Equipment Details)] %qD%R[alert(Equipment)] To:%R[alert(Equipment Details)] %2; }, { @pemit %0=ulocal(layout.error, %qE); }
 
 @@ Input:
 @@ %0 - %#
