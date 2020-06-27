@@ -18,7 +18,7 @@ think Entering 7 lines.
 
 &sql.insert.award [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, action, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', '[u(f.sql.escape, name(%1))]', '[u(f.sql.escape, %2)]', [u(f.sql.escape, %3)], 'gain', '[u(f.sql.escape, %4)]')
 
-&sql.select.type-character [v(d.xpas)]=SELECT entry_num, enactor_objid, enactor_name, log_time, xp_amt, action, SUBSTRING(reason, 1, 26), trait_name, trait_value FROM xp_log WHERE target_objid='[u(.objid, %0)]' AND xp_type='[lcstr(%1)]' [case(%2, all, null(show all), null(null), AND action!='auto', AND action='%2')] [if(strlen(%3), AND trait_name LIKE '[u(f.sql.escape, edit(%3, %b, _))]%%%%')]
+&sql.select.type-character [v(d.xpas)]=SELECT * FROM (SELECT entry_num, enactor_objid, enactor_name, log_time, xp_amt, action, SUBSTRING(reason, 1, 26), trait_name, trait_value FROM xp_log WHERE target_objid='[u(.objid, %0)]' AND xp_type='[lcstr(%1)]' [case(%2, all, null(show all), null(null), AND action!='auto', AND action='%2')] [if(strlen(%3), AND trait_name LIKE '[u(f.sql.escape, edit(%3, %b, _))]%%%%')] ORDER BY entry_num DESC LIMIT 25) t ORDER BY entry_num
 
 &sql.select.entry_num [v(d.xpas)]=SELECT enactor_objid, enactor_name, target_objid, target_name, log_time, xp_amt, action, reason, trait_category, trait_name, trait_value, xp_type, trait_value_old FROM xp_log WHERE entry_num=%0
 

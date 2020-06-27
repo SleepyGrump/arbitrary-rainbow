@@ -105,7 +105,7 @@ think Entering 81 lines.
 
 &sql.xp_log.auto-add [v(d.xpas)]=INSERT INTO xp_log (target_objid, target_name, enactor_objid, enactor_name, xp_type, xp_amt, reason) VALUES ('[u(.objid, %0)]', '[u(f.sql.escape, name(%0))]', '[u(.objid, %1)]', 'Auto-Experience System', '%2', %3, 'Daily Auto')
 
-&sql.xp_log.type-character [v(d.xpas)]=SELECT entry_num, enactor_objid, enactor_name, log_time, xp_amt, SUBSTRING(reason, 1, 26) FROM xp_log WHERE target_objid='[u(.objid, %0)]' AND xp_type='[u(f.sql.escape, lcstr(%1))]' [if(strlen(%2), AND trait_name LIKE '[u(f.sql.escape, edit(%2, %b, _))]%%%%')]
+&sql.xp_log.type-character [v(d.xpas)]=SELECT entry_num, enactor_objid, enactor_name, log_time, xp_amt, SUBSTRING(reason, 1, 26) FROM xp_log WHERE target_objid='[u(.objid, %0)]' AND xp_type='[u(f.sql.escape, lcstr(%1))]' [if(strlen(%2), AND trait_name LIKE '[u(f.sql.escape, edit(%2, %b, _))]%%%%')] ORDER BY entry_num DESC LIMIT 25
 
 &c.xp.general [v(d.xpas)]=$^\+?xp$:@assert not(isapproved(%#, guest))={@pemit %#=u(.msg, xp, Players only)}; @pemit %#=strcat(wheader(XP & Beats), %r, iter(v(d.xp_types), u(display.xp-and-beats.one-line, %#, %i0),, %r), %r, wdivider(), %r, if(isapproved(%#), u(display.approval-deets, %#)), %r, wfooter())
 
