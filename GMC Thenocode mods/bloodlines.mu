@@ -8,6 +8,7 @@ Feel free to edit and make your own, or reuse as-is with appropriate credit give
 
 2020-03-08: Added Toreador to Daeva bloodlines.
 2020-03-10: Fixed a missing comma on the Daeva @fo tag that wasn't noticed because when it was first fired, there were no existing bloodlines in the bio.bloodlines field.
+2020-06-24: Added Asnam to Daeva bloodlines, fixed a bug in The Carnival prereqs.
 
 */
 
@@ -23,7 +24,7 @@ think Entering 362 lines.
 
 &notes.bio.bloodline [v(d.dt)]=iter(get(v(d.dd)/bio.clan), ansi(h, %i0, n, :%b, n, edit(get(v(d.dd)/d.bloodline.%i0), ., %,%b)), ., |)
 
-&d.bloodline.daeva [v(d.dd)]=The Carnival.Septimi.Spina.Toreador
+&d.bloodline.daeva [v(d.dd)]=The Carnival.Septimi.Spina.Toreador.Asnam
 
 @fo me=&BIO.BLOODLINE [v(d.dd)]=[trim(setunion(get(v(d.dd)/bio.bloodline), get(v(d.dd)/d.bloodline.daeva), .), b, .)]
 
@@ -31,7 +32,7 @@ think Entering 362 lines.
 
 &devotion.contort [v(d.dd)]=-
 
-&prerequisite.devotion.contort [v(d.dd)]=cand(u(.is, %0, bio.bloodline, .The Carnival), u(.at_least, %0, discipline.protean, 2))
+&prerequisite.devotion.contort [v(d.dd)]=cand(u(.is, %0, bio.bloodline, The Carnival), u(.at_least, %0, discipline.protean, 2))
 
 &prereq-text.devotion.contort [v(d.dd)]=.The Carnival Bloodline Devotion;Protean 2
 
@@ -41,7 +42,7 @@ think Entering 362 lines.
 
 &devotion.merge [v(d.dd)]=-
 
-&prerequisite.devotion.merge [v(d.dd)]=cand(u(.is, %0, bio.bloodline, .The Carnival), u(.at_least_all, %0, discipline.majesty:2 discipline.protean:2))
+&prerequisite.devotion.merge [v(d.dd)]=cand(u(.is, %0, bio.bloodline, The Carnival), u(.at_least_all, %0, discipline.majesty:2 discipline.protean:2))
 
 &prereq-text.devotion.merge [v(d.dd)]=.The Carnival Bloodline Devotion;Majesty 2, Protean 2
 
@@ -51,7 +52,7 @@ think Entering 362 lines.
 
 &devotion.octopod [v(d.dd)]=-
 
-&prerequisite.devotion.octopod [v(d.dd)]=cand(u(.is, %0, bio.bloodline, .The Carnival), u(.at_least_all, %0, discipline.celerity:2 discipline.protean:2 discipline.vigor:2))
+&prerequisite.devotion.octopod [v(d.dd)]=cand(u(.is, %0, bio.bloodline, The Carnival), u(.at_least_all, %0, discipline.celerity:2 discipline.protean:2 discipline.vigor:2))
 
 &prereq-text.devotion.octopod [v(d.dd)]=.The Carnival Bloodline Devotion;Celerity 2, Protean 2, Vigor 2
 
@@ -61,7 +62,7 @@ think Entering 362 lines.
 
 &devotion.power_up [v(d.dd)]=-
 
-&prerequisite.devotion.power_up [v(d.dd)]=cand(u(.is, %0, bio.bloodline, .The Carnival), u(.at_least_all, %0, discipline.celerity:2 discipline.protean:4 discipline.vigor:2))
+&prerequisite.devotion.power_up [v(d.dd)]=cand(u(.is, %0, bio.bloodline, The Carnival), u(.at_least_all, %0, discipline.celerity:2 discipline.protean:4 discipline.vigor:2))
 
 &prereq-text.devotion.power_up [v(d.dd)]=.The Carnival Bloodline Devotion;Celerity 2, Protean 4, Vigor 2
 
@@ -196,6 +197,50 @@ think Entering 362 lines.
 &tags.devotion.the_rose_chokes_the_weed [v(d.dt)]=vampire.toreador
 
 &xp.devotion.the_rose_chokes_the_weed [v(d.xpcd)]=2
+
+@edit v(d.dt)/tags.discipline.Dominate=$, .asnam
+
+&devotion.haven_of_flesh_() [v(d.dd)]=-|Basic.Advanced
+
+&prerequisite.devotion.haven_of_flesh_() [v(d.dd)]=cand(u(.is, %0, bio.bloodline, Asnam), u(.at_least_all, %0, discipline.dominate:3 discipline.vigor:2))
+
+&prereq-text.devotion.haven_of_flesh_() [v(d.dd)]=Asnam Bloodline Devotion; Dominate 3, Vigor 2
+
+&tags.devotion.haven_of_flesh_() [v(d.dt)]=vampire.asnam
+
+&xp.devotion.haven_of_flesh_() [v(d.xpcd)]=case(1, strmatch(%3, devotion.haven_of_flesh_(Basic)), 2, cand(strmatch(%3, devotion.haven_of_flesh_(Advanced)), u(.has, %0, devotion.haven_of_flesh_(Basic))), 2, strmatch(%3, devotion.haven_of_flesh_(Advanced)), 4)
+
+&devotion.the_infinite_chalice [v(d.dd)]=-
+
+&prerequisite.devotion.the_infinite_chalice [v(d.dd)]=cand(u(.is, %0, bio.bloodline, Asnam), u(.at_least_all, %0, discipline.majesty:2 discipline.vigor:1))
+
+&prereq-text.devotion.the_infinite_chalice [v(d.dd)]=.Asnam Bloodline Devotion;Majesty 2, Vigor 1
+
+&tags.devotion.the_infinite_chalice [v(d.dt)]=vampire.Asnam
+
+&xp.devotion.the_infinite_chalice [v(d.xpcd)]=1
+
+&devotion.of_will_undivided [v(d.dd)]=-
+
+&prerequisite.devotion.of_will_undivided [v(d.dd)]=cand(u(.is, %0, bio.bloodline, Asnam), u(.at_least_all, %0, discipline.dominate:2 discipline.majesty:2))
+
+&prereq-text.devotion.of_will_undivided [v(d.dd)]=.Asnam Bloodline Devotion;Dominate 2, Majesty 2
+
+&tags.devotion.of_will_undivided [v(d.dt)]=vampire.Asnam
+
+&xp.devotion.of_will_undivided [v(d.xpcd)]=1
+
+&devotion.unholy_avatar [v(d.dd)]=Presence + Blood Potency - Resolve
+
+&prerequisite.devotion.unholy_avatar [v(d.dd)]=cand(u(.is, %0, bio.bloodline, Asnam), u(.at_least_all, %0, discipline.majesty:5 discipline.dominate:5))
+
+&prereq-text.devotion.unholy_avatar [v(d.dd)]=.Asnam Bloodline Devotion; Majesty 5, Dominate 5
+
+&tags.devotion.unholy_avatar [v(d.dt)]=vampire.Asnam
+
+&notes.devotion.unholy_avatar [v(d.dt)]=Costs one willpower DOT
+
+&xp.devotion.unholy_avatar [v(d.xpcd)]=4
 
 &d.bloodline.gangrel [v(d.dd)]=Ahrimanes.Bacchae.Dead Wolves
 
