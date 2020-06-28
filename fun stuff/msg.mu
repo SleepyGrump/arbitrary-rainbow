@@ -120,35 +120,35 @@ Old code:
 
 @aconnect MSG=@trigger me/switch.msg.summary=%#,1;
 
-&cmd-+txt MSG=$+txt*:@force %#=msg/text%0;
+&cmd-+txt MSG=$+txt*:@trigger me/switch.msg=/text%0, %#;
 
 @set MSG/cmd-+txt=no_parse
 
-&cmd-+text MSG=$+text*:@force %#=msg/text%0;
+&cmd-+text MSG=$+text*:@trigger me/switch.msg=/text%0, %#;
 
 @set MSG/cmd-+text=no_parse
 
-&cmd-+phone MSG=$+phone*:@force %#=msg/phone%0;
+&cmd-+phone MSG=$+phone*:@trigger me/switch.msg=/phone%0, %#;
 
 @set MSG/cmd-+phone=no_parse
 
-&cmd-+tel MSG=$+tel*:@force %#=msg/telepathy[switch(%0, epathy *, %b[rest(%0)], %0)];
+&cmd-+tel MSG=$+tel*:@trigger me/switch.msg=/telepathy[switch(%0, epathy *, %b[rest(%0)], %0)], %#;
 
 @set MSG/cmd-+tel=no_parse
 
-&cmd-txt MSG=$txt*:@force %#=msg/text%0;
+&cmd-txt MSG=$txt*:@trigger me/switch.msg=/text%0, %#;
 
 @set MSG/cmd-txt=no_parse
 
-&cmd-text MSG=$text*:@force %#=msg/text%0;
+&cmd-text MSG=$text*:@trigger me/switch.msg=/text%0, %#;
 
 @set MSG/cmd-text=no_parse
 
-&cmd-phone MSG=$phone*:@force %#=msg/phone%0;
+&cmd-phone MSG=$phone*:@trigger me/switch.msg=/phone%0, %#;
 
 @set MSG/cmd-phone=no_parse
 
-&cmd-tel MSG=$tel*:$+tel*:@force %#=msg/telepathy[switch(%0, epathy *, %b[rest(%0)], %0)];
+&cmd-tel MSG=$tel*:@trigger me/switch.msg=/telepathy[switch(%0, epathy *, %b[rest(%0)], %0)], %#;
 
 @set MSG/cmd-tel=no_parse
 
