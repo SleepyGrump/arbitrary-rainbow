@@ -208,7 +208,7 @@ think Entering 362 lines.
 
 &tags.devotion.haven_of_flesh_() [v(d.dt)]=vampire.asnam
 
-&xp.devotion.haven_of_flesh_() [v(d.xpcd)]=case(1, strmatch(%3, devotion.haven_of_flesh_(Basic)), 2, cand(strmatch(%3, devotion.haven_of_flesh_(Advanced)), u(.has, %0, devotion.haven_of_flesh_(Basic))), 2, strmatch(%3, devotion.haven_of_flesh_(Advanced)), 4)
+&xp.devotion.haven_of_flesh_() [v(d.xpcd)]=case(1, strmatch(%3, haven_of_flesh_(Basic)), 2, cand(strmatch(%3, haven_of_flesh_(Advanced)), u(.has, %0, devotion.haven_of_flesh_(Basic))), 2, strmatch(%3, haven_of_flesh_(Advanced)), 4)
 
 &devotion.the_infinite_chalice [v(d.dd)]=-
 
