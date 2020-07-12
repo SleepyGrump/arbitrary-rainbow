@@ -2,6 +2,8 @@
 
 2020-03-09: Noticed the Lance already had a stat named "Stigmata" which is not taken by a whole lot of our players (none at this count). So I renamed that stat "Stigmata miracle" and kept the merit as "Stigmata". Games that use this code should +census Stigmata before they load it just in case a player has that stat. You might need to adjust their attributes.
 
+2020-07-11: Noticed the new coils aren't XP-costing correctly. Plus, the Crucible merit isn't being taken into account with existing coils. Added!
+
 */
 
 think Merits and rites - 342 lines.
@@ -752,5 +754,17 @@ think Coils and scales
 &prerequisite.scale.siphon_the_soul [v(d.dd)]=u(.is_full, %0, bio.covenant, Ordo Dracul)
 
 &prereq-text.scale.siphon_the_soul [v(d.dd)]=Covenant is Ordo Dracul
+
+think XP costs for coils updating...
+
+&xp.discipline.coil_of_zirnitra [v(d.xpcd)]=add(if(u(.is_full, %0, bio.mystery_coil, Coil of Zirnitra), u(cost.standard, 3, %1, %2), u(cost.standard, 4, %1, %2)), if(u(.has, %0, merit.crucible), -1, 0))
+
+&xp.discipline.coil_of_ziva [v(d.xpcd)]=add(if(u(.is_full, %0, bio.mystery_coil, Coil of Ziva), u(cost.standard, 3, %1, %2), u(cost.standard, 4, %1, %2)), if(u(.has, %0, merit.crucible), -1, 0))
+
+&xp.discipline.coil_of_the_ascendant [v(d.xpcd)]=add(if(u(.is_full, %0, bio.mystery_coil, Coil of the Ascendant), u(cost.standard, 3, %1, %2), u(cost.standard, 4, %1, %2)), if(u(.has, %0, merit.crucible), -1, 0))
+
+&xp.discipline.coil_of_the_Wyrm [v(d.xpcd)]=add(if(u(.is_full, %0, bio.mystery_coil, Coil of the Wyrm), u(cost.standard, 3, %1, %2), u(cost.standard, 4, %1, %2)), if(u(.has, %0, merit.crucible), -1, 0))
+
+&xp.discipline.coil_of_the_voivode [v(d.xpcd)]=add(if(u(.is_full, %0, bio.mystery_coil, Coil of the Voivode), u(cost.standard, 3, %1, %2), u(cost.standard, 4, %1, %2)), if(u(.has, %0, merit.crucible), -1, 0))
 
 think Entry complete.
