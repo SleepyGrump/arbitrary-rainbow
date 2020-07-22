@@ -24,6 +24,7 @@ This file was created on 2019-11-04. Future versions will be updated to the newe
 
 2020-03-02: updated Touchstone prereq code to get values correctly.
 2020-03-20: updated Clarity system to include Theno's latest changes.
+2020-06-03: fixed Cloak of Leaves to be 1.2.3, not 3.
 
 ================================================================================
 
@@ -266,7 +267,7 @@ think Merit time!
 
 &tags.merit.brownie's_boon [v(d.dt)]=changeling
 
-&merit.cloak_of_leaves [v(d.dd)]=3
+&merit.cloak_of_leaves [v(d.dd)]=1.2.3
 
 &prerequisite.merit.cloak_of_leaves [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Autumn), 5), cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3)))
 
