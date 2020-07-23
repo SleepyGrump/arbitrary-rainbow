@@ -18,7 +18,7 @@ We archive our +jobs to a SQL server. Staff can view/search these jobs with:
 
 Search terms need a label, an equals sign, and if you want multiple search terms, separate them by commas:
 
-* PLAYER=<name or dbref>
+* PLAYER=<name>
 * STARTDATE=<some date in the format YYYY-MM-DD>
 * ENDDATE=<some date in the format YYYY-MM-DD>
 * TITLE=<text>
