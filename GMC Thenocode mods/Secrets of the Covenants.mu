@@ -4,6 +4,8 @@
 
 2020-07-11: Noticed the new coils aren't XP-costing correctly. Plus, the Crucible merit isn't being taken into account with existing coils. Added!
 
+2020-08-04: Noticed the prereqs were wrong for the coils, and not just these coils. You need Status (Ordo Dracul) of equivalent level to the coil OR 1 if it's your Mystery Coil. It is not restricted to Ordo Dracul.
+
 */
 
 think Merits and rites - 342 lines.
@@ -717,11 +719,11 @@ think Coils and scales
 
 &discipline.coil_of_zirnitra [v(d.dd)]=1.2.3.4.5
 
-&tags.discipline.coil_of_zirnitra [v(d.dt)]=vampire.coil.ordo dracul
+&tags.discipline.coil_of_zirnitra [v(d.dt)]=vampire.coil
 
-&prerequisite.discipline.coil_of_zirnitra [v(d.dd)]=cand(u(.is_full, %0, bio.covenant, Ordo Dracul), cor(u(.is_full, %0, bio.mystery_coil, Coil of Zirnitra), u(.at_most_stat, %0, discipline.coil_of_zirnitra, merit.status_(ordo_dracul), %2)))
+&prerequisite.DISCIPLINE.COIL_OF_Zirnitra [v(d.dd)]=case(1, u(.is_full, %0, bio.mystery_coil, Coil of Zirnitra), u(.has, %0, merit.status_(ordo_dracul)), u(.at_most_stat, %0, discipline.coil_of_Zirnitra, merit.status_(ordo_dracul)))
 
-&prereq-text.discipline.coil_of_zirnitra [v(d.dd)]=Covenant is Ordo Dracul, If not Mystery Coil then may not be higher than Status (Ordo Dracul)
+&prereq-text.DISCIPLINE.COIL_OF_Zirnitra [v(d.dd)]=Status (Ordo Dracul) 1 (if Mystery Coil) or of equivalent level (if not)
 
 &scale.grafting_unholy_flesh [v(d.dd)]=Coil of Zirnitra:4
 
@@ -739,9 +741,9 @@ think Coils and scales
 
 &tags.discipline.coil_of_ziva [v(d.dt)]=vampire.coil.ordo dracul
 
-&prerequisite.discipline.coil_of_ziva [v(d.dd)]=cand(u(.is_full, %0, bio.covenant, Ordo Dracul), cor(u(.is_full, %0, bio.mystery_coil, Coil of Zirnitra), u(.at_most_stat, %0, discipline.coil_of_ziva, merit.status_(ordo_dracul), %2)))
+&prerequisite.DISCIPLINE.COIL_OF_Ziva [v(d.dd)]=case(1, u(.is_full, %0, bio.mystery_coil, Coil of Ziva), u(.has, %0, merit.status_(ordo_dracul)), u(.at_most_stat, %0, discipline.coil_of_Ziva, merit.status_(ordo_dracul)))
 
-&prereq-text.discipline.coil_of_ziva [v(d.dd)]=Covenant is Ordo Dracul, If not Mystery Coil then may not be higher than Status (Ordo Dracul)
+&prereq-text.DISCIPLINE.COIL_OF_Ziva [v(d.dd)]=Status (Ordo Dracul) 1 (if Mystery Coil) or of equivalent level (if not)
 
 &scale.bleed_the_sin [v(d.dd)]=Coil of Ziva:2
 
