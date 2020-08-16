@@ -64,6 +64,8 @@ Then I decided to put the _player-info tag I'd been building up data on into pra
 
 Then... why not keep the "far match" option... but down-grade it. So that's more IP info. What's interesting is, if a name appears on all three lists, it's a high degree of confidence.
 
+2020-08-12: Moved extra alts info into +finger/alts and expanded it a bit. Still working out how to format it.
+
 */
 
 think Entering data.
@@ -74,7 +76,7 @@ think Entering data.
 
 @set [v(d.fto)]=INHERIT SAFE
 
-&c.finger [v(d.fto)]=$^\+?finger(.*)$:think strcat(p:, setr(p, if(t(%1), pmatch(switch(trim(%1), me, %#, trim(%1))), %#))); @assert not(strmatch(%1, /set*))={}; @assert t(%qP)={@pemit %#=u(.msg, finger, Target not found)}; @assert hastype(%qp, PLAYER)={@pemit %#=u(.msg, finger, Target not found)}; @pemit %#=strcat(wheader(u(display.finger.header, %qp)), %r, u(display.finger.ic, %qp), %r, wdivider(OOC info), %r, u(display.finger.ooc, %qp), %r, if(setr(x, u(display.finger.user, %qp)), strcat(wdivider(Extra info), %r, %qx, %r)), if(isstaff(%#), strcat(wdivider(Staff-only info), %r, u(display.finger.staff, %qp), %r)), wfooter(u(display.finger.footer, %qp)));
+&c.finger [v(d.fto)]=$^\+?finger(.*)$:think strcat(p:, setr(p, if(t(%1), pmatch(switch(trim(%1), /al*, rest(%1), me, %#, trim(%1))), %#))); @assert not(strmatch(%1, /set*))={}; @assert t(%qP)={@pemit %#=u(.msg, finger, Target not found)}; @assert hastype(%qp, PLAYER)={@pemit %#=u(.msg, finger, Target not found)}; @pemit %#=strcat(wheader(u(display.finger.header, %qp)), %r, u(display.finger.ic, %qp), %r, wdivider(OOC info), %r, u(display.finger.ooc, %qp), %r, if(setr(x, u(display.finger.user, %qp)), strcat(wdivider(Extra info), %r, %qx, %r)), if(isstaff(%#), strcat(wdivider(Staff-only info), %r, u(display.finger.staff, %qp), %r, if(strmatch(%1, /alt*), strcat(wdivider(Staff-only alts info), %r, u(display.finger.staff_alts, %qp), %r)))), wfooter(u(display.finger.footer, %qp)));
 
 @set FTO/c.finger=regex
 
@@ -90,7 +92,9 @@ think Entering data.
 
 &d.finger.section.ooc [v(d.fto)]=played_by location last_connected ooc_pronouns timezone note rp_preferences position song public_alts badges
 
-&d.finger.section.staff [v(d.fto)]=template last_ip terminfo alts exact_alts far_match_alts email mail connection_time
+&d.finger.section.staff [v(d.fto)]=template last_ip terminfo template_alts email mail connection_time
+
+&d.finger.section.staff_alts [v(d.fto)]=exact_alts near_alts far_alts interface_alts 
 
 &format.finger.one-section [v(d.fto)]=edit(trim(squish(iter(%1, strcat(setq(0, udefault(finger.%i0, get(%0/finger-%i0), %0)), if(t(%q0), strcat(u(format.finger.title, %i0), %b, wrap(%q0, 51, left,,, 20)))),, |), |), b, |), |, %r)
 
@@ -107,6 +111,8 @@ think Entering data.
 &display.finger.user [v(d.fto)]=u(format.finger.one-section, %0, u(f.finger.get-user-fields, %0))
 
 &display.finger.staff [v(d.fto)]=u(format.finger.one-section, %0, u(d.finger.section.staff))
+
+&display.finger.staff_alts [v(d.fto)]=u(format.finger.one-section, %0, u(d.finger.section.staff_alts))
 
 &f.finger.get-user-fields [v(d.fto)]=extract(u(.remove_elements, lcstr(edit(lattr(%0/finger-*), FINGER-,)), iter(lattr(%!/d.finger.section.*), lcstr(v(%i0))) apparentage playedby rp-prefs fullname), 1, v(d.finger.max-fields))
 
@@ -162,11 +168,17 @@ think Entering data.
 
 &finger.last_ip [v(d.fto)]=strcat(setr(0, get(%0/lastip)), if(and(not(strmatch(%q0, setr(1, extract(first(xget(%0, _player-info), |), 5, 100, -)))), t(%q1)), strcat(%,%b, %q1)))
 
-&finger.alts [v(d.fto)]=iter(search(eplayer=strmatch(get(##/lastip), extract(get(%0/lastip), 1, 3, .).*), 2), switch(isapproved(%i0, status), chargen, ansi(g, name(%i0)), guest, ansi(gh, name(%i0)), unapproved, ansi(xh, name(%i0)), frozen, ansi(xh, name(%i0)), moniker(%i0)),, %,%b)
+&finger.near_alts [v(d.fto)]=iter(search(eplayer=strmatch(get(##/lastip), extract(get(%0/lastip), 1, 3, .).*), 2), switch(isapproved(%i0, status), chargen, ansi(g, name(%i0)), guest, ansi(gh, name(%i0)), unapproved, ansi(xh, name(%i0)), frozen, ansi(xh, name(%i0)), moniker(%i0)),, %,%b)
 
 &finger.exact_alts [v(d.fto)]=iter(search(eplayer=cand(hasattr(%0, _player-info), hasattr(##, _player-info), t(setinter(xget(%0, _player-info), xget(##, _player-info), |))), 2), switch(isapproved(%i0, status), chargen, ansi(g, name(%i0)), guest, ansi(gh, name(%i0)), unapproved, ansi(xh, name(%i0)), frozen, ansi(xh, name(%i0)), moniker(%i0)),, %,%b)
 
-&finger.far_match_alts [v(d.fto)]=iter(search(eplayer=strmatch(get(##/lastip), extract(get(%0/lastip), 1, 2, .).*), 2), switch(isapproved(%i0, status), chargen, ansi(g, name(%i0)), guest, ansi(gh, name(%i0)), unapproved, ansi(xh, name(%i0)), frozen, ansi(xh, name(%i0)), moniker(%i0)),, %,%b)
+&finger.far_alts [v(d.fto)]=iter(search(eplayer=strmatch(get(##/lastip), extract(get(%0/lastip), 1, 2, .).*), 2), switch(isapproved(%i0, status), chargen, ansi(g, name(%i0)), guest, ansi(gh, name(%i0)), unapproved, ansi(xh, name(%i0)), frozen, ansi(xh, name(%i0)), moniker(%i0)),, %,%b)
+
+&finger.interface_alts [v(d.fto)]=iter(search(eplayer=cand(strmatch(get(##/lastip), extract(get(%0/lastip), 1, 2, .).*), hasattr(%0, _player-info), hasattr(##, _player-info), t(setinter(iter(xget(%0, _player-info), extract(itext(0), 1, 3, -), |, |), iter(xget(##, _player-info), extract(itext(0), 1, 3, -), |, |), |))), 2), switch(isapproved(%i0, status), chargen, ansi(g, name(%i0)), guest, ansi(gh, name(%i0)), unapproved, ansi(xh, name(%i0)), frozen, ansi(xh, name(%i0)), moniker(%i0)),, %,%b)
+
+&finger.template_alts [v(d.fto)]=iter(search(eplayer=cand(hasattr(%0, _player-info), hasattr(##, _player-info), t(setinter(xget(%0, _player-info), xget(##, _player-info), |))), 2), u(display.player-name, itext(0)),, %,%b)
+
+&display.player-name [v(d.fto)]=strcat(switch(setr(0, isapproved(%0, status)), approved, moniker(%0), chargen, ansi(g, name(%0)), ansi(xh, name(%0))), %b, %(, ansi(if(switch(%q0, chargen, 1, approved, 1, 0), switch(default(%0/_bio.template, Unset), Vampire, r, Ghoul, hr, Werewolf, y, Wolf-blooded, hy, Changeling, b, Fae-touched, hb, Atariya, c, Infected, hg, Plain, g, Lost Boy, hc, Psychic Vampire, m)), default(%0/_bio.template, Unset)), %))
 
 &finger.badges [v(d.fto)]=itemize(iter(lattr(%0/_badge-*), titlestr(edit(delete(itext(%i0), 0, 7), _, %b)),, %,), %,)
 
