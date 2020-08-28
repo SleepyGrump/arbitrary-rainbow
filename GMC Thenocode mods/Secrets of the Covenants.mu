@@ -65,6 +65,19 @@
 &prerequisite.merit.The_Judgment_Fast [v(d.dd)]=
 &tags.merit.The_Judgment_Fast [v(d.dt)]=
 
+2020-08-28: Updated NOLA's sheets to take on the combination of Pledge to the Worthless One and Coil of the Wyrm 4. Note that NOLA applies Vigor, Celerity, and Resilience directly to the appropriate stats (str/dex/sta) so that they can pass prerequisites, so those stats aren't included in the counts below. You might want to change the code to account for those.
+
+&health.maximum.vampire [v(d.dd)]=if(cand(u(.has, %0, miracle.pledge_to_the_worthless_one), u(.at_least, %0, discipline.coil_of_the_wyrm, 4)), u(.value, %0, advantage.blood_potency), 0)
+
+&advantage.defense [v(d.dd)]=add(ladd(u(.value_full, %0, skill.athletics), .), min(ladd(u(.value_full, %0, attribute.wits).[udefault(.has, 0, %0, merit.embodiment_of_the_firstborn_(wits))], .), ladd(u(.value_full, %0, attribute.dexterity).[udefault(.has, 0, %0, merit.embodiment_of_the_firstborn_(dexterity))], .)), udefault(.value, 0, %0, discipline.celerity), if(cand(u(.has, %0, miracle.pledge_to_the_worthless_one), u(.at_least, %0, discipline.coil_of_the_wyrm, 4)), u(.value, %0, advantage.blood_potency), 0))
+
+&ADVANTAGE.WEAPONRY_DEFENSE [v(d.dd)]=if(u(.has, %0, merit.defensive_combat_(weaponry)), add(ladd(u(.value_full, %0, skill.weaponry), .), u(advantage.defense, %0)), 0)
+
+&ADVANTAGE.BRAWL_DEFENSE [v(d.dd)]=if(u(.has, %0, merit.defensive_combat_(brawl)), add(ladd(u(.value_full, %0, skill.brawl), .), u(advantage.defense, %0)), 0)
+
+&ADVANTAGE.SPEED [v(d.dd)]=add(u(.value_stats, %0, attribute.strength attribute.dexterity special.species_factor merit.fleet_of_foot merit.strength_augmentation merit.augmented_speed), udefault(.has, 0, %0, merit.embodiment_of_the_firstborn_(dexterity)), udefault(.has, 0, %0, merit.embodiment_of_the_firstborn_(strength)), switch(udefault(%0/_form.current, u(v(d.sfs)/f.default_form, u(%0/_bio.template))), urshul, 3, urhan, 3, 0), switch(get(%0/_bio.seeming), Beast, 3, 0), if(cand(u(.has, %0, miracle.pledge_to_the_worthless_one), u(.at_least, %0, discipline.coil_of_the_wyrm, 4)), u(.value, %0, advantage.blood_potency), 0))
+
+
 */
 
 think Merits and rites - 342 lines.
