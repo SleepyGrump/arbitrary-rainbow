@@ -6,6 +6,65 @@
 
 2020-08-04: Noticed the prereqs were wrong for the coils, and not just these coils. You need Status (Ordo Dracul) of equivalent level to the coil OR 1 if it's your Mystery Coil. It is not restricted to Ordo Dracul.
 
+2020-08-28: Noticed I had a bunch of Theban Sorcery Miracles classed as MERITS. Also, Aaron's Rod was spelled Aaron's Road. How embarrassing. The fix is below, and here's the code to remove the bad merits (finding out which of your players have them is an exercise for +census):
+
+&merit.Apple_of_Eden [v(d.dd)]=
+&prereq-text.merit.Apple_of_Eden [v(d.dd)]=
+&prerequisite.merit.Apple_of_Eden [v(d.dd)]=
+&tags.merit.Apple_of_Eden [v(d.dt)]=
+&merit.Marian_Apparition [v(d.dd)]=
+&prereq-text.merit.Marian_Apparition [v(d.dd)]=
+&prerequisite.merit.Marian_Apparition [v(d.dd)]=
+&tags.merit.Marian_Apparition [v(d.dt)]=
+&merit.Revelatory_Shroud [v(d.dd)]=
+&prereq-text.merit.Revelatory_Shroud [v(d.dd)]=
+&prerequisite.merit.Revelatory_Shroud [v(d.dd)]=
+&tags.merit.Revelatory_Shroud [v(d.dt)]=
+&merit.Apparition_of_the_Host [v(d.dd)]=
+&prereq-text.merit.Apparition_of_the_Host [v(d.dd)]=
+&prerequisite.merit.Apparition_of_the_Host [v(d.dd)]=
+&tags.merit.Apparition_of_the_Host [v(d.dt)]=
+&merit.Bloody_Icon [v(d.dd)]=
+&prereq-text.merit.Bloody_Icon [v(d.dd)]=
+&prerequisite.merit.Bloody_Icon [v(d.dd)]=
+&tags.merit.Bloody_Icon [v(d.dt)]=
+&merit.The_Walls_of_Jericho [v(d.dd)]=
+&prereq-text.merit.The_Walls_of_Jericho [v(d.dd)]=
+&prerequisite.merit.The_Walls_of_Jericho [v(d.dd)]=
+&tags.merit.The_Walls_of_Jericho [v(d.dt)]=
+&merit.Aaron's_Road [v(d.dd)]=
+&prereq-text.merit.Aaron's_Road [v(d.dd)]=
+&prerequisite.merit.Aaron's_Road [v(d.dd)]=
+&tags.merit.Aaron's_Road [v(d.dt)]=
+&merit.Blessing_the_Legion [v(d.dd)]=
+&prereq-text.merit.Blessing_the_Legion [v(d.dd)]=
+&prerequisite.merit.Blessing_the_Legion [v(d.dd)]=
+&tags.merit.Blessing_the_Legion [v(d.dt)]=
+&merit.Miracle_of_the_Dead_Sun [v(d.dd)]=
+&prereq-text.merit.Miracle_of_the_Dead_Sun [v(d.dd)]=
+&prerequisite.merit.Miracle_of_the_Dead_Sun [v(d.dd)]=
+&tags.merit.Miracle_of_the_Dead_Sun [v(d.dt)]=
+&merit.Pledge_to_the_Worthless_One [v(d.dd)]=
+&prereq-text.merit.Pledge_to_the_Worthless_One [v(d.dd)]=
+&prerequisite.merit.Pledge_to_the_Worthless_One [v(d.dd)]=
+&tags.merit.Pledge_to_the_Worthless_One [v(d.dt)]=
+&merit.Great_Prophecy [v(d.dd)]=
+&prereq-text.merit.Great_Prophecy [v(d.dd)]=
+&prerequisite.merit.Great_Prophecy [v(d.dd)]=
+&tags.merit.Great_Prophecy [v(d.dt)]=
+&merit.The_Guiding_Star [v(d.dd)]=
+&prereq-text.merit.The_Guiding_Star [v(d.dd)]=
+&prerequisite.merit.The_Guiding_Star [v(d.dd)]=
+&tags.merit.The_Guiding_Star [v(d.dt)]=
+&merit.Apocalypse [v(d.dd)]=
+&prereq-text.merit.Apocalypse [v(d.dd)]=
+&prerequisite.merit.Apocalypse [v(d.dd)]=
+&tags.merit.Apocalypse [v(d.dt)]=
+&merit.The_Judgment_Fast [v(d.dd)]=
+&prereq-text.merit.The_Judgment_Fast [v(d.dd)]=
+&prerequisite.merit.The_Judgment_Fast [v(d.dd)]=
+&tags.merit.The_Judgment_Fast [v(d.dt)]=
+
 */
 
 think Merits and rites - 342 lines.
@@ -403,117 +462,117 @@ think Entering the Stigmata merit
 
 &tags.merit.Temple_of_Damnation [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Apple_of_Eden [v(d.dd)]=1
+&miracle.Apple_of_Eden [v(d.dd)]=1
 
-&prereq-text.merit.Apple_of_Eden [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Apple_of_Eden [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Apple_of_Eden [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Apple_of_Eden [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Apple_of_Eden [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Apple_of_Eden [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Marian_Apparition [v(d.dd)]=1
+&miracle.Marian_Apparition [v(d.dd)]=1
 
-&prereq-text.merit.Marian_Apparition [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Marian_Apparition [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Marian_Apparition [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Marian_Apparition [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Marian_Apparition [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Marian_Apparition [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Revelatory_Shroud [v(d.dd)]=1
+&miracle.Revelatory_Shroud [v(d.dd)]=1
 
-&prereq-text.merit.Revelatory_Shroud [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Revelatory_Shroud [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Revelatory_Shroud [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Revelatory_Shroud [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Revelatory_Shroud [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Revelatory_Shroud [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Apparition_of_the_Host [v(d.dd)]=2
+&miracle.Apparition_of_the_Host [v(d.dd)]=2
 
-&prereq-text.merit.Apparition_of_the_Host [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Apparition_of_the_Host [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Apparition_of_the_Host [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Apparition_of_the_Host [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Apparition_of_the_Host [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Apparition_of_the_Host [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Bloody_Icon [v(d.dd)]=2
+&miracle.Bloody_Icon [v(d.dd)]=2
 
-&prereq-text.merit.Bloody_Icon [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Bloody_Icon [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Bloody_Icon [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Bloody_Icon [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Bloody_Icon [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Bloody_Icon [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.The_Walls_of_Jericho [v(d.dd)]=2
+&miracle.The_Walls_of_Jericho [v(d.dd)]=2
 
-&prereq-text.merit.The_Walls_of_Jericho [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.The_Walls_of_Jericho [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.The_Walls_of_Jericho [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.The_Walls_of_Jericho [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.The_Walls_of_Jericho [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.The_Walls_of_Jericho [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Aaron's_Road [v(d.dd)]=3
+&miracle.Aaron's_Rod [v(d.dd)]=3
 
-&prereq-text.merit.Aaron's_Road [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Aaron's_Rod [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Aaron's_Road [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Aaron's_Rod [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Aaron's_Road [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Aaron's_Rod [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Blessing_the_Legion [v(d.dd)]=3
+&miracle.Blessing_the_Legion [v(d.dd)]=3
 
-&prereq-text.merit.Blessing_the_Legion [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Blessing_the_Legion [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Blessing_the_Legion [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Blessing_the_Legion [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Blessing_the_Legion [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Blessing_the_Legion [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Miracle_of_the_Dead_Sun [v(d.dd)]=3
+&miracle.Miracle_of_the_Dead_Sun [v(d.dd)]=3
 
-&prereq-text.merit.Miracle_of_the_Dead_Sun [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Miracle_of_the_Dead_Sun [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Miracle_of_the_Dead_Sun [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Miracle_of_the_Dead_Sun [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Miracle_of_the_Dead_Sun [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Miracle_of_the_Dead_Sun [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Pledge_to_the_Worthless_One [v(d.dd)]=3
+&miracle.Pledge_to_the_Worthless_One [v(d.dd)]=3
 
-&prereq-text.merit.Pledge_to_the_Worthless_One [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Pledge_to_the_Worthless_One [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Pledge_to_the_Worthless_One [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Pledge_to_the_Worthless_One [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Pledge_to_the_Worthless_One [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Pledge_to_the_Worthless_One [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Great_Prophecy [v(d.dd)]=4
+&miracle.Great_Prophecy [v(d.dd)]=4
 
-&prereq-text.merit.Great_Prophecy [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Great_Prophecy [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Great_Prophecy [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Great_Prophecy [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Great_Prophecy [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Great_Prophecy [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.The_Guiding_Star [v(d.dd)]=3
+&miracle.The_Guiding_Star [v(d.dd)]=3
 
-&prereq-text.merit.The_Guiding_Star [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.The_Guiding_Star [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.The_Guiding_Star [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.The_Guiding_Star [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.The_Guiding_Star [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.The_Guiding_Star [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Apocalypse [v(d.dd)]=5
+&miracle.Apocalypse [v(d.dd)]=5
 
-&prereq-text.merit.Apocalypse [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Apocalypse [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Apocalypse [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Apocalypse [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Apocalypse [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Apocalypse [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.The_Judgment_Fast [v(d.dd)]=5
+&miracle.The_Judgment_Fast [v(d.dd)]=5
 
-&prereq-text.merit.The_Judgment_Fast [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.The_Judgment_Fast [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.The_Judgment_Fast [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.The_Judgment_Fast [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.The_Judgment_Fast [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.The_Judgment_Fast [v(d.dt)]=vampire.lancea et sanctum
 
 &merit.Independent_Study [v(d.dd)]=2
 
