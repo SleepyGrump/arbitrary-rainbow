@@ -9,7 +9,7 @@ Feel free to edit and make your own, or reuse as-is with appropriate credit give
 2020-03-08: Added Toreador to Daeva bloodlines.
 2020-03-10: Fixed a missing comma on the Daeva @fo tag that wasn't noticed because when it was first fired, there were no existing bloodlines in the bio.bloodlines field.
 2020-06-24: Added Asnam to Daeva bloodlines, fixed a bug in The Carnival prereqs.
-
+2020-09-12: Fixed "obfuscare" to "obfuscate".
 */
 
 think Entering 362 lines.
@@ -592,7 +592,7 @@ think Entering 362 lines.
 
 &devotion.silent_passage [v(d.dd)]=-
 
-&prerequisite.devotion.silent_passage [v(d.dd)]=cand(u(.is, %0, bio.bloodline, Adroanzi), u(.at_least_all, %0, discipline.animalism:1 discipline.obfuscare:1))
+&prerequisite.devotion.silent_passage [v(d.dd)]=cand(u(.is, %0, bio.bloodline, Adroanzi), u(.at_least_all, %0, discipline.animalism:1 discipline.obfuscate:1))
 
 &prereq-text.silent_passage [v(d.dd)]=Adroanzi Bloodline Devotion;Animalism 1, Ofuscate 1
 
