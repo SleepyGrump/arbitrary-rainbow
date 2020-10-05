@@ -4,6 +4,80 @@
 
 2020-07-11: Noticed the new coils aren't XP-costing correctly. Plus, the Crucible merit isn't being taken into account with existing coils. Added!
 
+2020-08-04: Noticed the prereqs were wrong for the coils, and not just these coils. You need Status (Ordo Dracul) of equivalent level to the coil OR 1 if it's your Mystery Coil. It is not restricted to Ordo Dracul.
+
+2020-08-28: Noticed I had a bunch of Theban Sorcery Miracles classed as MERITS. Also, Aaron's Rod was spelled Aaron's Road. How embarrassing. The fix is below, and here's the code to remove the bad merits (finding out which of your players have them is an exercise for +census):
+
+&merit.Apple_of_Eden [v(d.dd)]=
+&prereq-text.merit.Apple_of_Eden [v(d.dd)]=
+&prerequisite.merit.Apple_of_Eden [v(d.dd)]=
+&tags.merit.Apple_of_Eden [v(d.dt)]=
+&merit.Marian_Apparition [v(d.dd)]=
+&prereq-text.merit.Marian_Apparition [v(d.dd)]=
+&prerequisite.merit.Marian_Apparition [v(d.dd)]=
+&tags.merit.Marian_Apparition [v(d.dt)]=
+&merit.Revelatory_Shroud [v(d.dd)]=
+&prereq-text.merit.Revelatory_Shroud [v(d.dd)]=
+&prerequisite.merit.Revelatory_Shroud [v(d.dd)]=
+&tags.merit.Revelatory_Shroud [v(d.dt)]=
+&merit.Apparition_of_the_Host [v(d.dd)]=
+&prereq-text.merit.Apparition_of_the_Host [v(d.dd)]=
+&prerequisite.merit.Apparition_of_the_Host [v(d.dd)]=
+&tags.merit.Apparition_of_the_Host [v(d.dt)]=
+&merit.Bloody_Icon [v(d.dd)]=
+&prereq-text.merit.Bloody_Icon [v(d.dd)]=
+&prerequisite.merit.Bloody_Icon [v(d.dd)]=
+&tags.merit.Bloody_Icon [v(d.dt)]=
+&merit.The_Walls_of_Jericho [v(d.dd)]=
+&prereq-text.merit.The_Walls_of_Jericho [v(d.dd)]=
+&prerequisite.merit.The_Walls_of_Jericho [v(d.dd)]=
+&tags.merit.The_Walls_of_Jericho [v(d.dt)]=
+&merit.Aaron's_Road [v(d.dd)]=
+&prereq-text.merit.Aaron's_Road [v(d.dd)]=
+&prerequisite.merit.Aaron's_Road [v(d.dd)]=
+&tags.merit.Aaron's_Road [v(d.dt)]=
+&merit.Blessing_the_Legion [v(d.dd)]=
+&prereq-text.merit.Blessing_the_Legion [v(d.dd)]=
+&prerequisite.merit.Blessing_the_Legion [v(d.dd)]=
+&tags.merit.Blessing_the_Legion [v(d.dt)]=
+&merit.Miracle_of_the_Dead_Sun [v(d.dd)]=
+&prereq-text.merit.Miracle_of_the_Dead_Sun [v(d.dd)]=
+&prerequisite.merit.Miracle_of_the_Dead_Sun [v(d.dd)]=
+&tags.merit.Miracle_of_the_Dead_Sun [v(d.dt)]=
+&merit.Pledge_to_the_Worthless_One [v(d.dd)]=
+&prereq-text.merit.Pledge_to_the_Worthless_One [v(d.dd)]=
+&prerequisite.merit.Pledge_to_the_Worthless_One [v(d.dd)]=
+&tags.merit.Pledge_to_the_Worthless_One [v(d.dt)]=
+&merit.Great_Prophecy [v(d.dd)]=
+&prereq-text.merit.Great_Prophecy [v(d.dd)]=
+&prerequisite.merit.Great_Prophecy [v(d.dd)]=
+&tags.merit.Great_Prophecy [v(d.dt)]=
+&merit.The_Guiding_Star [v(d.dd)]=
+&prereq-text.merit.The_Guiding_Star [v(d.dd)]=
+&prerequisite.merit.The_Guiding_Star [v(d.dd)]=
+&tags.merit.The_Guiding_Star [v(d.dt)]=
+&merit.Apocalypse [v(d.dd)]=
+&prereq-text.merit.Apocalypse [v(d.dd)]=
+&prerequisite.merit.Apocalypse [v(d.dd)]=
+&tags.merit.Apocalypse [v(d.dt)]=
+&merit.The_Judgment_Fast [v(d.dd)]=
+&prereq-text.merit.The_Judgment_Fast [v(d.dd)]=
+&prerequisite.merit.The_Judgment_Fast [v(d.dd)]=
+&tags.merit.The_Judgment_Fast [v(d.dt)]=
+
+2020-08-28: Updated NOLA's sheets to take on the combination of Pledge to the Worthless One and Coil of the Wyrm 4. Note that NOLA applies Vigor, Celerity, and Resilience directly to the appropriate stats (str/dex/sta) so that they can pass prerequisites, so those stats aren't included in the counts below. You might want to change the code to account for those.
+
+&health.maximum.vampire [v(d.dd)]=if(cand(u(.has, %0, miracle.pledge_to_the_worthless_one), u(.at_least, %0, discipline.coil_of_the_wyrm, 4)), u(.value, %0, advantage.blood_potency), 0)
+
+&advantage.defense [v(d.dd)]=add(ladd(u(.value_full, %0, skill.athletics), .), min(ladd(u(.value_full, %0, attribute.wits).[udefault(.has, 0, %0, merit.embodiment_of_the_firstborn_(wits))], .), ladd(u(.value_full, %0, attribute.dexterity).[udefault(.has, 0, %0, merit.embodiment_of_the_firstborn_(dexterity))], .)), udefault(.value, 0, %0, discipline.celerity), if(cand(u(.has, %0, miracle.pledge_to_the_worthless_one), u(.at_least, %0, discipline.coil_of_the_wyrm, 4)), u(.value, %0, advantage.blood_potency), 0))
+
+&ADVANTAGE.WEAPONRY_DEFENSE [v(d.dd)]=if(u(.has, %0, merit.defensive_combat_(weaponry)), add(ladd(u(.value_full, %0, skill.weaponry), .), u(advantage.defense, %0)), 0)
+
+&ADVANTAGE.BRAWL_DEFENSE [v(d.dd)]=if(u(.has, %0, merit.defensive_combat_(brawl)), add(ladd(u(.value_full, %0, skill.brawl), .), u(advantage.defense, %0)), 0)
+
+&ADVANTAGE.SPEED [v(d.dd)]=add(u(.value_stats, %0, attribute.strength attribute.dexterity special.species_factor merit.fleet_of_foot merit.strength_augmentation merit.augmented_speed), udefault(.has, 0, %0, merit.embodiment_of_the_firstborn_(dexterity)), udefault(.has, 0, %0, merit.embodiment_of_the_firstborn_(strength)), switch(udefault(%0/_form.current, u(v(d.sfs)/f.default_form, u(%0/_bio.template))), urshul, 3, urhan, 3, 0), switch(get(%0/_bio.seeming), Beast, 3, 0), if(cand(u(.has, %0, miracle.pledge_to_the_worthless_one), u(.at_least, %0, discipline.coil_of_the_wyrm, 4)), u(.value, %0, advantage.blood_potency), 0))
+
+
 */
 
 think Merits and rites - 342 lines.
@@ -401,117 +475,117 @@ think Entering the Stigmata merit
 
 &tags.merit.Temple_of_Damnation [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Apple_of_Eden [v(d.dd)]=1
+&miracle.Apple_of_Eden [v(d.dd)]=1
 
-&prereq-text.merit.Apple_of_Eden [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Apple_of_Eden [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Apple_of_Eden [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Apple_of_Eden [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Apple_of_Eden [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Apple_of_Eden [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Marian_Apparition [v(d.dd)]=1
+&miracle.Marian_Apparition [v(d.dd)]=1
 
-&prereq-text.merit.Marian_Apparition [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Marian_Apparition [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Marian_Apparition [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Marian_Apparition [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Marian_Apparition [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Marian_Apparition [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Revelatory_Shroud [v(d.dd)]=1
+&miracle.Revelatory_Shroud [v(d.dd)]=1
 
-&prereq-text.merit.Revelatory_Shroud [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Revelatory_Shroud [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Revelatory_Shroud [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Revelatory_Shroud [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Revelatory_Shroud [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Revelatory_Shroud [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Apparition_of_the_Host [v(d.dd)]=2
+&miracle.Apparition_of_the_Host [v(d.dd)]=2
 
-&prereq-text.merit.Apparition_of_the_Host [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Apparition_of_the_Host [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Apparition_of_the_Host [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Apparition_of_the_Host [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Apparition_of_the_Host [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Apparition_of_the_Host [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Bloody_Icon [v(d.dd)]=2
+&miracle.Bloody_Icon [v(d.dd)]=2
 
-&prereq-text.merit.Bloody_Icon [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Bloody_Icon [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Bloody_Icon [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Bloody_Icon [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Bloody_Icon [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Bloody_Icon [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.The_Walls_of_Jericho [v(d.dd)]=2
+&miracle.The_Walls_of_Jericho [v(d.dd)]=2
 
-&prereq-text.merit.The_Walls_of_Jericho [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.The_Walls_of_Jericho [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.The_Walls_of_Jericho [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.The_Walls_of_Jericho [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.The_Walls_of_Jericho [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.The_Walls_of_Jericho [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Aaron's_Road [v(d.dd)]=3
+&miracle.Aaron's_Rod [v(d.dd)]=3
 
-&prereq-text.merit.Aaron's_Road [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Aaron's_Rod [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Aaron's_Road [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Aaron's_Rod [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Aaron's_Road [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Aaron's_Rod [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Blessing_the_Legion [v(d.dd)]=3
+&miracle.Blessing_the_Legion [v(d.dd)]=3
 
-&prereq-text.merit.Blessing_the_Legion [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Blessing_the_Legion [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Blessing_the_Legion [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Blessing_the_Legion [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Blessing_the_Legion [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Blessing_the_Legion [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Miracle_of_the_Dead_Sun [v(d.dd)]=3
+&miracle.Miracle_of_the_Dead_Sun [v(d.dd)]=3
 
-&prereq-text.merit.Miracle_of_the_Dead_Sun [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Miracle_of_the_Dead_Sun [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Miracle_of_the_Dead_Sun [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Miracle_of_the_Dead_Sun [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Miracle_of_the_Dead_Sun [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Miracle_of_the_Dead_Sun [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Pledge_to_the_Worthless_One [v(d.dd)]=3
+&miracle.Pledge_to_the_Worthless_One [v(d.dd)]=3
 
-&prereq-text.merit.Pledge_to_the_Worthless_One [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Pledge_to_the_Worthless_One [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Pledge_to_the_Worthless_One [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Pledge_to_the_Worthless_One [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Pledge_to_the_Worthless_One [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Pledge_to_the_Worthless_One [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Great_Prophecy [v(d.dd)]=4
+&miracle.Great_Prophecy [v(d.dd)]=4
 
-&prereq-text.merit.Great_Prophecy [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Great_Prophecy [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Great_Prophecy [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Great_Prophecy [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Great_Prophecy [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Great_Prophecy [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.The_Guiding_Star [v(d.dd)]=3
+&miracle.The_Guiding_Star [v(d.dd)]=3
 
-&prereq-text.merit.The_Guiding_Star [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.The_Guiding_Star [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.The_Guiding_Star [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.The_Guiding_Star [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.The_Guiding_Star [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.The_Guiding_Star [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.Apocalypse [v(d.dd)]=5
+&miracle.Apocalypse [v(d.dd)]=5
 
-&prereq-text.merit.Apocalypse [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.Apocalypse [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.Apocalypse [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.Apocalypse [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.Apocalypse [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.Apocalypse [v(d.dt)]=vampire.lancea et sanctum
 
-&merit.The_Judgment_Fast [v(d.dd)]=5
+&miracle.The_Judgment_Fast [v(d.dd)]=5
 
-&prereq-text.merit.The_Judgment_Fast [v(d.dd)]=Theban Sorcery
+&prereq-text.miracle.The_Judgment_Fast [v(d.dd)]=Theban Sorcery
 
-&prerequisite.merit.The_Judgment_Fast [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
+&prerequisite.miracle.The_Judgment_Fast [v(d.dd)]=u(.has, %0, discipline.theban_sorcery)
 
-&tags.merit.The_Judgment_Fast [v(d.dt)]=vampire.lancea et sanctum
+&tags.miracle.The_Judgment_Fast [v(d.dt)]=vampire.lancea et sanctum
 
 &merit.Independent_Study [v(d.dd)]=2
 
@@ -717,11 +791,11 @@ think Coils and scales
 
 &discipline.coil_of_zirnitra [v(d.dd)]=1.2.3.4.5
 
-&tags.discipline.coil_of_zirnitra [v(d.dt)]=vampire.coil.ordo dracul
+&tags.discipline.coil_of_zirnitra [v(d.dt)]=vampire.coil
 
-&prerequisite.discipline.coil_of_zirnitra [v(d.dd)]=cand(u(.is_full, %0, bio.covenant, Ordo Dracul), cor(u(.is_full, %0, bio.mystery_coil, Coil of Zirnitra), u(.at_most_stat, %0, discipline.coil_of_zirnitra, merit.status_(ordo_dracul), %2)))
+&prerequisite.DISCIPLINE.COIL_OF_Zirnitra [v(d.dd)]=case(1, u(.is_full, %0, bio.mystery_coil, Coil of Zirnitra), u(.has, %0, merit.status_(ordo_dracul)), u(.at_most_stat, %0, discipline.coil_of_Zirnitra, merit.status_(ordo_dracul)))
 
-&prereq-text.discipline.coil_of_zirnitra [v(d.dd)]=Covenant is Ordo Dracul, If not Mystery Coil then may not be higher than Status (Ordo Dracul)
+&prereq-text.DISCIPLINE.COIL_OF_Zirnitra [v(d.dd)]=Status (Ordo Dracul) 1 (if Mystery Coil) or of equivalent level (if not)
 
 &scale.grafting_unholy_flesh [v(d.dd)]=Coil of Zirnitra:4
 
@@ -739,9 +813,9 @@ think Coils and scales
 
 &tags.discipline.coil_of_ziva [v(d.dt)]=vampire.coil.ordo dracul
 
-&prerequisite.discipline.coil_of_ziva [v(d.dd)]=cand(u(.is_full, %0, bio.covenant, Ordo Dracul), cor(u(.is_full, %0, bio.mystery_coil, Coil of Zirnitra), u(.at_most_stat, %0, discipline.coil_of_ziva, merit.status_(ordo_dracul), %2)))
+&prerequisite.DISCIPLINE.COIL_OF_Ziva [v(d.dd)]=case(1, u(.is_full, %0, bio.mystery_coil, Coil of Ziva), u(.has, %0, merit.status_(ordo_dracul)), u(.at_most_stat, %0, discipline.coil_of_Ziva, merit.status_(ordo_dracul)))
 
-&prereq-text.discipline.coil_of_ziva [v(d.dd)]=Covenant is Ordo Dracul, If not Mystery Coil then may not be higher than Status (Ordo Dracul)
+&prereq-text.DISCIPLINE.COIL_OF_Ziva [v(d.dd)]=Status (Ordo Dracul) 1 (if Mystery Coil) or of equivalent level (if not)
 
 &scale.bleed_the_sin [v(d.dd)]=Coil of Ziva:2
 

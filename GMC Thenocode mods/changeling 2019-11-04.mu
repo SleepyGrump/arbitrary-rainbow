@@ -25,6 +25,7 @@ This file was created on 2019-11-04. Future versions will be updated to the newe
 2020-03-02: updated Touchstone prereq code to get values correctly.
 2020-03-20: updated Clarity system to include Theno's latest changes.
 2020-06-03: fixed Cloak of Leaves to be 1.2.3, not 3.
+2020-07-29: noticed Cloak of Leaves was treated like a contract for prereqs, not a merit. Fixed. Also fixed Noblesse Oblige not to conflict with the SotC merit of the same name. Ew.
 
 ================================================================================
 
@@ -269,11 +270,11 @@ think Merit time!
 
 &merit.cloak_of_leaves [v(d.dd)]=1.2.3
 
-&prerequisite.merit.cloak_of_leaves [v(d.dd)]=or(u(.at_least, %0, merit.court_goodwill_(Autumn), 5), cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3)))
+&prerequisite.merit.cloak_of_leaves [v(d.dd)]=cand(u(.is, %0, bio.court, Autumn), u(.at_least, %0, merit.mantle, 3))
 
-&prereq-text.merit.cloak_of_leaves [v(d.dd)]=Must have Mantle 3 and be of the Autumn court, or have Court Goodwill (Autumn) 5.
+&prereq-text.merit.cloak_of_leaves [v(d.dd)]=Must have Mantle 3 and be of the Autumn court.
 
-&tags.merit.cloak_of_leaves [v(d.dt)]=changeling.court.autumn
+&tags.merit.cloak_of_leaves [v(d.dt)]=changeling
 
 &merit.cold_hearted [v(d.dd)]=3
 
@@ -450,6 +451,24 @@ think Merit time!
 &tags.merit.noblesse_oblige [v(d.dt)]=changeling.court
 
 &notes.merit.noblesse_oblige [v(d.dt)]=May be used only with those who share your Court or Court Goodwill|May not be used if Courtless
+
+@@ @@ Side note: because we have Secrets of the Covenants, we also have a merit called Noblesse Oblige for the Invictus, which has a different cost and dot value than the Changeling one. Because of that, here's what we did:
+
+@@ &MERIT.NOBLESSE_OBLIGE [v(d.dd)]=
+@@ &PREREQUISITE.MERIT.NOBLESSE_OBLIGE [v(d.dd)]=
+@@ &PREREQ-TEXT.MERIT.NOBLESSE_OBLIGE [v(d.dd)]=
+@@ &TAGS.MERIT.NOBLESSE_OBLIGE [v(d.dt)]=
+@@ &NOTES.MERIT.NOBLESSE_OBLIGE [v(d.dt)]=
+@@ &MERIT.Vampire_NOBLESSE_OBLIGE [v(d.dd)]=3
+@@ &PREREQUISITE.MERIT.Vampire_NOBLESSE_OBLIGE [v(d.dd)]=u(.at_least_all, %0, merit.status_(invictus):1 merit.status_(city):3)
+@@ &PREREQ-TEXT.MERIT.Vampire_NOBLESSE_OBLIGE [v(d.dd)]=Status (Invictus) 1 or higher, Status (City) 3
+@@ &TAGS.MERIT.Vampire_NOBLESSE_OBLIGE [v(d.dt)]=vampire.invictus
+@@ &NOTES.MERIT.Vampire_NOBLESSE_OBLIGE [v(d.dt)]=
+@@ &MERIT.Changeling_NOBLESSE_OBLIGE [v(d.dd)]=1.2.3
+@@ &PREREQUISITE.MERIT.Changeling_NOBLESSE_OBLIGE [v(d.dd)]=u(.is_not, %0, bio.court, Courtless)
+@@ &PREREQ-TEXT.MERIT.Changeling_NOBLESSE_OBLIGE [v(d.dd)]=Belongs to a Court
+@@ &TAGS.MERIT.Changeling_NOBLESSE_OBLIGE [v(d.dt)]=changeling.court
+@@ &NOTES.MERIT.Changeling_NOBLESSE_OBLIGE [v(d.dt)]=May be used only with those who share your Court or Court Goodwill|May not be used if Courtless
 
 &merit.pandemoniacal [v(d.dd)]=1.2.3
 
