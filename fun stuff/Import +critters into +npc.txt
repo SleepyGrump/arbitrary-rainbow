@@ -1,0 +1,123 @@
++npc/transfer Badger=Animal
++npc/approve Badger=Honeybadger DGAF.
++npc/import Badger
+
++npc/transfer Bat=Animal
++npc/approve Bat=Batty bat.
++npc/import Bat
+
++npc/transfer Bear=Animal
++npc/approve Bear=Bruin.
++npc/import Bear
+
++npc/transfer Cat (Domestic)=Animal
++npc/approve Cat (Domestic)=Lolcat.
++npc/import Cat (Domestic)
+
++npc/transfer Cat (Great)=Animal
++npc/approve Cat (Great)=Lorge lolcat.
++npc/import Cat (Great)
+
++npc/transfer Chimpanzee=Animal
++npc/approve Chimpanzee=Professor Bananas.
++npc/import Chimpanzee
+
++npc/transfer Coyote=Animal
++npc/approve Coyote=Wild pupper.
++npc/import Coyote
+
++npc/transfer Crocodile (Adult)=Animal
++npc/approve Crocodile (Adult)=Murder log.
++npc/import Crocodile (Adult)
+
++npc/transfer Crocodile (Juvenile)=Animal
++npc/approve Crocodile (Juvenile)=Smol murder log.
++npc/import Crocodile (Juvenile)
+
++npc/transfer Deer (Buck)=Animal
++npc/approve Deer (Buck)=Big hat.
++npc/import Deer (Buck)
+
++npc/transfer Dog (Large)=Animal
++npc/approve Dog (Large)=Woofer.
++npc/import Dog (Large)
+
++npc/transfer Dog (Small)=Animal
++npc/approve Dog (Small)=Subwoofer.
++npc/import Dog (Small)
+
+@@ +npc/transfer Dragon Turtle=Animal
+@@ +npc/approve Dragon Turtle=Comment
+@@ +npc/import Dragon Turtle
+
++npc/transfer Elephant=Animal
++npc/approve Elephant=Ears.
++npc/import Elephant
+
++npc/transfer Fox=Animal
++npc/approve Fox=Catdog.
++npc/import Fox
+
++npc/transfer Horse=Animal
++npc/approve Horse=Horsie!
++npc/import Horse
+
++npc/transfer Hyena=Animal
++npc/approve Hyena=Gigglepup.
++npc/import Hyena
+
+@@ +npc/transfer Kitsune=Animal
+@@ +npc/approve Kitsune=Comment
+@@ +npc/import Kitsune
+
+@@ +npc/transfer Kraken=Animal
+@@ +npc/approve Kraken=Comment
+@@ +npc/import Kraken
+
+@@ +npc/transfer Massive Dragon=Animal
+@@ +npc/approve Massive Dragon=Comment
+@@ +npc/import Massive Dragon
+
++npc/transfer Owl=Animal
++npc/approve Owl=Hoot.
++npc/import Owl
+
+@@ +npc/transfer Pegasus=Animal
+@@ +npc/approve Pegasus=Comment
+@@ +npc/import Pegasus
+
+@@ +npc/transfer Pixie=Animal
+@@ +npc/approve Pixie=Comment
+@@ +npc/import Pixie
+
++npc/transfer Rat=Animal
++npc/approve Rat=Cute until hungry.
++npc/import Rat
+
++npc/transfer Raven or Crow=Animal
++npc/approve Raven or Crow=Caw.
++npc/import Raven or Crow
+
+@@ +npc/transfer Regular Dragon=Animal
+@@ +npc/approve Regular Dragon=Comment
+@@ +npc/import Regular Dragon
+
++npc/transfer Snake=Animal
++npc/approve Snake=Nope rope!
++npc/import Snake
+
++npc/transfer Sugar Glider=Animal
++npc/approve Sugar Glider=Squee.
++npc/import Sugar Glider
+
++npc/transfer Toad=Animal
++npc/approve Toad=Ribbit.
++npc/import Toad
+
++npc/transfer Weasel or Ferret=Animal
++npc/approve Weasel or Ferret=Catsnake.
++npc/import Weasel or Ferret
+
++npc/transfer Wolf=Animal
++npc/approve Wolf=Danger woof.
++npc/import Wolf
