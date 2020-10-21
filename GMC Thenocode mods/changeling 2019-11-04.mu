@@ -1,13 +1,7 @@
 /*
 ================================================================================
 
-WORK IN PROGRESS. But should drop in cleanly. Just... well, expect bugs and read the text below. ALL the text, not just this section.
-
-Currently working on:
-
-- Incorporating Theno's latest updates.
-
-	- Decided to skip the prereqs code for contracts - it seemed complex for something that could be handled with a simple search/replace given I'd already written up prereqs. Did incorporate the rules change to allow Court Goodwill to substitute for Mantle (Court).
+- Decided to skip the prereqs code for contracts - it seemed complex for something that could be handled with a simple search/replace given I'd already written up prereqs. Did incorporate the rules change to allow Court Goodwill to substitute for Mantle (Court).
 
 
 ================================================================================
