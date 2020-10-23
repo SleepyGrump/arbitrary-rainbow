@@ -14,8 +14,8 @@ TODO:
  - Write some kind of stat-listing utility - +npc/stats <npc>?
  - Hobgoblins
  - Hedge Ghosts
+ - Strix (VtR pg 201)
  - Werewolf weird spirit stuff - Hosts, etc?
- - Maybe make the below-minimums of Influences and Manifestations error
  - Maybe make skills only show up on Horrors if they exist?
 
 DONE:
