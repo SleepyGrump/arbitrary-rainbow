@@ -68,3 +68,6 @@ This absolutely requires you to already have installed NPCs - AKA Critters 2.0.m
 
 &check-resurrection [v(d.angels)]=if(and(hasattrp(me, numina-resurrection), lt(default(rank, 0), 4)), The angel needs to be at least Rank 4 to have the Numina Resurrection.)
 
+&check-influences-min [v(d.angels)]=if(lt(setr(1, ladd(iter(lattrp(me/influence-*), v(itext(0))))), setr(0, default(rank, 0))), By the book you can have up to %q0 points of Influences. You have %q1. You can do fewer if you want to%, this is just a notification!)
+
+&check-manifestations-min [v(d.angels)]=if(lt(setr(1, ladd(iter(lattrp(me/manifestation-*), v(itext(0))))), setr(0, default(rank, 0))), By the book you can have up to %q0 points of Manifestations. You have %q1. You can do fewer if you want to%, this is just a notification!)

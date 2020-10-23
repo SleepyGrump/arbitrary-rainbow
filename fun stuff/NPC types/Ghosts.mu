@@ -65,3 +65,7 @@ This absolutely requires you to already have installed NPCs - AKA Critters 2.0.m
 &check-influences-max [v(d.ghosts)]=strcat(setq(0, add(sub(ulocal(f.get-unspent-numina), ulocal(f.get-extra-manifestations)), setr(2, default(rank, 0)))), setq(1, ladd(iter(lattrp(me/influence-*), v(itext(0))))), if(gt(%q1, %q0), By our calculations%, you should have a max of %q0 Influences%, counting unspent Numina and the Influences granted by the entity's rank of %q2. You have %q1.))
 
 &check-manifestations-max [v(d.ghosts)]=strcat(setq(0, add(sub(ulocal(f.get-unspent-numina), ulocal(f.get-extra-influences)), setr(2, default(rank, 0)), 1)), setq(1, ladd(iter(lattrp(me/manifestation-*), v(itext(0))))), if(gt(%q1, %q0), By our calculations%, you should have a max of %q0 Manifestations%, counting unspent Numina and the Manifestations granted by the entity's rank of %q2%, plus the default Twilight Form. You have %q1.))
+
+&check-influences-min [v(d.ghosts)]=if(lt(setr(1, ladd(iter(lattrp(me/influence-*), v(itext(0))))), setr(0, default(rank, 0))), By the book you can have up to %q0 points of Influences. You have %q1. You can do fewer if you want to%, this is just a notification!)
+
+&check-manifestations-min [v(d.ghosts)]=if(lt(setr(1, ladd(iter(lattrp(me/manifestation-*), v(itext(0))))), setr(0, default(rank, 0))), By the book you can have up to %q0 points of Manifestations. You have %q1. You can do fewer if you want to%, this is just a notification!)

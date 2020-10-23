@@ -81,3 +81,7 @@ This absolutely requires you to already have installed NPCs - AKA Critters 2.0.m
 &check-shadow_gateway [v(d.spirits)]=if(and(hasattrp(me, manifestation-shadow_gateway), lt(default(rank, 0), 3)), The spirit needs to be at least Rank 3 to have the Shadow Gateway Manifestation.)
 
 &check-resurrection [v(d.spirits)]=if(and(hasattrp(me, numina-resurrection), lt(default(rank, 0), 4)), The spirit needs to be at least Rank 4 to have the Numina Resurrection.)
+
+&check-influences-min [v(d.spirits)]=if(lt(setr(1, ladd(iter(lattrp(me/influence-*), v(itext(0))))), setr(0, default(rank, 0))), By the book you can have up to %q0 points of Influences. You have %q1. You can do fewer if you want to%, this is just a notification!)
+
+&check-manifestations-min [v(d.spirits)]=if(lt(setr(1, ladd(iter(lattrp(me/manifestation-*), v(itext(0))))), setr(0, default(rank, 0))), By the book you can have up to %q0 points of Manifestations. You have %q1. You can do fewer if you want to%, this is just a notification!)
