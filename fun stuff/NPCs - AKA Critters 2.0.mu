@@ -381,8 +381,6 @@ think Setting up Categories for character sheets.
 
 &f.get-species-factor [v(d.npcs)]=default(species_factor, 1)
 
-&f.get-size [v(d.npcs)]=default(size, 1)
-
 @@ Required stats
 
 &check-required_stats [v(d.npcs)]=squish(trim(iter(v(required-stats), if(not(hasattr(%0, edit(itext(0), %b, _))), itext(0) is required.), |, |), b, |), |)
