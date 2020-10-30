@@ -37,7 +37,7 @@ This absolutely requires you to already have installed NPCs - AKA Critters 2.0.m
 
 &f.get-defense [v(d.fetches)]=default(defense, add(min(default(wits, 1), default(dexterity, 1)), first(default(athletics, 0), |)))
 
-&f.get-health [v(d.fetches)]=default(health, ulocal(f.get-trait, size, stamina))
+&f.get-health [v(d.fetches)]=default(health, add(ulocal(f.get-size), default(stamina, 1)))
 
 &f.get-willpower [v(d.fetches)]=default(willpower, ulocal(f.get-trait, resolve, composure))
 
