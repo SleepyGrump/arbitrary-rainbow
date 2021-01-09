@@ -3,10 +3,15 @@
 @@ - isstaff()
 @@ - wheader()
 @@ - wfooter()
-@@ - titlestr() (to capitalize words correctly)
+@@ - title() (to capitalize words correctly)
 @@ - The "APPROVED" flag
+@@ -
+@@ All required functions can be found in my byzantine-opal repo under commands/Basic Commands. The "APPROVED" flag, you'll need to add yourself in your netmux.conf file.
+@@ -
+
 
 /*
+
 Commands:
 
 	+channel - list all channels
@@ -16,6 +21,8 @@ Commands:
 	+channel/claim <existing channel> - (staff only) claim an existing channel and make it possible to administer the channel via this system. Will automatically create a channel log for this channel. If one already exists, use the second form of this command.
 
 	+channel/claim <existing channel>=<dbref> - as above, but with an existing log object.
+
+	+channel/give <channel>=<player> - give a channel you administer to someone else.
 
 	+channel/history <channel> - staff only, see the last 10 history entries
 	+channel/history <channel>=<#> - same, last # history of the channel
@@ -36,10 +43,18 @@ Only the owner (or staff) can perform the following commands:
 
 	+channel/destroy <title> - nukes a channel (must be the owner or staff)
 
-@@ Planned feature:
-	+channel/give <title>=<player> - give a channel to someone else so they can administer it (as in set headers, etc)
+	+channel/cleanup - deletes any channel which meets all of these criteria:
+		- No one has spoken on the channel in the last 180 days.
+		- The owner has not logged in in over 180 days.
+		- The owner is not staff.
+
+Planned feature:
+	Auto cleanup - delete channels that are owned by players and have not been used in a while, or whose players are no longer logged in.
 
 Changes:
+2020-12-26:
+ - Added +channel/give so players can pass control of their channels to someone else.
+ - Added an automatic cleanup which fires daily, and +channel/cleanup which can fire whenever anyone needs it to.
 2020-04-30:
  - Some tweaks to let the code handle channels with multiple words for their names. (Spaces, OMG!)
  - Also, turns out channel headers have a max limit of 100 characters. (Who knew. :P) This includes the evaluated stuff like colors. So now it'll warn you if you go over that limit but will still set colors correctly.
@@ -63,7 +78,9 @@ Changes:
 
 @force me=&vD CHF=[num(CDB)]
 
-@desc CHC=%RCommands:%R%R[space(3)]+channel - list all channels%R[space(3)]+channel/create <title>%R[space(3)]+channel/create <title>=<details>%R%R[space(3)]+channel/claim <existing channel> - (staff only) claim an existing channel and make it possible to administer the channel via this system. Will automatically create a channel log for this channel. If one already exists, use the second form of this command.%R%R[space(3)]+channel/claim <existing channel>=<dbref> - as above, but with an existing log object.%R%R[space(3)]+channel/history <channel> - staff only, see the last 10 history entries%R[space(3)]+channel/history <channel>=<#> - same, last # history of the channel%R%ROnly the owner (or staff) can perform the following commands:%R%R[space(3)]+channel/header <title>=<value> - set a channel's header (the "<format>" part)%R[space(3)]+channel/desc <title>=<value> - set a channel's description%R%R[space(3)]+channel/public <title> - set a channel public%R[space(3)]+channel/private <title> - set a channel private%R%R[space(3)]+channel/spoof <title> - set a channel spoofable (anonymous)%R[space(3)]+channel/nospoof <title> - set a channel non-spoofable (not anonymous)%R%R[space(3)]+channel/loud <title> - set a channel noisy (emits connects/disconnects)%R[space(3)]+channel/quiet <title> - set a channel quiet (no connects/disconnects)%R%R[space(3)]+channel/destroy <title> - nukes a channel (must be the owner or staff)%R
+@daily CHF=@trigger me/tr.channel-cleanup;
+
+@desc CHC=%RCommands:%R%R[space(3)]+channel - list all channels%R[space(3)]+channel/create <title>%R[space(3)]+channel/create <title>=<details>%R%R[space(3)]+channel/claim <existing channel> - (staff only) claim an existing channel and make it possible to administer the channel via this system. Will automatically create a channel log for this channel. If one already exists, use the second form of this command.%R%R[space(3)]+channel/claim <existing channel>=<dbref> - as above, but with an existing log object.%R%R[space(3)]+channel/give <channel>=<player> - give a channel you administer to someone else.%R%R[space(3)]+channel/history <channel> - staff only, see the last 10 history entries%R[space(3)]+channel/history <channel>=<#> - same, last # history of the channel%R%ROnly the owner (or staff) can perform the following commands:%R%R[space(3)]+channel/header <title>=<value> - set a channel's header (the "<format>" part)%R[space(3)]+channel/desc <title>=<value> - set a channel's description%R%R[space(3)]+channel/public <title> - set a channel public%R[space(3)]+channel/private <title> - set a channel private%R%R[space(3)]+channel/spoof <title> - set a channel spoofable (anonymous)%R[space(3)]+channel/nospoof <title> - set a channel non-spoofable (not anonymous)%R%R[space(3)]+channel/loud <title> - set a channel noisy (emits connects/disconnects)%R[space(3)]+channel/quiet <title> - set a channel quiet (no connects/disconnects)%R%R[space(3)]+channel/destroy <title> - nukes a channel (must be the owner or staff)%R%R[space(3)]+channel/cleanup - deletes any channel which meets all of these criteria:%R[space(3)][space(3)]- No one has spoken on the channel in the last 180 days.%R[space(3)][space(3)]- The owner has not logged in in over 180 days.%R[space(3)][space(3)]- The owner is not staff.%R
 
 @@ Add your channels here, separated by |'s.
 @@ This should be whatever shows up in @clist.
@@ -131,7 +148,7 @@ Changes:
 &f.is-banned-name CHF=ladd(strcat(iter(lattr(%vD/channel.*), match(ulocal(f.get-channel-name, rest(itext(0), .)), %0, |)), %b, match(default(%vD, d.existing-channels, 0), %1, |)))
 
 @@ %0 - title of channel
-&f.clean-channel-name CHF=titlestr(%0)
+&f.clean-channel-name CHF=title(%0)
 
 @@ %0 - sort option A
 @@ %1 - sort option B
@@ -179,9 +196,13 @@ Changes:
 
 &switch.6.claim CHC=@trigger me/tr.channel-claim=%0, first(%1, =), rest(%1, =);
 
+&switch.6.give CHC=@trigger me/tr.channel-give=%0, first(%1, =), rest(%1, =);
+
 &switch.7.history CHC=@trigger me/tr.channel-history=%0, first(rest(%1), =), rest(%1, =);
 
 &switch.7.last CHC=@trigger me/tr.channel-history=%0, first(rest(%1), =), rest(%1, =);
+
+&switch.98.cleanup CHC=@trigger me/tr.channel-cleanup=%0;
 
 &switch.99.destroy CHC=@switch/first %1=*=*, { @trigger me/tr.destroy-channel=%0, first(rest(%1), =), rest(%1, =); }, { @trigger me/tr.confirm-destroy=%0, rest(%1); }
 
@@ -248,8 +269,19 @@ Changes:
 @@ Input:
 @@ %0 - %#
 @@ %1 - channel title
+@@ %2 - player the channel is to be given to
+&tr.channel-give CHC=@assert t(comalias(%0, %1))={ @pemit %0=ulocal(layout.error, Can't find a channel you joined named '%1'. Please enter the exact name of the channel - it is case sensitive - and make sure you have joined the channel.); }; @assert t(setr(P, switch(%2, me, %0, pmatch(%2))))={ @pemit %0=ulocal(layout.error, Cannot find a player named '%2'.); }; @assert ulocal(f.can-create-channels, %qP)={ @pemit %0=ulocal(layout.error, name(%qP) cannot create channels%, either because they are at the max number of channels already%, or because they are not approved%, or because player-owned channels are disabled.); }; @assert match(ulocal(f.get-channel-owner, %1), %0)={ @pemit %0=ulocal(layout.error, You must own the channel you're giving away.); }; @set %vD=channel.%qN:[strcat(%1 was given to, %b, moniker(%qP) %(%qP%) by, %b, moniker(%0) %(%0%) on, %b, time().)]; @set %qN=creator-dbref:%0; @set %0=_channels-created:[setdiff(%qN, xget(%0, _channels-created))]; @set %qP=_channels-created:[setunion(%qN, xget(%qP, _channels-created))]; @pemit %0=ulocal(layout.msg, Channel '%1' given to [moniker(%qP)]!); @pemit %qP=ulocal(layout.msg, moniker(%0) just gave you channel %qN to administer. Type +help Channels to find out more!);
+
+
+@@ Input:
+@@ %0 - %#
+@@ %1 - channel title
 @@ %2 - number of history rows to check (if sent)
 &tr.channel-history CHC=@assert isstaff(%0)={ @pemit %0=ulocal(layout.error, Staff only.); }; @switch setr(E, trim(squish(strcat(if(not(t(setr(N, ulocal(f.get-channel-dbref, setr(T, ulocal(f.clean-channel-name, %1)))))), Could not find channel '%qT'. You must use the exact name of the channel you wish to modify.), %b, if(not(ulocal(f.can-modify-channel, %0, %qN)), You are not staff or the owner of the channel '%qT' and cannot change it.)))))=, { @pemit %0=ulocal(layout.channel-history, %qN, %2); }, { @pemit %0=ulocal(layout.error, %qE); }
+
+@@ Input:
+@@ %0 - %#
+&tr.channel-cleanup CHC=@dolist lattr(%vD/channel.*)={ @assert not(isstaff(setr(O, ulocal(f.get-channel-owner, setr(N, rest(##, .)))))); @assert not(hasflag(%qO, CONNECTED)); @assert not(hasflag(%qO, CONNECTED));  @assert gt(sub(secs(), convtime(xget(%qO, last))), 15552000); @assert t(setr(T, ulocal(f.clean-channel-name, %qN))); @cdestroy %qT; @wipe %vD/channel.%qN; @destroy %qN; @pemit %0=alert(Channel) The channel '%qT' has been destroyed.; }; @pemit %0=alert(Channel) Cleanup complete.;
 
 @@ Input:
 @@ %0 - %#
