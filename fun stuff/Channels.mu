@@ -1,3 +1,8 @@
+@@ NOTE: This is deprecated; the current copy is in my byzantine-opal repo and
+@@ is the most recent, but may require new dependencies. I'll try to apply
+@@ fixes for major bugs but new installs should definitely use the updated
+@@ version.
+
 @@ Requires:
 @@ - alert()
 @@ - isstaff()
@@ -47,9 +52,6 @@ Only the owner (or staff) can perform the following commands:
 		- No one has spoken on the channel in the last 180 days.
 		- The owner has not logged in in over 180 days.
 		- The owner is not staff.
-
-Planned feature:
-	Auto cleanup - delete channels that are owned by players and have not been used in a while, or whose players are no longer logged in.
 
 Changes:
 2020-12-26:
@@ -194,7 +196,7 @@ Changes:
 
 &switch.5.quiet CHC=@trigger me/tr.channel-quiet=%0, rest(%1);
 
-&switch.6.claim CHC=@trigger me/tr.channel-claim=%0, first(%1, =), rest(%1, =);
+&switch.6.claim CHC=@trigger me/tr.channel-claim=%0, first(rest(%1), =), rest(%1, =);
 
 &switch.6.give CHC=@trigger me/tr.channel-give=%0, first(%1, =), rest(%1, =);
 
